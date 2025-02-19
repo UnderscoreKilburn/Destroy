@@ -38,6 +38,7 @@
         "FilterItemStackMixin",
         "FluidIngredientMixin",
         "FluidNetworkMixin",
+        "FluidPropagatorMixin",
         "FluidTankBlockEntityMixin",
         "GenericItemFillingMixin",
         "GhostItemMenuMixin",

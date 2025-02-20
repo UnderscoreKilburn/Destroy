@@ -23,6 +23,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.util.Lazy;
 
 public class DynamoBlock extends KineticBlock implements IBE<DynamoBlockEntity> {
 
@@ -101,18 +103,32 @@ public class DynamoBlock extends KineticBlock implements IBE<DynamoBlockEntity> 
 
     @Override
     public InteractionResult onWrenched(BlockState state, UseOnContext context) {
-        if (context.getLevel().getBlockState(context.getClickedPos().below()).getBlock() instanceof ArcFurnaceLidBlock) context.getLevel().setBlock(context.getClickedPos().below(), state.cycle(ArcFurnaceLidBlock.AXIS), 3);
-        context.getLevel().setBlock(context.getClickedPos(), state.cycle(AXIS), 3);
+        Level level = context.getLevel();
+        BlockState stateBelow = level.getBlockState(context.getClickedPos().below());
+        if (stateBelow.getBlock() instanceof ArcFurnaceLidBlock) level.setBlock(context.getClickedPos().below(), stateBelow.cycle(ArcFurnaceLidBlock.AXIS), 3);
+        level.setBlock(context.getClickedPos(), state.cycle(AXIS), 3);
+
+        if (level.getBlockState(context.getClickedPos()) != state)
+            playRotateSound(context.getLevel(), context.getClickedPos());
+
         return InteractionResult.SUCCESS;
     };
 
     public void checkForArcFurnace(Level level, BlockPos pos, BlockState state) {
         BlockState stateBelow = level.getBlockState(pos.below());
-        if (state.getValue(ARC_FURNACE)) return;
-        if (stateBelow.is(DestroyBlocks.CARBON_FIBER_BLOCK.get()) || level.getBlockState(pos.below()).getBlock() instanceof ArcFurnaceLidBlock) {
-            level.getBlockEntity(pos, DestroyBlockEntityTypes.DYNAMO.get()).ifPresent(dynamo -> dynamo.arcFurnaceBlock = () -> stateBelow);
-            level.setBlock(pos.below(), DestroyBlocks.ARC_FURNACE_LID.getDefaultState().setValue(ArcFurnaceLidBlock.AXIS, state.getValue(AXIS)), 3);
-            level.setBlock(pos, state.setValue(ARC_FURNACE, true), 3);
+        boolean belowIsArcFurnaceLidBlock = stateBelow.is(DestroyBlocks.CARBON_FIBER_BLOCK.get()) || level.getBlockState(pos.below()).getBlock() instanceof ArcFurnaceLidBlock;
+
+        if (state.getValue(ARC_FURNACE)) {
+            if (!belowIsArcFurnaceLidBlock) {
+                level.getBlockEntity(pos, DestroyBlockEntityTypes.DYNAMO.get()).ifPresent(dynamo -> dynamo.arcFurnaceBlock = Lazy.of(Blocks.AIR::defaultBlockState));
+                level.setBlock(pos, state.setValue(ARC_FURNACE, false), 3);
+            };
+        } else {
+            if (belowIsArcFurnaceLidBlock) {
+                level.getBlockEntity(pos, DestroyBlockEntityTypes.DYNAMO.get()).ifPresent(dynamo -> dynamo.arcFurnaceBlock = () -> stateBelow);
+                level.setBlock(pos.below(), DestroyBlocks.ARC_FURNACE_LID.getDefaultState().setValue(ArcFurnaceLidBlock.AXIS, state.getValue(AXIS)), 3);
+                level.setBlock(pos, state.setValue(ARC_FURNACE, true), 3);
+            };
         };
     };
 

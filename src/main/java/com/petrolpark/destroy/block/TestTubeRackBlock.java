@@ -84,10 +84,10 @@ public class TestTubeRackBlock extends Block implements IBE<TestTubeRackBlockEnt
     };
 
     @Override
-    public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
-        super.destroy(pLevel, pPos, pState);
-        withBlockEntityDo(pLevel, pPos, be -> ItemHelper.dropContents(be.getLevel(), pPos, be.inv));
-    };
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+        withBlockEntityDo(world, pos, be -> ItemHelper.dropContents(be.getLevel(), pos, be.inv));
+        super.onRemove(state, world, pos, newState, isMoving);
+    }
 
     /**
      * @param state

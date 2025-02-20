@@ -5,6 +5,7 @@ import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.block.entity.DestroyBlockEntityTypes;
 import com.petrolpark.destroy.block.entity.KeypunchBlockEntity;
 import com.petrolpark.destroy.client.gui.menu.KeypunchScreen;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import com.simibubi.create.foundation.block.IBE;
@@ -52,6 +53,8 @@ public class KeypunchBlock extends HorizontalKineticBlock implements IBE<Keypunc
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (AllItems.WRENCH.isIn(player.getItemInHand(hand))) return InteractionResult.PASS;
+
         return onBlockEntityUse(level, pos, be -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> displayScreen(be, player));
             return InteractionResult.SUCCESS;

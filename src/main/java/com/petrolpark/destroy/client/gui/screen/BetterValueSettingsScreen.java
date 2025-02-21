@@ -38,7 +38,7 @@ public class BetterValueSettingsScreen extends ValueSettingsScreen {
     protected void saveAndClose(double mouseX, double mouseY) {
 		ValueSettings closest = getClosestCoordinate((int) mouseX, (int) mouseY);
 		AllPackets.getChannel()
-			.sendToServer(new ValueSettingsPacket(pos, closest.row(), closest.value(), hand, sideAccessed,
+			.sendToServer(new ValueSettingsPacket(pos, closest.row(), closest.value(), null, sideAccessed,
 				AllKeys.ctrlDown()));
 		onClose();
 	};

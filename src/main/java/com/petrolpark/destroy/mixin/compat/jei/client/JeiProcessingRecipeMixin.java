@@ -7,11 +7,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.petrolpark.destroy.DestroyFluids;
 import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;
 import com.petrolpark.destroy.chemistry.legacy.ReadOnlyMixture;
 import com.petrolpark.destroy.compat.jei.DestroyJEI;
-import com.petrolpark.destroy.fluid.DestroyFluids;
-import com.petrolpark.destroy.fluid.ingredient.MixtureFluidIngredient;
+import com.petrolpark.destroy.core.recipe.ingredient.fluid.MixtureFluidIngredient;
 import com.petrolpark.destroy.mixin.accessor.ProcessingRecipeParamsAccessor;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder.ProcessingRecipeParams;

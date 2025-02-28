@@ -1,7 +1,7 @@
 package com.petrolpark.destroy.chemistry.legacy;
 
 import com.jozufozu.flywheel.core.PartialModel;
-import com.petrolpark.destroy.block.model.DestroyPartials;
+import com.petrolpark.destroy.client.DestroyPartials;
 
 /**
  * A specific Atom in a specific {@link LegacySpecies}.

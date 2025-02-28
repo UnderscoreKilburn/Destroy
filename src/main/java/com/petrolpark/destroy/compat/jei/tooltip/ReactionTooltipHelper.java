@@ -4,8 +4,8 @@ import com.petrolpark.destroy.chemistry.legacy.IItemReactant;
 import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;
 import com.petrolpark.destroy.chemistry.legacy.LegacyReaction;
 import com.petrolpark.destroy.chemistry.legacy.reactionresult.PrecipitateReactionResult;
+import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.util.DestroyLang;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipHelper.Palette;
 

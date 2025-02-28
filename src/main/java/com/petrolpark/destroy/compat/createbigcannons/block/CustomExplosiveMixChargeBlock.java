@@ -6,14 +6,14 @@ import javax.annotation.Nullable;
 
 import java.util.Collections;
 
-import com.petrolpark.destroy.block.entity.SimpleDyeableNameableCustomExplosiveMixBlockEntity;
 import com.petrolpark.destroy.compat.createbigcannons.DestroyMunitionPropertiesHandlers;
 import com.petrolpark.destroy.compat.createbigcannons.block.entity.CreateBigCannonBlockEntityTypes;
 import com.petrolpark.destroy.compat.createbigcannons.item.CustomExplosiveMixChargeBlockItem;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.item.inventory.CustomExplosiveMixInventory;
-import com.petrolpark.destroy.world.explosion.ExplosiveProperties;
-import com.petrolpark.destroy.world.explosion.ExplosiveProperties.ExplosiveProperty;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosiveProperties;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.MixedExplosiveInventory;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.SimpleDyeableNameableMixedExplosiveBlockEntity;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosiveProperties.ExplosiveProperty;
 import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.core.BlockPos;
@@ -41,7 +41,7 @@ import net.minecraftforge.network.NetworkHooks;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.config.BigCannonPropellantPropertiesComponent;
 
-public class CustomExplosiveMixChargeBlock extends PowderChargeBlock implements IBE<SimpleDyeableNameableCustomExplosiveMixBlockEntity> {
+public class CustomExplosiveMixChargeBlock extends PowderChargeBlock implements IBE<SimpleDyeableNameableMixedExplosiveBlockEntity> {
 
     public CustomExplosiveMixChargeBlock(Properties properties) {
         super(properties);
@@ -73,7 +73,7 @@ public class CustomExplosiveMixChargeBlock extends PowderChargeBlock implements 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
         BlockEntity be = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        if (!(be instanceof SimpleDyeableNameableCustomExplosiveMixBlockEntity ebe)) return Collections.emptyList();
+        if (!(be instanceof SimpleDyeableNameableMixedExplosiveBlockEntity ebe)) return Collections.emptyList();
         return Collections.singletonList(ebe.getFilledItemStack(CreateBigCannonsBlocks.CUSTOM_EXPLOSIVE_MIX_CHARGE.asStack()));
     };
 
@@ -88,7 +88,7 @@ public class CustomExplosiveMixChargeBlock extends PowderChargeBlock implements 
     };
 
     public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos) {
-        SimpleDyeableNameableCustomExplosiveMixBlockEntity be = getBlockEntity(level, pos);
+        SimpleDyeableNameableMixedExplosiveBlockEntity be = getBlockEntity(level, pos);
         if (be == null) return ItemStack.EMPTY;
         return be.getFilledItemStack(CreateBigCannonsBlocks.CUSTOM_EXPLOSIVE_MIX_CHARGE.asStack());
     };
@@ -135,12 +135,12 @@ public class CustomExplosiveMixChargeBlock extends PowderChargeBlock implements 
 	};
 
     @Override
-    public Class<SimpleDyeableNameableCustomExplosiveMixBlockEntity> getBlockEntityClass() {
-        return SimpleDyeableNameableCustomExplosiveMixBlockEntity.class;
+    public Class<SimpleDyeableNameableMixedExplosiveBlockEntity> getBlockEntityClass() {
+        return SimpleDyeableNameableMixedExplosiveBlockEntity.class;
     };
 
     @Override
-    public BlockEntityType<? extends SimpleDyeableNameableCustomExplosiveMixBlockEntity> getBlockEntityType() {
+    public BlockEntityType<? extends SimpleDyeableNameableMixedExplosiveBlockEntity> getBlockEntityType() {
         return CreateBigCannonBlockEntityTypes.CUSTOM_EXPLOSIVE_MIX_CHARGE.get();
     };
 
@@ -157,7 +157,7 @@ public class CustomExplosiveMixChargeBlock extends PowderChargeBlock implements 
     };
 
     public BigCannonPropellantPropertiesComponent getPropellantProperties(CompoundTag nbt) {
-        CustomExplosiveMixInventory inv = new CustomExplosiveMixInventory(DestroyAllConfigs.SERVER.compat.customExplosiveMixChargeSize.get());
+        MixedExplosiveInventory inv = new MixedExplosiveInventory(DestroyAllConfigs.SERVER.compat.customExplosiveMixChargeSize.get());
         inv.deserializeNBT(nbt.getCompound("ExplosiveMix"));
         if (inv.isEmpty()) return BigCannonPropellantPropertiesComponent.DEFAULT;
         CustomExplosiveMixChargeProperties chargeProperties = DestroyMunitionPropertiesHandlers.CUSTOM_EXPLOSIVE_MIX_CHARGE.getPropertiesOf(this);

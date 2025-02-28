@@ -9,12 +9,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.petrolpark.destroy.capability.Pollution;
-import com.petrolpark.destroy.capability.Pollution.PollutionType;
+import com.petrolpark.destroy.DestroyMessages;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.network.DestroyMessages;
-import com.petrolpark.destroy.network.packet.SyncChunkPollutionS2CPacket;
-import com.petrolpark.destroy.util.PollutionHelper;
+import com.petrolpark.destroy.core.pollution.Pollution;
+import com.petrolpark.destroy.core.pollution.PollutionHelper;
+import com.petrolpark.destroy.core.pollution.SyncChunkPollutionS2CPacket;
+import com.petrolpark.destroy.core.pollution.Pollution.PollutionType;
 import com.simibubi.create.foundation.utility.Couple;
 
 import net.minecraft.core.Holder;

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
 import com.petrolpark.destroy.compat.jei.animation.AnimatedDynamo;
-import com.petrolpark.destroy.recipe.ChargingRecipe;
+import com.petrolpark.destroy.content.processing.dynamo.ChargingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 

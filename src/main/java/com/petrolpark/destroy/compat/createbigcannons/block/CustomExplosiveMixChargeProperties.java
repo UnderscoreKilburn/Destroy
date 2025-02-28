@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.petrolpark.destroy.world.explosion.ExplosiveProperties.ExplosiveProperty;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosiveProperties.ExplosiveProperty;
 import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.network.FriendlyByteBuf;

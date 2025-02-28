@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.function.Supplier;
 
 import com.petrolpark.compat.jei.JEISetup;
-import com.petrolpark.destroy.block.DestroyBlocks;
-import com.petrolpark.destroy.item.DestroyItems;
+import com.petrolpark.destroy.DestroyBlocks;
+import com.petrolpark.destroy.DestroyItems;
 
 import net.minecraft.world.item.ItemStack;
 

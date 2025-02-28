@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.petrolpark.destroy.recipe.DestroyMysteriousItemConversions;
+import com.petrolpark.destroy.DestroyMysteriousItemConversions;
 import com.simibubi.create.compat.jei.CreateJEI;
 
 @Mixin(CreateJEI.class)

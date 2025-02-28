@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
-import com.petrolpark.destroy.block.entity.VatControllerBlockEntity;
 import com.petrolpark.destroy.chemistry.legacy.reactionresult.PrecipitateReactionResult;
+import com.petrolpark.destroy.core.chemistry.vat.VatControllerBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 
 import net.minecraft.world.level.Level;

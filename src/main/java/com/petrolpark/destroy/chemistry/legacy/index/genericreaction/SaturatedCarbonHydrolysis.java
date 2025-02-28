@@ -1,7 +1,7 @@
 package com.petrolpark.destroy.chemistry.legacy.index.genericreaction;
 
 import com.petrolpark.destroy.Destroy;
-import com.petrolpark.destroy.advancement.DestroyAdvancementTrigger;
+import com.petrolpark.destroy.DestroyAdvancementTrigger;
 import com.petrolpark.destroy.chemistry.legacy.LegacyElement;
 import com.petrolpark.destroy.chemistry.legacy.LegacyMolecularStructure;
 import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;

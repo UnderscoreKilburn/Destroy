@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.petrolpark.destroy.DestroyClient;
-import com.petrolpark.destroy.entity.player.ExtendedInventory;
+import com.petrolpark.destroy.core.extendedinventory.ExtendedInventory;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;

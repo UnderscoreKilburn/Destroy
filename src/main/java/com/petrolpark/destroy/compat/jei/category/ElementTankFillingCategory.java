@@ -1,8 +1,8 @@
 package com.petrolpark.destroy.compat.jei.category;
 
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
-import com.petrolpark.destroy.block.DestroyBlocks;
-import com.petrolpark.destroy.recipe.ElementTankFillingRecipe;
+import com.petrolpark.destroy.DestroyBlocks;
+import com.petrolpark.destroy.content.product.periodictable.ElementTankFillingRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
 import mezz.jei.api.forge.ForgeTypes;

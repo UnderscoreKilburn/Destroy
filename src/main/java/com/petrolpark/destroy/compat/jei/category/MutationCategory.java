@@ -6,10 +6,10 @@ import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.petrolpark.client.rendering.PetrolparkGuiTexture;
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
+import com.petrolpark.destroy.DestroyItems;
 import com.petrolpark.destroy.compat.jei.animation.GUIBlockRenderer;
-import com.petrolpark.destroy.item.DestroyItems;
-import com.petrolpark.destroy.recipe.MutationRecipe;
-import com.petrolpark.destroy.util.CropMutation;
+import com.petrolpark.destroy.content.processing.phytomining.CropMutation;
+import com.petrolpark.destroy.content.processing.phytomining.PhytominingRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -25,9 +25,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class MutationCategory extends PetrolparkRecipeCategory<MutationRecipe> {
+public class MutationCategory extends PetrolparkRecipeCategory<PhytominingRecipe> {
 
-    public static final List<MutationRecipe> RECIPES = new ArrayList<>();
+    public static final List<PhytominingRecipe> RECIPES = new ArrayList<>();
 
     private static final GUIBlockRenderer blockRenderer = new GUIBlockRenderer();
 
@@ -40,17 +40,17 @@ public class MutationCategory extends PetrolparkRecipeCategory<MutationRecipe> {
     static {
         for (List<CropMutation> mutations : CropMutation.MUTATIONS.values()) {
             for (CropMutation mutation : mutations) {
-                RECIPES.add(MutationRecipe.create(mutation));
+                RECIPES.add(PhytominingRecipe.create(mutation));
             };
         };
     };
 
-    public MutationCategory(Info<MutationRecipe> info, IJeiHelpers helpers) {
+    public MutationCategory(Info<PhytominingRecipe> info, IJeiHelpers helpers) {
         super(info, helpers);
     };
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, MutationRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, PhytominingRecipe recipe, IFocusGroup focuses) {
         builder
             .addSlot(RecipeIngredientRole.INPUT, 52, 40)
             .setBackground(getRenderedSlot(), -1, -1)
@@ -78,7 +78,7 @@ public class MutationCategory extends PetrolparkRecipeCategory<MutationRecipe> {
     };
 
     @Override
-    public void draw(MutationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
+    public void draw(PhytominingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
         super.draw(recipe, recipeSlotsView, graphics, mouseX, mouseY);
         PoseStack stack = graphics.pose();
 

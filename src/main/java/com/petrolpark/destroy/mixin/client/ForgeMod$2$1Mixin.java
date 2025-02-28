@@ -3,8 +3,8 @@ package com.petrolpark.destroy.mixin.client;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
-import com.petrolpark.destroy.block.color.SmogAffectedBlockColor;
-import com.petrolpark.destroy.capability.Pollution;
+import com.petrolpark.destroy.core.pollution.Pollution;
+import com.petrolpark.destroy.core.pollution.SmogAffectedBlockColor;
 import com.simibubi.create.foundation.ponder.PonderWorld;
 
 import net.minecraft.core.BlockPos;

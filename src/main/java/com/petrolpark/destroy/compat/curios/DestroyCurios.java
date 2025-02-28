@@ -2,7 +2,7 @@ package com.petrolpark.destroy.compat.curios;
 
 import com.petrolpark.compat.curios.Curios;
 import com.petrolpark.compat.curios.CuriosSetup;
-import com.petrolpark.destroy.util.ChemistryDamageHelper.Protection;
+import com.petrolpark.destroy.core.chemistry.hazard.ChemistryHazardHelper.Protection;
 import com.simibubi.create.content.equipment.goggles.GogglesItem;
 
 import net.minecraftforge.eventbus.api.IEventBus;

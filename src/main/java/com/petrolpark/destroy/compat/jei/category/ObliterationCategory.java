@@ -1,15 +1,10 @@
 package com.petrolpark.destroy.compat.jei.category;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.petrolpark.client.rendering.PetrolparkGuiTexture;
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
-import com.petrolpark.destroy.block.DestroyBlocks;
-import com.petrolpark.destroy.item.CustomExplosiveMixBlockItem;
-import com.petrolpark.destroy.recipe.ObliterationRecipe;
-import com.petrolpark.destroy.util.DestroyTags.DestroyItemTags;
+import com.petrolpark.destroy.core.explosion.ObliterationRecipe;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.MixedExplosiveBlockItem;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
@@ -34,7 +29,7 @@ public class ObliterationCategory extends PetrolparkRecipeCategory<ObliterationR
         
         builder.addSlot(RecipeIngredientRole.CATALYST, 77, 26)
             .setBackground(getRenderedSlot(), -1, -1)
-            .addItemStack(CustomExplosiveMixBlockItem.getExampleItemStack());
+            .addItemStack(MixedExplosiveBlockItem.getExampleItemStack());
 
         ProcessingOutput output = recipe.getRollableResults().get(0);
         builder.addSlot(RecipeIngredientRole.OUTPUT, 131, 51)

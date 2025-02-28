@@ -11,8 +11,8 @@ import com.petrolpark.destroy.chemistry.legacy.LegacyFunctionalGroupType;
 import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;
 import com.petrolpark.destroy.chemistry.legacy.LegacyReaction;
 import com.petrolpark.destroy.chemistry.legacy.genericreaction.GenericReaction;
-import com.petrolpark.destroy.recipe.ReactionRecipe;
-import com.petrolpark.destroy.recipe.ReactionRecipe.GenericReactionRecipe;
+import com.petrolpark.destroy.core.chemistry.recipe.ReactionRecipe;
+import com.petrolpark.destroy.core.chemistry.recipe.ReactionRecipe.GenericReactionRecipe;
 
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.RecipeType;

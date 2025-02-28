@@ -9,12 +9,12 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.jozufozu.flywheel.util.Color;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.petrolpark.destroy.capability.Pollution;
-import com.petrolpark.destroy.capability.Pollution.PollutionType;
-import com.petrolpark.destroy.capability.level.pollution.ClientLevelPollutionData;
-import com.petrolpark.destroy.client.particle.TintedSplashParticle;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.util.PollutionHelper;
+import com.petrolpark.destroy.core.fluid.TintedSplashParticle;
+import com.petrolpark.destroy.core.pollution.ClientLevelPollutionData;
+import com.petrolpark.destroy.core.pollution.Pollution;
+import com.petrolpark.destroy.core.pollution.PollutionHelper;
+import com.petrolpark.destroy.core.pollution.Pollution.PollutionType;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -31,7 +31,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * Mixin to Level Renderer to change the color of rain depending on the {@link com.petrolpark.destroy.capability.Pollution.PollutionType#ACID_RAIN acid rain} level.
+ * Mixin to Level Renderer to change the color of rain depending on the {@link com.petrolpark.destroy.core.pollution.Pollution.PollutionType#ACID_RAIN acid rain} level.
  */
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {

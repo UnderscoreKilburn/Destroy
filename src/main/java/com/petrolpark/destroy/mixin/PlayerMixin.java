@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.authlib.GameProfile;
-import com.petrolpark.destroy.entity.player.ExtendedInventory;
+import com.petrolpark.destroy.core.extendedinventory.ExtendedInventory;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;

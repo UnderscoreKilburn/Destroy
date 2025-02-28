@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import com.petrolpark.destroy.effect.potion.PotionFluidMixingRecipes;
-import com.petrolpark.destroy.fluid.DestroyFluids;
+import com.petrolpark.destroy.DestroyFluids;
+import com.petrolpark.destroy.content.processing.centrifuge.potion.PotionFluidMixingRecipes;
+import com.petrolpark.destroy.core.chemistry.basinreaction.ReactionInBasinRecipe;
 import com.petrolpark.destroy.mixin.accessor.BasinOperatingBlockEntityAccessor;
-import com.petrolpark.destroy.recipe.ReactionInBasinRecipe;
 import com.simibubi.create.content.kinetics.mixer.MechanicalMixerBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
 import com.simibubi.create.infrastructure.config.AllConfigs;
@@ -30,7 +30,7 @@ public class MechanicalMixerBlockEntityMixin {
     /**
      * Injection into {@link com.simibubi.create.content.contraptions.components.mixer.MechanicalMixerBlockEntity Mechanical Mixers}
      * to allow them to recognise Mixtures that are able to React, and also stir up Potions.
-     * @see com.petrolpark.destroy.recipe.ReactionInBasinRecipe Reactions in Basins
+     * @see com.petrolpark.destroy.core.chemistry.basinreaction.ReactionInBasinRecipe Reactions in Basins
      */
     @Inject(
         method = "getMatchingRecipes()Ljava/util/List;",

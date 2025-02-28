@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.petrolpark.destroy.util.ChemistryDamageHelper;
+import com.petrolpark.destroy.core.chemistry.hazard.ChemistryHazardHelper;
 import com.simibubi.create.content.kinetics.fan.processing.AllFanProcessingTypes.SplashingType;
 
 import net.minecraft.world.entity.Entity;
@@ -30,7 +30,7 @@ public class SplashingTypeMixin {
     )
     public void inAffectEntity(Entity entity, Level level, CallbackInfo ci) {
         if (entity instanceof LivingEntity livingEntity) {
-            for (ItemStack armor : livingEntity.getArmorSlots()) ChemistryDamageHelper.decontaminate(armor);
+            for (ItemStack armor : livingEntity.getArmorSlots()) ChemistryHazardHelper.decontaminate(armor);
         };
     };
 };

@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.petrolpark.destroy.fluid.DestroyFluids;
+import com.petrolpark.destroy.DestroyFluids;
 import com.simibubi.create.content.logistics.filter.FilterItemStack;
 
 import net.minecraft.world.level.Level;

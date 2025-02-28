@@ -1,14 +1,14 @@
 package com.petrolpark.destroy.chemistry.legacy.index;
 
 import com.petrolpark.destroy.Destroy;
-import com.petrolpark.destroy.advancement.DestroyAdvancementTrigger;
-import com.petrolpark.destroy.block.DestroyBlocks;
+import com.petrolpark.destroy.DestroyAdvancementTrigger;
+import com.petrolpark.destroy.DestroyBlocks;
+import com.petrolpark.destroy.DestroyItems;
 import com.petrolpark.destroy.chemistry.legacy.LegacyReaction;
 import com.petrolpark.destroy.chemistry.legacy.LegacyReaction.ReactionBuilder;
 import com.petrolpark.destroy.chemistry.legacy.reactionresult.CombinedReactionResult;
 import com.petrolpark.destroy.chemistry.legacy.reactionresult.ExplosionReactionResult;
 import com.petrolpark.destroy.chemistry.legacy.reactionresult.PrecipitateReactionResult;
-import com.petrolpark.destroy.item.DestroyItems;
 import com.petrolpark.destroy.config.DestroySubstancesConfigs;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
@@ -512,7 +512,18 @@ public class DestroyReactions {
         .activationEnergy(100f)
         .enthalpyChange(-500f)
         .build(),
-    
+
+
+
+    HYDROGEN_CYANIDE_DISSOCIATION = builder()
+            .id("hydrogen_cyanide_dissociation")
+            .addReactant(DestroyMolecules.HYDROGEN_CYANIDE)
+            .addReactant(DestroyMolecules.HYDROXIDE)
+            .addProduct(DestroyMolecules.WATER)
+            .addProduct(DestroyMolecules.CYANIDE)
+            .build(),
+
+
     HYDROGEN_IODIDE_SYNTHESIS = builder()
         .id("hydrogen_iodide_synthesis")
         .addReactant(DestroyMolecules.HYDRAZINE)
@@ -545,6 +556,16 @@ public class DestroyReactions {
         .addProduct(DestroyMolecules.WATER)
         .requireUV() //TODO add reverse reaction
         .build(),
+
+
+    HYPOCHLOROUS_ACID_DISSOCIATION = builder()
+            .id("hypochlorous_acid_dissociation")
+            .addReactant(DestroyMolecules.HYPOCHLOROUS_ACID)
+            .addReactant(DestroyMolecules.HYDROXIDE)
+            .addProduct(DestroyMolecules.WATER)
+            .addProduct(DestroyMolecules.HYPOCHLORITE)
+            .build(),
+
 
     IODIDE_DISPLACEMENT = builder()
         .id("iodide_displacement")
@@ -866,6 +887,17 @@ public class DestroyReactions {
         .addProduct(DestroyMolecules.HYDROGEN)
         .build(),
 
+    SODIUM_INGOT_DISSOLUTION = builder()
+            .id("sodium_ingot_dissolution")
+            .addReactant(DestroyMolecules.WATER, 2, 1)
+            .addSimpleItemReactant(DestroyItems.SODIUM_INGOT::get, 4.9f)
+            .addProduct(DestroyMolecules.SODIUM_ION, 2)
+            .addProduct(DestroyMolecules.HYDROXIDE, 2)
+            .addProduct(DestroyMolecules.HYDROGEN)
+            .activationEnergy(1f)
+            .enthalpyChange(-370f) // STRONGLY exothermic
+            .build(),
+
     SODIUM_OXIDE_DISSOLUTION = builder()
         .id("sodium_oxide_dissolution")
         .addReactant(DestroyMolecules.WATER)
@@ -965,6 +997,14 @@ public class DestroyReactions {
         ).preexponentialFactor(10f)
         .activationEnergy(10f)
         .build(),
+
+    THIONYL_CHLORIDE_SYNTHESIS = builder()
+            .id("thionyl_chloride_synthesis")
+            .addReactant(DestroyMolecules.SULFUR_DIOXIDE)
+            .addReactant(DestroyMolecules.PHOSGENE)
+            .addProduct(DestroyMolecules.THIONYL_CHLORIDE)
+            .addProduct(DestroyMolecules.CARBON_DIOXIDE)
+            .build(),
 
     TOLUENE_NITRATION = builder()
         .id("toluene_nitration")

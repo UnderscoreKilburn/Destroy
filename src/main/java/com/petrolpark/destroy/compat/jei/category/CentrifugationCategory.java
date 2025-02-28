@@ -3,7 +3,7 @@ package com.petrolpark.destroy.compat.jei.category;
 import com.petrolpark.client.rendering.PetrolparkGuiTexture;
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
 import com.petrolpark.destroy.compat.jei.animation.AnimatedCentrifuge;
-import com.petrolpark.destroy.recipe.CentrifugationRecipe;
+import com.petrolpark.destroy.content.processing.centrifuge.CentrifugationRecipe;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 

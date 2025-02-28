@@ -2,18 +2,18 @@ package com.petrolpark.destroy.compat.createbigcannons.block.entity;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.petrolpark.destroy.block.entity.SimpleDyeableNameableCustomExplosiveMixBlockEntity;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.item.inventory.CustomExplosiveMixInventory;
-import com.petrolpark.destroy.world.explosion.ExplosiveProperties;
-import com.petrolpark.destroy.world.explosion.ExplosiveProperties.ExplosivePropertyCondition;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosiveProperties;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.MixedExplosiveInventory;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.SimpleDyeableNameableMixedExplosiveBlockEntity;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosiveProperties.ExplosivePropertyCondition;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CustomExplosiveMixChargeBlockEntity extends SimpleDyeableNameableCustomExplosiveMixBlockEntity {
+public class CustomExplosiveMixChargeBlockEntity extends SimpleDyeableNameableMixedExplosiveBlockEntity {
 
     public static ExplosivePropertyCondition[] EXPLOSIVE_PROPERTY_CONDITIONS = new ExplosivePropertyCondition[]{
         ExplosiveProperties.CAN_EXPLODE
@@ -24,8 +24,8 @@ public class CustomExplosiveMixChargeBlockEntity extends SimpleDyeableNameableCu
     };
 
     @Override
-    public CustomExplosiveMixInventory createInv() {
-        return new CustomExplosiveMixInventory(DestroyAllConfigs.SERVER.compat.customExplosiveMixChargeSize.get(), EXPLOSIVE_PROPERTY_CONDITIONS);
+    public MixedExplosiveInventory createInv() {
+        return new MixedExplosiveInventory(DestroyAllConfigs.SERVER.compat.customExplosiveMixChargeSize.get(), EXPLOSIVE_PROPERTY_CONDITIONS);
     };
 
     @Override

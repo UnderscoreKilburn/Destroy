@@ -8,11 +8,11 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.petrolpark.client.rendering.PetrolparkGuiTexture;
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
-import com.petrolpark.destroy.block.AgingBarrelBlock;
-import com.petrolpark.destroy.block.DestroyBlocks;
+import com.petrolpark.destroy.DestroyBlocks;
+import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.compat.jei.animation.GUIBlockRenderer;
-import com.petrolpark.destroy.recipe.AgingRecipe;
-import com.petrolpark.destroy.util.DestroyLang;
+import com.petrolpark.destroy.content.processing.ageing.AgeingRecipe;
+import com.petrolpark.destroy.content.processing.ageing.AgingBarrelBlock;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.item.ItemHelper;
@@ -32,11 +32,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.fluids.FluidStack;
 
-public class AgingCategory extends PetrolparkRecipeCategory<AgingRecipe> {
+public class AgingCategory extends PetrolparkRecipeCategory<AgeingRecipe> {
 
     private static final GUIBlockRenderer blockRenderer = new GUIBlockRenderer();
 
-    public AgingCategory(Info<AgingRecipe> info, IJeiHelpers helpers) {
+    public AgingCategory(Info<AgeingRecipe> info, IJeiHelpers helpers) {
         super(info, helpers);
     };
 
@@ -44,7 +44,7 @@ public class AgingCategory extends PetrolparkRecipeCategory<AgingRecipe> {
      * Most of this is all copied from {@link com.simibubi.create.compat.jei.category.BasinCategory BasinCategory}.
      */
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, AgingRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, AgeingRecipe recipe, IFocusGroup focuses) {
         List<Pair<Ingredient, MutableInt>> condensedIngredients = ItemHelper.condenseIngredients(recipe.getIngredients());
 
 		int size = condensedIngredients.size() ; // The +1 is for the mandatory single Fluid; size should have a maximum of 3
@@ -85,7 +85,7 @@ public class AgingCategory extends PetrolparkRecipeCategory<AgingRecipe> {
 
     @Override
     @SuppressWarnings("resource")
-    public void draw(AgingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
+    public void draw(AgeingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
         super.draw(recipe, recipeSlotsView, graphics, mouseX, mouseY);
         PoseStack stack = graphics.pose();
         AllGuiTextures.JEI_DOWN_ARROW.render(graphics, 136, 14);

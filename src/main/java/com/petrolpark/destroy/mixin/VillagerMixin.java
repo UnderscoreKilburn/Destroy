@@ -6,13 +6,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.petrolpark.destroy.capability.Pollution.PollutionType;
+import com.petrolpark.destroy.DestroyItems;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.item.DestroyItems;
+import com.petrolpark.destroy.core.pollution.PollutionHelper;
+import com.petrolpark.destroy.core.pollution.Pollution.PollutionType;
 import com.petrolpark.destroy.mixin.accessor.AbstractVillagerAccessor;
 import com.petrolpark.destroy.mixin.accessor.AgeableMobAccessor;
 import com.petrolpark.destroy.mixin.accessor.VillagerAccessor;
-import com.petrolpark.destroy.util.PollutionHelper;
 
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;

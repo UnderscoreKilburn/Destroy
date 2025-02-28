@@ -1,16 +1,16 @@
 package com.petrolpark.destroy.chemistry.legacy.reactionresult;
 
-import com.petrolpark.destroy.advancement.DestroyAdvancementTrigger;
-import com.petrolpark.destroy.block.entity.VatControllerBlockEntity;
-import com.petrolpark.destroy.block.entity.behaviour.DestroyAdvancementBehaviour;
+import com.petrolpark.destroy.DestroyAdvancementTrigger;
 import com.petrolpark.destroy.chemistry.legacy.LegacyReaction;
 import com.petrolpark.destroy.chemistry.legacy.ReactionResult;
+import com.petrolpark.destroy.core.chemistry.vat.VatControllerBlockEntity;
+import com.petrolpark.destroy.core.data.advancement.DestroyAdvancementBehaviour;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 
 import net.minecraft.world.level.Level;
 
 /**
- * Awards a {@link com.petrolpark.destroy.advancement.DestroyAdvancementTrigger Destroy Advancement} when enough of a Reaction takes place.
+ * Awards a {@link com.petrolpark.destroy.DestroyAdvancementTrigger Destroy Advancement} when enough of a Reaction takes place.
  * It is recommended that addon creators make their own child class of {@link com.petrolpark.destroy.chemistry.legacy.ReactionResult ReactionResult} for Advancements rather than trying to piggyback off this.
  */
 public class DestroyAdvancementReactionResult extends ReactionResult {

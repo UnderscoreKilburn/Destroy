@@ -20,8 +20,8 @@ import com.petrolpark.destroy.chemistry.legacy.index.DestroyGroupTypes;
 import com.petrolpark.destroy.chemistry.legacy.index.DestroyMolecules;
 import com.petrolpark.destroy.chemistry.naming.INameableProduct;
 import com.petrolpark.destroy.chemistry.serializer.Branch;
-import com.petrolpark.destroy.client.gui.MoleculeRenderer;
-import com.petrolpark.destroy.util.DestroyLang;
+import com.petrolpark.destroy.client.DestroyLang;
+import com.petrolpark.destroy.core.chemistry.MoleculeRenderer;
 import com.simibubi.create.foundation.utility.Pair;
 
 import net.minecraft.client.resources.language.I18n;
@@ -139,7 +139,7 @@ public class LegacySpecies implements INameableProduct {
     private int color;
 
     /**
-     * The {@link com.petrolpark.destroy.client.gui.MoleculeRenderer Renderer} for this Molecule.
+     * The {@link com.petrolpark.destroy.core.chemistry.MoleculeRenderer Renderer} for this Molecule.
      */
     private MoleculeRenderer renderer;
 
@@ -529,7 +529,7 @@ public class LegacySpecies implements INameableProduct {
     };
 
     /**
-     * Get the {@link com.petrolpark.destroy.client.gui.MoleculeRenderer Renderer} for this Molecule.
+     * Get the {@link com.petrolpark.destroy.core.chemistry.MoleculeRenderer Renderer} for this Molecule.
      * To save on processing time, the first time Renderer is generated, it is {@link LegacySpecies#renderer stored}
      * in this Molecule and referred to for later use.
      */

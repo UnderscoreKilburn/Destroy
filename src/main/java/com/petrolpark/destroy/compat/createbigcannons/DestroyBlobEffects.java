@@ -1,15 +1,5 @@
 package com.petrolpark.destroy.compat.createbigcannons;
 
-import com.petrolpark.destroy.fluid.DestroyFluids;
-import com.petrolpark.destroy.util.PollutionHelper;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.fluids.FluidStack;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobEffectRegistry;
-
 public class DestroyBlobEffects {
     
     public static void registerBlobEffects() {

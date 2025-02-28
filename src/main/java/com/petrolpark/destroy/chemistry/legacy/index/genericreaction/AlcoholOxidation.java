@@ -3,7 +3,7 @@ package com.petrolpark.destroy.chemistry.legacy.index.genericreaction;
 import java.util.List;
 
 import com.petrolpark.destroy.Destroy;
-import com.petrolpark.destroy.advancement.DestroyAdvancementTrigger;
+import com.petrolpark.destroy.DestroyAdvancementTrigger;
 import com.petrolpark.destroy.chemistry.legacy.LegacyAtom;
 import com.petrolpark.destroy.chemistry.legacy.LegacyElement;
 import com.petrolpark.destroy.chemistry.legacy.LegacyMolecularStructure;

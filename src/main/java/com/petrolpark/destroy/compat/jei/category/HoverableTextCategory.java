@@ -8,10 +8,10 @@ import com.jozufozu.flywheel.util.AnimationTickHolder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.petrolpark.compat.jei.category.ITickableCategory;
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
-import com.petrolpark.destroy.client.gui.stackedtextbox.AbstractStackedTextBox;
-import com.petrolpark.destroy.client.gui.stackedtextbox.AbstractStackedTextBox.Area;
-import com.petrolpark.destroy.client.gui.stackedtextbox.AbstractStackedTextBox.LinesAndActivationAreas;
-import com.petrolpark.destroy.client.gui.stackedtextbox.StackedTextBox;
+import com.petrolpark.destroy.client.stackedtextbox.AbstractStackedTextBox;
+import com.petrolpark.destroy.client.stackedtextbox.StackedTextBox;
+import com.petrolpark.destroy.client.stackedtextbox.AbstractStackedTextBox.Area;
+import com.petrolpark.destroy.client.stackedtextbox.AbstractStackedTextBox.LinesAndActivationAreas;
 import com.simibubi.create.foundation.item.TooltipHelper.Palette;
 import com.simibubi.create.foundation.utility.Pair;
 

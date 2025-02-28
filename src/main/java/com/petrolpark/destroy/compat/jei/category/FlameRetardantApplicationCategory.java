@@ -4,9 +4,9 @@ import java.util.Collections;
 import java.util.List;
 
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
-import com.petrolpark.destroy.recipe.FlameRetardantApplicationRecipe;
-import com.petrolpark.destroy.util.DestroyLang;
-import com.petrolpark.destroy.util.FireproofingHelper;
+import com.petrolpark.destroy.client.DestroyLang;
+import com.petrolpark.destroy.content.product.fireretardant.FireproofingHelper;
+import com.petrolpark.destroy.content.product.fireretardant.FlameRetardantApplicationRecipe;
 import com.simibubi.create.compat.jei.category.animations.AnimatedSpout;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 

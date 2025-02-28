@@ -3,7 +3,7 @@ package com.petrolpark.destroy.compat.jei;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.petrolpark.destroy.client.gui.menu.IConditionalGhostSlot;
+import com.petrolpark.destroy.client.IConditionalGhostSlot;
 import com.simibubi.create.AllPackets;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.menu.GhostItemMenu;

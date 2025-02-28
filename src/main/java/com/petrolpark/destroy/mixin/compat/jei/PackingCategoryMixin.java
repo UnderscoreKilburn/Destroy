@@ -5,8 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.petrolpark.destroy.block.entity.CoolerBlockEntity.ColdnessLevel;
 import com.petrolpark.destroy.compat.jei.animation.AnimatedCooler;
+import com.petrolpark.destroy.content.processing.cooler.CoolerBlockEntity.ColdnessLevel;
 import com.simibubi.create.compat.jei.category.PackingCategory;
 import com.simibubi.create.compat.jei.category.animations.AnimatedPress;
 import com.simibubi.create.content.processing.basin.BasinRecipe;

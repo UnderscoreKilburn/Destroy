@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 import com.petrolpark.destroy.chemistry.legacy.LegacyReaction;
 import com.petrolpark.destroy.compat.jei.category.GenericReactionCategory;
 import com.petrolpark.destroy.compat.jei.category.ReactionCategory;
-import com.petrolpark.destroy.recipe.ReactionRecipe;
+import com.petrolpark.destroy.core.chemistry.recipe.ReactionRecipe;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.ingredients.ITypedIngredient;

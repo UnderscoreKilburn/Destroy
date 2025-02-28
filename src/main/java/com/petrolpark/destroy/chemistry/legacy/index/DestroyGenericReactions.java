@@ -1,5 +1,6 @@
 package com.petrolpark.destroy.chemistry.legacy.index;
 
+
 import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AcylChlorideEsterification;
 import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AcylChlorideFormation;
 import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AcylChlorideHydrolysis;
@@ -33,6 +34,8 @@ import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.NitroHydrog
 import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.SaturatedCarbonHydrogenation;
 import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.SaturatedCarbonHydrolysis;
 import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.WolffKishnerReduction;
+import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.ThionylChlorideSubstitution;
+
 
 public class DestroyGenericReactions {
 
@@ -79,6 +82,7 @@ public class DestroyGenericReactions {
     public static final NitrileHydrogenation NITRILE_HYDROGENATION = new NitrileHydrogenation();
     public static final NitrileHydrolysis NITRILE_HYDROLYSIS = new NitrileHydrolysis();
     public static final NitroHydrogenation NITRO_HYDROGENATION = new NitroHydrogenation();
+    public static final ThionylChlorideSubstitution THIONYL_CHLORIDE_SUBSTITUTION = new ThionylChlorideSubstitution();
     public static final WolffKishnerReduction WOLFF_KISHNER_REDUCTION = new WolffKishnerReduction();
 
     public static void register() {};

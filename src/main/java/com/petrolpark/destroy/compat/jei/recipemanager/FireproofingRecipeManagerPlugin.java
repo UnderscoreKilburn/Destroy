@@ -3,9 +3,9 @@ package com.petrolpark.destroy.compat.jei.recipemanager;
 import java.util.Collections;
 import java.util.List;
 
+import com.petrolpark.destroy.DestroyRecipeTypes;
 import com.petrolpark.destroy.compat.jei.DestroyJEI;
-import com.petrolpark.destroy.recipe.DestroyRecipeTypes;
-import com.petrolpark.destroy.util.FireproofingHelper;
+import com.petrolpark.destroy.content.product.fireretardant.FireproofingHelper;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.recipe.IFocus;

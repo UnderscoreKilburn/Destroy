@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.petrolpark.destroy.MoveToPetrolparkLibrary;
-import com.petrolpark.destroy.effect.DestroyMobEffect.DestroyMobEffectExtensions;
+import com.petrolpark.destroy.core.mobeffect.DestroyMobEffect.DestroyMobEffectExtensions;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;

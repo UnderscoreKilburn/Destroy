@@ -2,8 +2,8 @@ package com.petrolpark.destroy.compat.jei.animation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.petrolpark.destroy.block.DestroyBlocks;
-import com.petrolpark.destroy.block.model.DestroyPartials;
+import com.petrolpark.destroy.DestroyBlocks;
+import com.petrolpark.destroy.client.DestroyPartials;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
 
 import net.minecraft.client.gui.GuiGraphics;

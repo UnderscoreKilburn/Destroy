@@ -13,11 +13,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.petrolpark.destroy.DestroyFluids;
 import com.petrolpark.destroy.chemistry.legacy.ClientMixture;
+import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.compat.jei.DestroyJEI;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.fluid.DestroyFluids;
-import com.petrolpark.destroy.util.DestroyLang;
 import com.simibubi.create.AllFluids;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory.Info;
@@ -66,7 +66,7 @@ public abstract class CreateRecipeCategoryMixin<T extends Recipe<?>> {
      * Injection into {@link com.simibubi.create.compat.jei.category.CreateRecipeCategory#CreateRecipeCategory CreateRecipeCategory}.
      * As Create's {@link mezz.jei.api.recipe.RecipeType Recipe Types} are not exposed by default, we snipe them here and add them to the
      * {@link com.petrolpark.destroy.compat.jei.DestroyJEI#MIXTURE_APPLICABLE_RECIPE_TYPES list of Recipe Types} for which {@link com.petrolpark.destroy.chemistry.legacy.LegacyMixture Mixtures}
-     * can be {@link com.petrolpark.destroy.fluid.ingredient.MoleculeFluidIngredient ingredients} or results.
+     * can be {@link com.petrolpark.destroy.core.recipe.ingredient.fluid.MoleculeFluidIngredient ingredients} or results.
      */
     @Inject(
         method = "<init>",

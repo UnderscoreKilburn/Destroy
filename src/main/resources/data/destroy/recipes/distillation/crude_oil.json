@@ -88,19 +88,19 @@
                     "Contents": [
                         {
                             "Molecule": "destroy:methane",
-                            "Concentration": 0.00314171
+                            "Concentration": 0.0628342
                         },
                         {
                             "Molecule": "destroy:ethene",
-                            "Concentration": 0.00942513
+                            "Concentration": 0.1885026
                         },
                         {
                             "Molecule": "destroy:propene",
-                            "Concentration": 0.00628342
+                            "Concentration": 0.1256684
                         },
                         {
                             "Molecule": "destroy:butadiene",
-                            "Concentration": 0.00628342
+                            "Concentration": 0.1256684
                         }
                     ]
                 }

@@ -8,8 +8,8 @@ import com.jozufozu.flywheel.util.Color;
 import com.petrolpark.destroy.chemistry.legacy.index.DestroyMolecules;
 import com.petrolpark.destroy.chemistry.naming.INameableProduct;
 import com.petrolpark.destroy.chemistry.naming.NamedSalt;
+import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.util.DestroyLang;
 
 import net.minecraft.network.chat.Component;
 

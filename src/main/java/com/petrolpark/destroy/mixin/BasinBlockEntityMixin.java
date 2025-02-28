@@ -8,9 +8,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.petrolpark.destroy.block.entity.behaviour.DestroyAdvancementBehaviour;
-import com.petrolpark.destroy.block.entity.behaviour.ExtendedBasinBehaviour;
-import com.petrolpark.destroy.util.DestroyLang;
+import com.petrolpark.destroy.client.DestroyLang;
+import com.petrolpark.destroy.core.chemistry.basinreaction.ExtendedBasinBehaviour;
+import com.petrolpark.destroy.core.data.advancement.DestroyAdvancementBehaviour;
 import com.simibubi.create.content.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;

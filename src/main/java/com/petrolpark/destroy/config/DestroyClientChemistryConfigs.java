@@ -1,6 +1,6 @@
 package com.petrolpark.destroy.config;
 
-import com.petrolpark.destroy.util.DestroyLang.TemperatureUnit;
+import com.petrolpark.destroy.client.DestroyLang.TemperatureUnit;
 
 public class DestroyClientChemistryConfigs extends DestroyConfigBase {
 

@@ -9,12 +9,14 @@ import java.util.Optional;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.petrolpark.destroy.Destroy;
+import com.petrolpark.destroy.MoveToPetrolparkLibrary;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
+@MoveToPetrolparkLibrary
 public abstract class DestroyReloadListener implements ResourceManagerReloadListener {
 
     private static final Gson GSON = new Gson();

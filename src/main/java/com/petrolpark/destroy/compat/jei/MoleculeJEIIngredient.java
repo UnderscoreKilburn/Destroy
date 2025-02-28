@@ -5,16 +5,17 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.petrolpark.destroy.Destroy;
+import com.petrolpark.destroy.DestroyFluids;
+import com.petrolpark.destroy.DestroyItems;
 import com.petrolpark.destroy.chemistry.legacy.LegacyMixture;
 import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;
 import com.petrolpark.destroy.chemistry.legacy.ReadOnlyMixture;
 import com.petrolpark.destroy.chemistry.legacy.index.DestroyMolecules;
+import com.petrolpark.destroy.chemistry.minecraft.MixtureFluid;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.fluid.DestroyFluids;
-import com.petrolpark.destroy.fluid.MixtureFluid;
-import com.petrolpark.destroy.item.DestroyItems;
-import com.petrolpark.destroy.item.MoleculeDisplayItem;
-import com.petrolpark.destroy.item.TestTubeItem;
+import com.petrolpark.destroy.core.chemistry.MoleculeDisplayItem;
+import com.petrolpark.destroy.core.chemistry.MoleculeDisplayItem.MoleculeTooltip;
+import com.petrolpark.destroy.core.chemistry.storage.testtube.TestTubeItem;
 
 import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.ingredients.IIngredientHelper;
@@ -27,8 +28,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
-
-import com.petrolpark.destroy.item.MoleculeDisplayItem.MoleculeTooltip;
 
 import java.util.Collections;
 

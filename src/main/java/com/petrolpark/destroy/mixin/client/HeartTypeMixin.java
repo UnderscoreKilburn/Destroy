@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.petrolpark.destroy.effect.DestroyMobEffects;
+import com.petrolpark.destroy.DestroyMobEffects;
 
 import net.minecraft.client.gui.Gui.HeartType;
 import net.minecraft.world.entity.player.Player;

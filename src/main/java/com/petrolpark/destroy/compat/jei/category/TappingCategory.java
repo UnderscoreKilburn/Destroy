@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
 import com.petrolpark.destroy.compat.jei.animation.AnimatedTreeTap;
-import com.petrolpark.destroy.recipe.TappingRecipe;
-import com.petrolpark.destroy.util.BlockTapping;
+import com.petrolpark.destroy.content.processing.treetap.BlockTapping;
+import com.petrolpark.destroy.content.processing.treetap.TappingRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
 import mezz.jei.api.forge.ForgeTypes;

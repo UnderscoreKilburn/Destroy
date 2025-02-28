@@ -8,9 +8,9 @@ import java.util.Map;
 
 import com.petrolpark.compat.CompatMods;
 import com.petrolpark.destroy.Destroy;
+import com.petrolpark.destroy.DestroyRecipeTypes;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.recipe.DestroyRecipeTypes;
-import com.petrolpark.destroy.recipe.DistillationRecipe;
+import com.petrolpark.destroy.content.processing.distillation.DistillationRecipe;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;

@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
 import com.petrolpark.destroy.Destroy;
-import com.petrolpark.destroy.item.DestroyItems;
-import com.petrolpark.destroy.util.DestroyLang;
+import com.petrolpark.destroy.DestroyItems;
+import com.petrolpark.destroy.client.DestroyLang;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.utility.Lang;
 

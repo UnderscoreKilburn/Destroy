@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import com.petrolpark.destroy.block.entity.VatControllerBlockEntity;
 import com.petrolpark.destroy.chemistry.legacy.LegacyReaction;
 import com.petrolpark.destroy.chemistry.legacy.ReactionResult;
+import com.petrolpark.destroy.core.chemistry.vat.VatControllerBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 
 import net.minecraft.world.level.Level;

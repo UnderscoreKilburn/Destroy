@@ -4,8 +4,8 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
+import com.petrolpark.destroy.DestroyMobEffects;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.effect.DestroyMobEffects;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -30,7 +30,7 @@ public interface DestroyFrictionModifier extends IForgeBlockState {
     /**
      * Overwritten but mostly copied from {@link net.minecraftforge.common.extensions.IForgeBlockState#getFriction Minecraft source code},
      * as Injecting into interfaces doesn't appear to be possible.
-     * This decreases the friction Entities experience if they are under the {@link com.petrolpark.destroy.effect.InebriationMobEffect Inebriation Effect},
+     * This decreases the friction Entities experience if they are under the {@link com.petrolpark.destroy.content.product.alcohol.InebriationMobEffect Inebriation Effect},
      * according to the {@link com.petrolpark.destroy.config.DestroySubstancesConfigs#drunkenSlipping config file}.
      */
     @Overwrite(remap = false)

@@ -7,10 +7,10 @@ import java.util.Map.Entry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
 import com.petrolpark.destroy.Destroy;
-import com.petrolpark.destroy.client.gui.DestroyGuiTextures;
+import com.petrolpark.destroy.client.DestroyGuiTextures;
 import com.petrolpark.destroy.compat.jei.DestroyJEI;
-import com.petrolpark.destroy.item.tooltip.ExplosivePropertiesTooltip;
-import com.petrolpark.destroy.world.explosion.ExplosiveProperties;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosiveProperties;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosivePropertiesTooltip;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;

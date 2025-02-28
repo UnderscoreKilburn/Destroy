@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Collections;
 
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
-import com.petrolpark.destroy.recipe.MixtureConversionRecipe;
-import com.petrolpark.destroy.util.DestroyLang;
+import com.petrolpark.destroy.client.DestroyLang;
+import com.petrolpark.destroy.core.chemistry.recipe.MixtureConversionRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipHelper.Palette;

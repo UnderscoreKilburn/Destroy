@@ -2,7 +2,7 @@ package com.petrolpark.destroy.config;
 
 import java.util.EnumMap;
 
-import com.petrolpark.destroy.util.DestroyLang;
+import com.petrolpark.destroy.client.DestroyLang;
 
 import net.minecraft.sounds.SoundSource;
 

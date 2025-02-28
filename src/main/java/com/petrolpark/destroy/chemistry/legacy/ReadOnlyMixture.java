@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.chemistry.api.util.Constants;
 import com.petrolpark.destroy.chemistry.legacy.index.DestroyMolecules;
-import com.petrolpark.destroy.util.DestroyLang;
+import com.petrolpark.destroy.client.DestroyLang;
 import com.simibubi.create.foundation.utility.NBTHelper;
 
 import net.minecraft.ChatFormatting;

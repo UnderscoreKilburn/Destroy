@@ -2,9 +2,9 @@ package com.petrolpark.destroy.compat.jei.animation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.petrolpark.destroy.block.DestroyBlocks;
-import com.petrolpark.destroy.block.DynamoBlock;
-import com.petrolpark.destroy.block.model.DestroyPartials;
+import com.petrolpark.destroy.DestroyBlocks;
+import com.petrolpark.destroy.client.DestroyPartials;
+import com.petrolpark.destroy.content.processing.dynamo.DynamoBlock;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
 

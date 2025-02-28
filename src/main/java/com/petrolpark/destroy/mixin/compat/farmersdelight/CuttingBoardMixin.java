@@ -6,9 +6,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import com.petrolpark.destroy.advancement.DestroyAdvancementTrigger;
+import com.petrolpark.destroy.DestroyAdvancementTrigger;
+import com.petrolpark.destroy.DestroyMobEffects;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.effect.DestroyMobEffects;
 import com.simibubi.create.AllTags;
 
 import net.minecraft.core.BlockPos;

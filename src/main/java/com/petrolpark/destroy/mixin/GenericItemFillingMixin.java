@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.petrolpark.destroy.util.FireproofingHelper;
+import com.petrolpark.destroy.content.product.fireretardant.FireproofingHelper;
 import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
 
 import net.minecraft.world.item.ItemStack;

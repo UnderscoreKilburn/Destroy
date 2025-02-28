@@ -2,7 +2,7 @@ package com.petrolpark.destroy.test;
 
 import java.util.Arrays;
 
-import com.petrolpark.destroy.item.SeismographItem.Seismograph;
+import com.petrolpark.destroy.content.oil.seismology.SeismographItem.Seismograph;
 
 public class SeismographTest {
     

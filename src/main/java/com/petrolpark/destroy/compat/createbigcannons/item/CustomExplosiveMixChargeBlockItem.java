@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 
 import com.petrolpark.destroy.compat.createbigcannons.block.entity.CustomExplosiveMixChargeBlockEntity;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.item.DyeableCustomExplosiveMixBlockItem;
-import com.petrolpark.destroy.world.explosion.ExplosiveProperties.ExplosivePropertyCondition;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.DyeableMixedExplosiveBlockItem;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosiveProperties.ExplosivePropertyCondition;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +15,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
-public class CustomExplosiveMixChargeBlockItem extends DyeableCustomExplosiveMixBlockItem {
+public class CustomExplosiveMixChargeBlockItem extends DyeableMixedExplosiveBlockItem {
 
     public CustomExplosiveMixChargeBlockItem(Block block, Properties properties) {
         super(block, properties);

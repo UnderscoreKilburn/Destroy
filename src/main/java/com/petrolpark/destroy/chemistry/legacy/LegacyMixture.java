@@ -21,7 +21,7 @@ import com.petrolpark.destroy.chemistry.legacy.genericreaction.GenericReaction;
 import com.petrolpark.destroy.chemistry.legacy.genericreaction.SingleGroupGenericReaction;
 import com.petrolpark.destroy.chemistry.legacy.index.DestroyMolecules;
 import com.petrolpark.destroy.chemistry.legacy.reactionresult.NovelCompoundSynthesizedReactionResult;
-import com.petrolpark.destroy.recipe.ReactionInBasinRecipe.ReactionInBasinResult;
+import com.petrolpark.destroy.core.chemistry.basinreaction.ReactionInBasinRecipe.ReactionInBasinResult;
 import com.simibubi.create.foundation.utility.NBTHelper;
 import com.simibubi.create.foundation.utility.Pair;
 
@@ -716,12 +716,12 @@ public class LegacyMixture extends ReadOnlyMixture {
 
     /**
      * {@link LegacyMixture#reactForTick React} this Mixture until it reaches {@link LegacyMixture#equilibrium equilibrium}. This is mutative.
-     * @return A {@link com.petrolpark.destroy.recipe.ReactionInBasinRecipe.ReactionInBasinResult ReactionInBasinResult} containing
+     * @return A {@link com.petrolpark.destroy.core.chemistry.basinreaction.ReactionInBasinRecipe.ReactionInBasinResult ReactionInBasinResult} containing
      * the number of ticks it took to reach equilibrium, the {@link ReactionResult Reaction Results} and the new volume of Mixture.
      * @param volume (in liters) of this Reaction
      * @param availableStacks Item Stacks available for reacting. This List and its contents will be modified.
-     * @param heatingPower The power being supplied to this Basin by the {@link com.petrolpark.destroy.util.vat.IVatHeaterBlock heater} below it.
-     * @param outsideTemperature The {@link com.petrolpark.destroy.capability.Pollution#getLocalTemperature temperature} outside the Basin.
+     * @param heatingPower The power being supplied to this Basin by the {@link com.petrolpark.destroy.core.chemistry.vat.IVatHeaterBlock heater} below it.
+     * @param outsideTemperature The {@link com.petrolpark.destroy.core.pollution.Pollution#getLocalTemperature temperature} outside the Basin.
      */
     public ReactionInBasinResult reactInBasin(int volume, List<ItemStack> availableStacks, float heatingPower, float outsideTemperature) {
         float volumeInLiters = (float)volume / Constants.MILLIBUCKETS_PER_LITER;

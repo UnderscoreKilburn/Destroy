@@ -2,7 +2,7 @@ package com.petrolpark.destroy.compat.jei.category;
 
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
 import com.petrolpark.destroy.compat.jei.animation.AnimatedSieve;
-import com.petrolpark.destroy.recipe.SievingRecipe;
+import com.petrolpark.destroy.content.processing.sieve.SievingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 

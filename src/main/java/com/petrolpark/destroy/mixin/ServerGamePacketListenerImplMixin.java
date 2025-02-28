@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import com.petrolpark.destroy.entity.player.ExtendedInventory;
+import com.petrolpark.destroy.core.extendedinventory.ExtendedInventory;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ServerGamePacketListener;

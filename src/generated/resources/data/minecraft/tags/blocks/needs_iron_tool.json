@@ -5,6 +5,7 @@
     "destroy:nether_crocoite_block",
     "destroy:platinum_block",
     "destroy:fluorite_ore",
+    "destroy:vat_controller",
     "destroy:deepslate_fluorite_ore",
     "destroy:end_fluorite_ore",
     "destroy:nickel_ore",

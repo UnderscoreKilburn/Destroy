@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.Overwrite;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.petrolpark.destroy.fluid.ingredient.MixtureFluidIngredient;
-import com.petrolpark.destroy.fluid.ingredient.mixturesubtype.MixtureFluidIngredientSubType;
+import com.petrolpark.destroy.core.recipe.ingredient.fluid.MixtureFluidIngredient;
+import com.petrolpark.destroy.core.recipe.ingredient.fluid.MixtureFluidIngredientSubType;
 import com.petrolpark.destroy.mixin.accessor.FluidIngredientAccessor;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.fluid.FluidIngredient.FluidStackIngredient;
@@ -30,7 +30,7 @@ public abstract class FluidIngredientMixin {
     
 	/**
 	 * Overwriting of {@link com.simibubi.create.foundation.fluid.FluidIngredient#isFluidIngredient FluidIngredient} to
-	 * say {@link com.petrolpark.destroy.fluid.ingredient.MoleculeFluidIngredient Molecule ingredients}
+	 * say {@link com.petrolpark.destroy.core.recipe.ingredient.fluid.MoleculeFluidIngredient Molecule ingredients}
 	 * are valid.
 	 */
     @Overwrite(remap = false)
@@ -48,7 +48,7 @@ public abstract class FluidIngredientMixin {
 
 	/**
 	 * Overwritten but mostly copied from {@link com.simibubi.create.foundation.fluid.FluidIngredient#deserialize FluidIngredient}.
-	 * This deserializes {@link com.petrolpark.destroy.fluid.ingredient.MoleculeFluidIngredient Molecule ingredients}.
+	 * This deserializes {@link com.petrolpark.destroy.core.recipe.ingredient.fluid.MoleculeFluidIngredient Molecule ingredients}.
 	 */
     @Overwrite(remap = false)
     public static FluidIngredient deserialize(@Nullable JsonElement je) {

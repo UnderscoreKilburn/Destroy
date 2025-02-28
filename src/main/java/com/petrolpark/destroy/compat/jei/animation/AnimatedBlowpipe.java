@@ -3,10 +3,10 @@ package com.petrolpark.destroy.compat.jei.animation;
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.petrolpark.destroy.block.BlowpipeBlock;
-import com.petrolpark.destroy.block.DestroyBlocks;
-import com.petrolpark.destroy.block.renderer.BlowpipeRenderer;
-import com.petrolpark.destroy.recipe.GlassblowingRecipe;
+import com.petrolpark.destroy.DestroyBlocks;
+import com.petrolpark.destroy.content.processing.glassblowing.BlowpipeBlock;
+import com.petrolpark.destroy.content.processing.glassblowing.BlowpipeBlockEntityRenderer;
+import com.petrolpark.destroy.content.processing.glassblowing.GlassblowingRecipe;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 
@@ -38,7 +38,7 @@ public class AnimatedBlowpipe extends AnimatedKinetics {
             .rotateY(180d)
             .translate(-0.5d, -0.5d, 0d);
         ms.pushPose();
-        BlowpipeRenderer.render(recipe, fluid, Math.min((AnimationTickHolder.getRenderTime() % 120f) / 100f, 1f), ms, graphics.bufferSource(), Brightness.FULL_BRIGHT.pack(), OverlayTexture.NO_OVERLAY);
+        BlowpipeBlockEntityRenderer.render(recipe, fluid, Math.min((AnimationTickHolder.getRenderTime() % 120f) / 100f, 1f), ms, graphics.bufferSource(), Brightness.FULL_BRIGHT.pack(), OverlayTexture.NO_OVERLAY);
         ms.popPose();
 
         ms.popPose();

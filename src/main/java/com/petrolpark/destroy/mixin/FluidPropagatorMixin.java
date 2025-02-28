@@ -1,6 +1,6 @@
 package com.petrolpark.destroy.mixin;
 
-import com.petrolpark.destroy.block.DestroyBlocks;
+import com.petrolpark.destroy.DestroyBlocks;
 import com.simibubi.create.content.fluids.FluidPropagator;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,7 +20,7 @@ public class FluidPropagatorMixin
         ),
         remap=false
     )
-    static private boolean matchOtherPumps(BlockEntry instance, BlockState state) {
+    static private boolean matchOtherPumps(BlockEntry<?> instance, BlockState state) {
         return instance.has(state) || DestroyBlocks.CREATIVE_PUMP.has(state);
     }
 }

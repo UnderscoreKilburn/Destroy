@@ -4,11 +4,11 @@ import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.petrolpark.destroy.block.entity.IDyeableCustomExplosiveMixBlockEntity;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
-import com.petrolpark.destroy.item.inventory.CustomExplosiveMixInventory;
-import com.petrolpark.destroy.world.explosion.ExplosiveProperties;
-import com.petrolpark.destroy.world.explosion.ExplosiveProperties.ExplosivePropertyCondition;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosiveProperties;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.IDyeableMixedExplosiveBlockEntity;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.MixedExplosiveInventory;
+import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosiveProperties.ExplosivePropertyCondition;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,7 +26,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 
-public class CustomExplosiveMixShellBlockEntity extends FuzedBlockEntity implements IDyeableCustomExplosiveMixBlockEntity {
+public class CustomExplosiveMixShellBlockEntity extends FuzedBlockEntity implements IDyeableMixedExplosiveBlockEntity {
 
     public static ExplosivePropertyCondition[] EXPLOSIVE_PROPERTY_CONDITIONS = new ExplosivePropertyCondition[]{
         ExplosiveProperties.CAN_EXPLODE,
@@ -42,7 +42,7 @@ public class CustomExplosiveMixShellBlockEntity extends FuzedBlockEntity impleme
 
     public LazyOptional<IItemHandler> itemCapability;
 
-    protected CustomExplosiveMixInventory inv;
+    protected MixedExplosiveInventory inv;
     protected int color;
     protected Component name;
 
@@ -53,8 +53,8 @@ public class CustomExplosiveMixShellBlockEntity extends FuzedBlockEntity impleme
         refreshCapability();
     };
 
-    public CustomExplosiveMixInventory createInv() {
-        return new CustomExplosiveMixInventory(DestroyAllConfigs.SERVER.compat.customExplosiveMixShellSize.get());
+    public MixedExplosiveInventory createInv() {
+        return new MixedExplosiveInventory(DestroyAllConfigs.SERVER.compat.customExplosiveMixShellSize.get());
     };
 
     public void refreshCapability() {
@@ -69,7 +69,7 @@ public class CustomExplosiveMixShellBlockEntity extends FuzedBlockEntity impleme
 
     @Override
     public void onPlace(ItemStack blockItemStack) {
-        IDyeableCustomExplosiveMixBlockEntity.super.onPlace(blockItemStack);
+        IDyeableMixedExplosiveBlockEntity.super.onPlace(blockItemStack);
         if (blockItemStack.hasCustomHoverName()) name = blockItemStack.getHoverName();
     };
 
@@ -91,12 +91,12 @@ public class CustomExplosiveMixShellBlockEntity extends FuzedBlockEntity impleme
     };
 
     @Override
-    public CustomExplosiveMixInventory getExplosiveInventory() {
+    public MixedExplosiveInventory getExplosiveInventory() {
         return inv;
     };
 
     @Override
-    public void setExplosiveInventory(CustomExplosiveMixInventory inv) {
+    public void setExplosiveInventory(MixedExplosiveInventory inv) {
         this.inv = inv;
         refreshCapability();
         notifyUpdate();
@@ -105,13 +105,13 @@ public class CustomExplosiveMixShellBlockEntity extends FuzedBlockEntity impleme
     @Override
     public void setColor(int color) {
         this.color = color;
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> IDyeableCustomExplosiveMixBlockEntity.reRender(getLevel(), getBlockPos()));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> IDyeableMixedExplosiveBlockEntity.reRender(getLevel(), getBlockPos()));
         notifyUpdate();
     };
 
     @Override
     public ItemStack getFilledItemStack(ItemStack emptyItemStack) {
-        ItemStack stack = IDyeableCustomExplosiveMixBlockEntity.super.getFilledItemStack(emptyItemStack);
+        ItemStack stack = IDyeableMixedExplosiveBlockEntity.super.getFilledItemStack(emptyItemStack);
         if (name != null) stack.setHoverName(name);
         return stack;
     };

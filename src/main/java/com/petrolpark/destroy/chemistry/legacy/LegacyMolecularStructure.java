@@ -916,7 +916,7 @@ public class LegacyMolecularStructure implements Cloneable {
     };
 
     /**
-     * Get the directed form of this structure, for use in {@link com.petrolpark.destroy.client.gui.MoleculeRenderer rendering}.
+     * Get the directed form of this structure, for use in {@link com.petrolpark.destroy.core.chemistry.MoleculeRenderer rendering}.
      */
     public Branch getRenderBranch() {
         if (topology != Topology.LINEAR) throw new FormulaRenderingException(this, "Cannot get a Render branch for a cyclic Molecule.");
@@ -1214,7 +1214,7 @@ public class LegacyMolecularStructure implements Cloneable {
 
     /**
      * A 3D structure of a {@link LegacySpecies} if it is cyclic.
-     * This class contains {@link com.petrolpark.destroy.client.gui.MoleculeRenderer rendering} information.
+     * This class contains {@link com.petrolpark.destroy.core.chemistry.MoleculeRenderer rendering} information.
      */
     public static class Topology {
     
@@ -1330,7 +1330,7 @@ public class LegacyMolecularStructure implements Cloneable {
              * Add a single-bonded side chain to the root {@link LegacyAtom} of this Topology.
              * @param bondDirection The direction of the next {@link LegacyBond}
              * @param branchDirection The direction in which the side-chain should continue (as chains of Atoms zig-zag,
-             * this is the net direction of movement. This information is used in {@link com.petrolpark.destroy.client.gui.MoleculeRenderer rendering})
+             * this is the net direction of movement. This information is used in {@link com.petrolpark.destroy.core.chemistry.MoleculeRenderer rendering})
              * @param bondType The {@link BondType type} of Bond connecting the side chain to the Topology
              * @return This Topology builder
              */
@@ -1342,7 +1342,7 @@ public class LegacyMolecularStructure implements Cloneable {
              * Add a side chain to the root {@link LegacyAtom} of this Topology.
              * @param bondDirection The direction of the next {@link LegacyBond}
              * @param branchDirection The direction in which the side-chain should continue (as chains of Atoms zig-zag,
-             * this is the net direction of movement. This information is used in {@link com.petrolpark.destroy.client.gui.MoleculeRenderer rendering})
+             * this is the net direction of movement. This information is used in {@link com.petrolpark.destroy.core.chemistry.MoleculeRenderer rendering})
              * @param bondType The {@link BondType type} of Bond connecting the side chain to the Topology
              * @return This Topology builder
              */
@@ -1423,7 +1423,7 @@ public class LegacyMolecularStructure implements Cloneable {
         /**
          * An entry in a Topology, containing information about the {@link LegacyAtom} itself, connections
          * from this Atom to other Atoms in the Topology (allowing for the creation of cyclic {@link LegacySpecies Molecules}),
-         * and the geometrical data (for use in {@link com.petrolpark.destroy.client.gui.MoleculeRenderer rendering}) on
+         * and the geometrical data (for use in {@link com.petrolpark.destroy.core.chemistry.MoleculeRenderer rendering}) on
          * any side-chains attached to this Atom should generate.
          */
         public static class AttachedAtom {
@@ -1461,7 +1461,7 @@ public class LegacyMolecularStructure implements Cloneable {
              * Add a singly-bonded side chain to the current attached {@link LegacyAtom}.
              * @param bondDirection The direction of the next {@link LegacyBond}
              * @param branchDirection The direction in which the side-chain should continue (as chains of Atoms zig-zag,
-             * this is the net direction of movement. This information is used in {@link com.petrolpark.destroy.client.gui.MoleculeRenderer rendering})
+             * this is the net direction of movement. This information is used in {@link com.petrolpark.destroy.core.chemistry.MoleculeRenderer rendering})
              * @return This attached Atom
              */
             public AttachedAtom withSideBranch(Vec3 bondDirection, Vec3 branchDirection) {
@@ -1472,7 +1472,7 @@ public class LegacyMolecularStructure implements Cloneable {
              * Add a side chain to the current attached {@link LegacyAtom}.
              * @param bondDirection The direction of the next {@link LegacyBond}
              * @param branchDirection The direction in which the side-chain should continue (as chains of Atoms zig-zag,
-             * this is the net direction of movement. This information is used in {@link com.petrolpark.destroy.client.gui.MoleculeRenderer rendering})
+             * this is the net direction of movement. This information is used in {@link com.petrolpark.destroy.core.chemistry.MoleculeRenderer rendering})
              * @param bondType The {@link BondType type} of Bond connecting the side chain to the Topology
              * @return This attached Atom
              */

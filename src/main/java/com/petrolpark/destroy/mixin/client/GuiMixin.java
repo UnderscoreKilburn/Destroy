@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.config.DestroyClientConfigs;
-import com.petrolpark.destroy.entity.player.ExtendedInventory;
+import com.petrolpark.destroy.core.extendedinventory.ExtendedInventory;
 
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;

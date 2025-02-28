@@ -5,8 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.petrolpark.destroy.block.DestroyBlocks;
-import com.petrolpark.destroy.fluid.DestroyFluids;
+import com.petrolpark.destroy.DestroyBlocks;
+import com.petrolpark.destroy.DestroyFluids;
 import com.simibubi.create.content.fluids.pipes.VanillaFluidTargets;
 
 import net.minecraft.core.BlockPos;

@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.petrolpark.destroy.client.gui.screen.BetterValueSettingsScreen;
+import com.petrolpark.destroy.core.bettervaluesettings.BetterValueSettingsScreen;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsClient;
@@ -21,7 +21,7 @@ public class ValueSettingsClientMixin {
 
     /**
      * Replace that {@link com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsScreen screen} that opens to edit a value
-     * with an {@link com.petrolpark.destroy.client.gui.BetterValueSettingsScreen improved version}.
+     * with an {@link com.petrolpark.destroy.core.bettervaluesettings.BetterValueSettingsScreen improved version}.
      * @param ci The callback information
      */
     @Inject(

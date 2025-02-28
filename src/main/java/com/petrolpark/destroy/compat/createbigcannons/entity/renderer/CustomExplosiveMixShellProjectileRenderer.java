@@ -5,7 +5,7 @@ import org.joml.Quaternionf;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.petrolpark.destroy.block.model.DestroyPartials;
+import com.petrolpark.destroy.client.DestroyPartials;
 import com.petrolpark.destroy.compat.createbigcannons.entity.CustomExplosiveMixShellProjectile;
 import com.simibubi.create.foundation.render.CachedBufferer;
 

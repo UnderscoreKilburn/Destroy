@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.petrolpark.destroy.MoveToPetrolparkLibrary;
+import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
 
 import net.minecraft.client.Minecraft;
@@ -56,10 +57,19 @@ public abstract class StackedTextBoxComponent {
 
         public Molecule(String value) {
             super(value);
-            String[] nameSpaceAndId = value.split(":");
-            String key = nameSpaceAndId[0] + ".chemical." + nameSpaceAndId[1];
-            String iupacKey = key + ".iupac";
-            if (DestroyAllConfigs.CLIENT.chemistry.iupacNames.get() && I18n.exists(iupacKey)) key = iupacKey;
+            LegacySpecies sp = LegacySpecies.getMolecule(value);
+            String key;
+
+            if(sp != null)
+                key = sp.getTranslationKey(DestroyAllConfigs.CLIENT.chemistry.iupacNames.get());
+            else
+            {
+                String[] nameSpaceAndId = value.split(":");
+                key = nameSpaceAndId[0] + ".chemical." + nameSpaceAndId[1];
+                String iupacKey = key + ".iupac";
+                if (DestroyAllConfigs.CLIENT.chemistry.iupacNames.get() && I18n.exists(iupacKey)) key = iupacKey;
+            }
+
             String moleculeName = Component.translatable(key).getString();
             setWords(moleculeName);
         };

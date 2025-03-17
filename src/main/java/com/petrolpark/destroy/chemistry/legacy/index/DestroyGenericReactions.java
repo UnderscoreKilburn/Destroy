@@ -1,40 +1,7 @@
 package com.petrolpark.destroy.chemistry.legacy.index;
 
 
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AcylChlorideEsterification;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AcylChlorideFormation;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AcylChlorideHydrolysis;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AlcoholDehydration;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AlcoholOxidation;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AldehydeOxidation;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AlkoxideProtonation;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AmideHydrolysis;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AminePhosgenation;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.BoraneOxidation;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.BorateEsterHydrolysis;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.BorateEsterification;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.CarboxylicAcidEsterification;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.CyanamideAddition;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.CyanideNucleophilicAddition;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.ElectrophilicChlorination;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.ElectrophilicChlorohydrination;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.ElectrophilicHydroboration;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.BoraneElectrophilicHydroboration;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.ElectrophilicHydrochlorination;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.ElectrophilicHydroiodination;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.ElectrophilicIodination;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.HalideAmineSubstitution;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.HalideAmmoniaSubstitution;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.HalideCyanideSubstitution;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.HalideHydroxideSubstitution;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.IsocyanateHydrolysis;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.NitrileHydrogenation;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.NitrileHydrolysis;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.NitroHydrogenation;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.SaturatedCarbonHydrogenation;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.SaturatedCarbonHydrolysis;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.WolffKishnerReduction;
-import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.ThionylChlorideSubstitution;
+import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.*;
 
 
 public class DestroyGenericReactions {
@@ -45,6 +12,7 @@ public class DestroyGenericReactions {
     public static final AlcoholDehydration ALCOHOL_DEHYDRATION = new AlcoholDehydration();
     public static final AlcoholOxidation ALCOHOL_OXIDATION = new AlcoholOxidation();
     public static final AldehydeOxidation ALDEHYDE_OXIDATION = new AldehydeOxidation();
+    public static final AlkyneHydrolysis ALKYNE_HYDROLYSIS = new AlkyneHydrolysis();
     public static final ElectrophilicChlorination ALKENE_CHLORINATION = new ElectrophilicChlorination(false);
     public static final ElectrophilicChlorohydrination ALKENE_CHLOROHYDRINATION = new ElectrophilicChlorohydrination(false);
     public static final SaturatedCarbonHydrolysis ALKENE_HYDROLYSIS = new SaturatedCarbonHydrolysis(false);
@@ -57,7 +25,6 @@ public class DestroyGenericReactions {
     public static final AlkoxideProtonation ALKOXIDE_PROTONATION = new AlkoxideProtonation();
     public static final ElectrophilicChlorination ALKYNE_CHLORINATION = new ElectrophilicChlorination(true);
     public static final ElectrophilicChlorohydrination ALKYNE_CHLOROHYDRINATION = new ElectrophilicChlorohydrination(true);
-    public static final SaturatedCarbonHydrolysis ALKYNE_HYDROLYSIS = new SaturatedCarbonHydrolysis(true);
    //public static final ElectrophilicHydroboration ALKYNE_HYDROBORATION = new ElectrophilicHydroboration(true);
     public static final BoraneElectrophilicHydroboration ALKYNE_HYDROBORATION_WITH_BORANE = new BoraneElectrophilicHydroboration(true);
     public static final ElectrophilicHydrochlorination ALKYNE_HYDROCHLORINATION = new ElectrophilicHydrochlorination(true);

@@ -13,8 +13,19 @@ import net.minecraft.ChatFormatting;
 
 public final class DestroyMolecules {
 
-    public static final LegacySpecies 
-    
+    public static final LegacySpecies
+
+
+    ACETALDEHYDE = builder()
+        .id("acetaldehyde")
+        .structure(LegacyMolecularStructure.deserialize("destroy:linear:CC(=O)"))
+        .boilingPoint(20.2f)
+        .density(784f)
+        .molarHeatCapacity(117.3f)
+        .tag(Tags.ACUTELY_TOXIC)
+        .tag(Tags.CARCINOGEN)
+        .build(),
+
     ACETAMIDE = builder()
         .id("acetamide")
         .structure(LegacyMolecularStructure.deserialize("destroy:linear:CC(=O)N"))
@@ -281,6 +292,17 @@ public final class DestroyMolecules {
         .tag(Tags.CARCINOGEN)
         .build(),
 
+    CHLOROETHANOL = builder()
+        .id("chloroethanol")
+        .structure(LegacyMolecularStructure.deserialize("destroy:linear:ClCCO"))
+        .boilingPoint(127f)
+        .density(1201f)
+        .molarHeatCapacity(109f) // couldn't find a source, copied ethanol's
+        .tag(Tags.ACUTELY_TOXIC)
+        .tag(Tags.GREENHOUSE)
+        .build(),
+
+
     CHLOROETHENE = builder()
         .id("chloroethene")
         .structure(LegacyMolecularStructure.deserialize("destroy:linear:C=CCl"))
@@ -525,6 +547,23 @@ public final class DestroyMolecules {
         .structure(LegacyMolecularStructure.deserialize("destroy:linear:CCO^-1"))
         .build(),
     
+    FORMALDEHYDE = builder()
+        .id("formaldehyde")
+        .structure(LegacyMolecularStructure.deserialize("destroy:linear:C(=O)"))
+        .boilingPoint(-19f)
+        .density(815f)
+        .molarHeatCapacity(35.4f) // this feels wrong but its the only thing I could find
+        .build(),
+
+
+    FORMIC_ACID = builder()
+        .id("formic_acid")
+        .structure(LegacyMolecularStructure.deserialize("destroy:linear:C(=O)OH"))
+        .boilingPoint(100.8f)
+        .density(1220f)
+        .molarHeatCapacity(82.8f)
+        .build(),
+
     FLUORIDE = builder()
         .id("fluoride")
         .structure(LegacyMolecularStructure.atom(LegacyElement.FLUORINE, -1))

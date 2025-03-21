@@ -10,7 +10,7 @@ public class AcetylideGroup extends LegacyFunctionalGroup<AcetylideGroup> {
     public final LegacyAtom carbonWithCharge;
     public final LegacyAtom neutralCarbon;
 
-    public AcetylideGroup(LegacyAtom neutralCarbon, LegacyAtom carbonWithCharge) {
+    public AcetylideGroup(LegacyAtom carbonWithCharge, LegacyAtom neutralCarbon) {
         this.carbonWithCharge = carbonWithCharge;
         this.neutralCarbon = neutralCarbon;
     };

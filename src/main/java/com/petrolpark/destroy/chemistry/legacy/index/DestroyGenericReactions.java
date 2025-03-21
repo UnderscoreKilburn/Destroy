@@ -14,6 +14,7 @@ public class DestroyGenericReactions {
     public static final AlcoholOxidation ALCOHOL_OXIDATION = new AlcoholOxidation();
     public static final AldehydeOxidation ALDEHYDE_OXIDATION = new AldehydeOxidation();
     public static final AlkyneDeprotonation ALKYNE_DEPROTONATION = new AlkyneDeprotonation();
+    public static final HydrideAlkyneDeprotonation HYDRIDE_ALKYNE_DEPROTONATION = new HydrideAlkyneDeprotonation();
     public static final AlkyneHydrolysis ALKYNE_HYDROLYSIS = new AlkyneHydrolysis();
     public static final AlkynePartialHydrogenation ALKYNE_DISSOLVING_METAL_REDUCTION = new AlkynePartialHydrogenation();
     public static final ElectrophilicChlorination ALKENE_CHLORINATION = new ElectrophilicChlorination(false);

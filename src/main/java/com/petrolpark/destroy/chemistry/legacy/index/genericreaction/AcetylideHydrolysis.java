@@ -7,6 +7,7 @@ import com.petrolpark.destroy.chemistry.legacy.genericreaction.SingleGroupGeneri
 import com.petrolpark.destroy.chemistry.legacy.index.DestroyGroupTypes;
 import com.petrolpark.destroy.chemistry.legacy.index.DestroyMolecules;
 import com.petrolpark.destroy.chemistry.legacy.index.group.AcetylideGroup;
+import com.petrolpark.destroy.chemistry.legacy.index.group.AlcoholGroup;
 
 public class AcetylideHydrolysis extends SingleGroupGenericReaction<AcetylideGroup> {
 
@@ -18,10 +19,9 @@ public class AcetylideHydrolysis extends SingleGroupGenericReaction<AcetylideGro
     public LegacyReaction generateReaction(GenericReactant<AcetylideGroup> reactant) {
         LegacyMolecularStructure structure = reactant.getMolecule().shallowCopyStructure();
         structure.moveTo(reactant.group.carbonWithCharge)
-                .addAtom(LegacyElement.HYDROGEN);
-           // .remove(reactant.group.carbonWithCharge)
-           // .addGroup(LegacyMolecularStructure.atom(LegacyElement.CARBON), false, LegacyBond.BondType.TRIPLE)
-
+                .addAtom(LegacyElement.HYDROGEN)
+                .moveTo(reactant.group.neutralCarbon)
+                .replace(reactant.group.carbonWithCharge, new LegacyAtom(LegacyElement.CARBON, 0d));
 
         return reactionBuilder()
             .addReactant(reactant.molecule)
@@ -35,5 +35,9 @@ public class AcetylideHydrolysis extends SingleGroupGenericReaction<AcetylideGro
     public boolean isPossibleIn(ReadOnlyMixture mixture) {
         return mixture.getConcentrationOf(DestroyMolecules.WATER) > 0f;
     };
+
+
+
+
     
 };

@@ -6,8 +6,8 @@ import com.petrolpark.destroy.chemistry.legacy.LegacyFunctionalGroupType;
 
 public class AlkeneGroup extends SaturatedCarbonGroup {
 
-    public AlkeneGroup(LegacyAtom highDegreeCarbon, LegacyAtom lowDegreeCarbon) {
-        super(highDegreeCarbon, lowDegreeCarbon);
+    public AlkeneGroup(LegacyAtom highDegreeCarbon, LegacyAtom lowDegreeCarbon, Boolean noHydrogens) {
+        super(highDegreeCarbon, lowDegreeCarbon, noHydrogens);
     };
 
     @Override

@@ -38,8 +38,8 @@ public class HalideAcetylideSubstitution extends DoubleGroupGenericReaction<Hali
         LegacyMolecularStructure product = LegacyMolecularStructure.joinFormulae(halideGroup, acetylideGroup, BondType.SINGLE);
 
         return reactionBuilder()
-                .addReactant(firstReactant.molecule, 1, 1)
-                .addReactant(secondReactant.molecule, 1, 1)
+                .addReactant(firstReactant.molecule, 1)
+                .addReactant(secondReactant.molecule, 1)
                 .addProduct(moleculeBuilder().structure(product).build(), 1)
                 .addProduct(getIon(firstReactant.group.halogen), 1)
                 .build();

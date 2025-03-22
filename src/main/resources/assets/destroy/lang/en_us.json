@@ -973,6 +973,8 @@
     "destroy.ponder.vat.uv.text_3": "As the level of \uED08 Ozone Depletion increases, more UV power reaches the Vat in this way.",
     "destroy.ponder.vat.uv.text_4": "More UV power is supplied by Blacklights placed directly adjacent to transparent sides of the Vat.",
 
+    "destroy.generic_reaction.acetylide_addition": "[destroy:acetylide] Addition",
+    "destroy.generic_reaction.acetylide_addition.description": "A good way to create carbon-carbon {bonds destroy:bond} via the {addition, destroy:addition} of an [destroy:acetylide] to a [destroy:carbonyl].",
     "destroy.generic_reaction.acetylide_hydration": "[destroy:acetylide] Hydration",
     "destroy.generic_reaction.acetylide_hydration.description": "The {hydrolysis, destroy:hydrolysis} of an [destroy:acetylide] and {deprotonation, destroy:deprotonation} of [destroy:water] to form an [destroy:alkyne] and a [destroy:hydroxide]",
     "destroy.generic_reaction.acyl_chloride_esterification": "[destroy:acyl_chloride] Esterification",
@@ -1014,7 +1016,7 @@
     "destroy.generic_reaction.alkyne_chlorination": "[destroy:alkyne] Chlorination",
     "destroy.generic_reaction.alkyne_chlorination.description": "The {electrophilic, destroy:electrophile} {addition, destroy:addition} of [destroy:chlorine] to an [destroy:alkyne].",
     "destroy.generic_reaction.alkyne_chlorohydrination": "[destroy:alkyne] Chlorohydrination",
-    "destroy.generic_reaction.alkyne_chlorohydrination.description": "The {electrophilic, destroy:electrophile} {addition, destroy:addition} of [destroy:hypochlorous_acid] to an [destroy:alkyne]. The alcohol group gets added to the higher {degree, destroy:degree} carbon.",
+    "destroy.generic_reaction.alkyne_chlorohydrination.description": "The {electrophilic, destroy:electrophile} {addition, destroy:addition} of [destroy:hypochlorous_acid] to an [destroy:alkyne]. The carbonyl group gets added to the higher {degree, destroy:degree} carbon.",
     "destroy.generic_reaction.alkyne_hydrolysis": "[destroy:alkyne] Hydration",
     "destroy.generic_reaction.alkyne_hydrolysis.description": "The {hydrolysis, destroy:hydrolysis} of an [destroy:alkyne] to form a [destroy:carbonyl]. The carbonyl group gets added to the higher {degree, destroy:degree} carbon.",
     "destroy.generic_reaction.alkyne_hydroboration": "[destroy:alkyne] Hydroboration",

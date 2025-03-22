@@ -32,7 +32,8 @@ public class HalideAcetylideSubstitution extends DoubleGroupGenericReaction<Hali
         LegacyMolecularStructure acetylideGroup = secondReactant.molecule.shallowCopyStructure();
         halideGroup.moveTo(firstReactant.group.carbon)
                 .remove(firstReactant.group.halogen);
-       acetylideGroup.replace(secondReactant.group.neutralCarbon, new LegacyAtom(LegacyElement.CARBON, 0d))
+       acetylideGroup.moveTo(secondReactant.group.carbonWithCharge)
+               .replace(secondReactant.group.neutralCarbon, new LegacyAtom(LegacyElement.CARBON, 0d))
                .replace(secondReactant.group.carbonWithCharge, new LegacyAtom(LegacyElement.CARBON, 0d));
         LegacyMolecularStructure product = LegacyMolecularStructure.joinFormulae(halideGroup, acetylideGroup, BondType.SINGLE);
 

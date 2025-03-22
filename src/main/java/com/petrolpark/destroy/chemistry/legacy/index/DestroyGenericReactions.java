@@ -7,6 +7,7 @@ import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.*;
 public class DestroyGenericReactions {
 
     public static final AcetylideHydrolysis ACETYLIDE_HYDRATION = new AcetylideHydrolysis();
+    public static final AcetylideNucleophilicAddition ACETYLIDE_ADDITION = new AcetylideNucleophilicAddition();
     public static final AcylChlorideEsterification ACYL_CHLORIDE_ESTERIFICATION = new AcylChlorideEsterification();
     public static final AcylChlorideFormation ACYL_CHLORIDE_FORMATION = new AcylChlorideFormation();
     public static final AcylChlorideHydrolysis ACYL_CHLORIDE_HYDROLYSIS = new AcylChlorideHydrolysis();
@@ -28,7 +29,7 @@ public class DestroyGenericReactions {
     public static final ElectrophilicIodination ALKENE_IODINATION = new ElectrophilicIodination(false);
     public static final AlkoxideProtonation ALKOXIDE_PROTONATION = new AlkoxideProtonation();
     public static final ElectrophilicChlorination ALKYNE_CHLORINATION = new ElectrophilicChlorination(true);
-    public static final ElectrophilicChlorohydrination ALKYNE_CHLOROHYDRINATION = new ElectrophilicChlorohydrination(true);
+    public static final AlkyneChlorohydrination ALKYNE_CHLOROHYDRINATION = new AlkyneChlorohydrination();
    //public static final ElectrophilicHydroboration ALKYNE_HYDROBORATION = new ElectrophilicHydroboration(true);
     public static final BoraneElectrophilicHydroboration ALKYNE_HYDROBORATION_WITH_BORANE = new BoraneElectrophilicHydroboration(true);
     public static final ElectrophilicHydrochlorination ALKYNE_HYDROCHLORINATION = new ElectrophilicHydrochlorination(true);

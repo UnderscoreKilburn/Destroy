@@ -179,19 +179,20 @@ public class DestroyGroupFinder extends GroupFinder {
                         }
                         else if (carbon.formalCharge == 0d && alkyneCarbon.formalCharge == 0d && secondCarbonBondedToHydrogen.size() == 1d ){
                             if (firstCarbonDegree >= secondCarbonDegree) {
-                                groups.add(new AlkyneGroup(carbon, alkyneCarbon, true));
+                                groups.add(new AlkyneGroup(carbon, alkyneCarbon, false));
                             };
                             if (secondCarbonDegree >= firstCarbonDegree) {
-                                groups.add(new AlkyneGroup(alkyneCarbon, carbon, false));
+                                groups.add(new AlkyneGroup(alkyneCarbon, carbon, true));
                             };
 
                             carbonsToIgnoreForAlkynes.add(carbon);
                             carbonsToIgnoreForAlkynes.add(alkyneCarbon); // This will only ever be in one alkyne group so we can ignore it the second time
                         } else if (alkyneCarbon.formalCharge == -1d) { // Acetylides
                             groups.add(new AcetylideGroup(alkyneCarbon, carbon));
-                        } else if (carbon.formalCharge == -1d) {
-                            groups.add(new AcetylideGroup(alkyneCarbon, carbon));
-                        } else if (rGroups.size() == 1) { // this is just for the alkyne generic in JEI
+                        } // else if (carbon.formalCharge == -1d) {
+                          //  groups.add(new AcetylideGroup(alkyneCarbon, carbon));
+                        // }
+                    else if (rGroups.size() == 1) { // this is just for the alkyne generic in JEI
                             if (firstCarbonDegree >= secondCarbonDegree) {
                                 groups.add(new AlkyneGroup(carbon, alkyneCarbon, false));
                             };

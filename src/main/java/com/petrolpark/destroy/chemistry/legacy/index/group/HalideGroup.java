@@ -7,8 +7,6 @@ import com.petrolpark.destroy.chemistry.legacy.LegacyFunctionalGroupType;
 
 public class HalideGroup extends LegacyFunctionalGroup<HalideGroup> {
 
-    public static LegacyAtom getHalogen;
-    public static LegacyAtom getCarbon;
     public final LegacyAtom carbon;
     public final  LegacyAtom halogen;
     public int degree;
@@ -19,10 +17,6 @@ public class HalideGroup extends LegacyFunctionalGroup<HalideGroup> {
         this.degree = degree;
     };
 
-    public LegacyAtom getHalogen() {
-        return halogen;
-    };
-    public LegacyAtom getCarbon() { return carbon; };
 
     @Override
     public LegacyFunctionalGroupType<HalideGroup> getType() {

@@ -654,7 +654,7 @@ public class LegacyMixture extends ReadOnlyMixture {
         // Add Reaction Results to new Mixtures
         for (Entry<ReactionResult, Float> entry : reactionResults.entrySet()) {
             double resultMoles = entry.getValue() * initialVolume;
-            double newTotalVolume = newLiquidVolume * newGasVolume;
+            double newTotalVolume = newLiquidVolume + newGasVolume;
             liquidMixture.reactionResults.put(entry.getKey(), (float)(resultMoles / newTotalVolume)); // A cancelled-out expression for (resultMoles / liquidVolume)  * (liquidVolume / (liquidVolume + gasVolume)). Essentially we just divvy out the results based on the volumes of the two phases
             gasMixture.reactionResults.put(entry.getKey(), (float)(resultMoles / newTotalVolume));
         };

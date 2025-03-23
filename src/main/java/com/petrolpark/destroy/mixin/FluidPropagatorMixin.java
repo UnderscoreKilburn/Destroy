@@ -2,8 +2,8 @@ package com.petrolpark.destroy.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.petrolpark.destroy.DestroyBlocks;
 import com.simibubi.create.content.fluids.FluidPropagator;
+import com.simibubi.create.content.fluids.pump.PumpBlock;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,6 +21,6 @@ public class FluidPropagatorMixin {
         remap=false
     )
     private static boolean matchOtherPumps(BlockEntry<?> instance, BlockState state, Operation<Boolean> original) {
-        return DestroyBlocks.CREATIVE_PUMP.has(state) || original.call(instance, state);
+        return (state.getBlock() instanceof PumpBlock) || original.call(instance, state);
     }
 }

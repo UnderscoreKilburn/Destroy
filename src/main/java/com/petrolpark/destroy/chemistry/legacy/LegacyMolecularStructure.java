@@ -797,9 +797,12 @@ public class LegacyMolecularStructure implements Cloneable {
         Collections.sort(terminalAtoms, (a1, a2) -> {
             return getMaximumBranch(a2, structure).getMassOfLongestChain().compareTo(getMaximumBranch(a1, structure).getMassOfLongestChain()); // Put in descending order of chain length
         });
-        Collections.sort(terminalAtoms, (a1, a2) -> {
+
+        // Commenting this out since this seems to break rendering with numbered R groups
+        // Not entirely sure what this does since getMassOfLongestChain should already take care of sorting R groups by index
+        /*Collections.sort(terminalAtoms, (a1, a2) -> {
             return Branch.getMassForComparisonInSerialization(a1).compareTo(Branch.getMassForComparisonInSerialization(a2));
-        });
+        });*/
 
         return getMaximumBranch(terminalAtoms.get(0), structure);
     };

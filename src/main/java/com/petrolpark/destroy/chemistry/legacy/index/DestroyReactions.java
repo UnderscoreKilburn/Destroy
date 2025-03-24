@@ -342,7 +342,7 @@ public class DestroyReactions {
     CYANAMIDE_ION_HYDROLYSIS = builder()
         .id("cyanamide_ion_hydrolysis")
         .addReactant(DestroyMolecules.CYANAMIDE_ION)
-        .addReactant(DestroyMolecules.WATER, 3, 1)
+        .addReactant(DestroyMolecules.WATER, 2, 1)
         .addProduct(DestroyMolecules.CYANAMIDE)
         .addProduct(DestroyMolecules.HYDROXIDE, 2)
         .build(),

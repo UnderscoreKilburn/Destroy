@@ -132,7 +132,6 @@ public class ColorimeterBlockEntity extends SmartBlockEntity {
 
     public void updateVat() {
         Optional<VatControllerBlockEntity> vat = getVatOptional();
-        Destroy.LOGGER.info("updated vat {}", vat);
         if (molecule != null && vat.isPresent()) {
             redstoneMonitor.quantityObserved = Optional.of(() -> {
                 FluidStack mixtureStack = (observingGas ? vat.get().getGasTankContents() : vat.get().getLiquidTankContents());

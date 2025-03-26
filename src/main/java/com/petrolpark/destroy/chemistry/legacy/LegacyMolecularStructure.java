@@ -1,14 +1,6 @@
 package com.petrolpark.destroy.chemistry.legacy;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
@@ -85,7 +77,7 @@ public class LegacyMolecularStructure implements Cloneable {
     private String optimumFROWNSCode;
 
     private LegacyMolecularStructure() {
-        structure = new HashMap<LegacyAtom, List<LegacyBond>>();
+        structure = new LinkedHashMap<LegacyAtom, List<LegacyBond>>();
         groups = new ArrayList<>();
         topology = Topology.LINEAR;
         sideChains = new ArrayList<>();
@@ -606,7 +598,7 @@ public class LegacyMolecularStructure implements Cloneable {
      * @return This Formula
      */
     public LegacyMolecularStructure addAllHydrogens() {
-        Map<LegacyAtom, List<LegacyBond>> newStructure = new HashMap<LegacyAtom, List<LegacyBond>>(structure); // Create a shallow copy, as the original structure can't be modified while being iterated over
+        Map<LegacyAtom, List<LegacyBond>> newStructure = new LinkedHashMap<LegacyAtom, List<LegacyBond>>(structure); // Create a shallow copy, as the original structure can't be modified while being iterated over
 
         // Replace all empty side chains with Hydrogen, if necessary
         if (topology != Topology.LINEAR) {
@@ -888,7 +880,7 @@ public class LegacyMolecularStructure implements Cloneable {
         try {
 
             LegacyMolecularStructure newFormula = (LegacyMolecularStructure) super.clone();
-            newFormula.structure = new HashMap<>(structure.size());
+            newFormula.structure = new LinkedHashMap<>(structure.size());
             newFormula.structure = shallowCopyStructure(structure); // Shallow copy the Structure
             newFormula.groups = new ArrayList<>(groups); // Shallow copy the Groups
             newFormula.topology = this.topology; // Shallow copy the Topology
@@ -933,7 +925,7 @@ public class LegacyMolecularStructure implements Cloneable {
      * @see LegacyMolecularStructure#shallowCopy The wrapper for this Method
      */
     private static Map<LegacyAtom, List<LegacyBond>> shallowCopyStructure(Map<LegacyAtom, List<LegacyBond>> structureToCopy) {
-        Map<LegacyAtom, List<LegacyBond>> newStructure = new HashMap<>();
+        Map<LegacyAtom, List<LegacyBond>> newStructure = new LinkedHashMap<>();
         for (LegacyAtom atom : structureToCopy.keySet()) {
             List<LegacyBond> oldBonds = structureToCopy.get(atom);
             List<LegacyBond> newBonds = new ArrayList<>();
@@ -1197,7 +1189,7 @@ public class LegacyMolecularStructure implements Cloneable {
      * @return The original structure, now with its non-acidic hydrogen Atoms removed
      */
     private static Map<LegacyAtom, List<LegacyBond>> stripHydrogens(Map<LegacyAtom, List<LegacyBond>> structure) {
-        Map<LegacyAtom, List<LegacyBond>> newStructure = new HashMap<>();
+        Map<LegacyAtom, List<LegacyBond>> newStructure = new LinkedHashMap<>();
         for (Entry<LegacyAtom, List<LegacyBond>> entry : structure.entrySet()) {
             LegacyAtom atom = entry.getKey();
             List<LegacyBond> bondsToInclude = new ArrayList<>();

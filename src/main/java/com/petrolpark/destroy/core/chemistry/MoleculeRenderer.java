@@ -205,7 +205,7 @@ public class MoleculeRenderer {
                 Branch sideBranch = sideBranchAndBondType.getKey();
                 Vec3 newPlane = confinedGeometry.getZig().cross(sideZag);
                 RENDERED_OBJECTS.add(Pair.of(location.add(sideZag.scale(0.5d * BOND_LENGTH)), BondRenderInstance.fromZig(sideBranchAndBondType.getValue(),  sideZag)));
-                generateBranch(sideBranch, location.add(sideZag.scale(BOND_LENGTH)), MathsHelper.rotate(sideZag, newPlane, 90d), newPlane, sideZag, false);
+                generateBranch(sideBranch, location.add(sideZag.scale(BOND_LENGTH)), MathsHelper.rotate(sideZag, newPlane, 90d), newPlane, sideZag, true);
                 j++;
             };
 

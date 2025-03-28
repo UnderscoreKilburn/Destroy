@@ -121,7 +121,7 @@ public class ColorimeterScreen extends AbstractQuantityObservingScreen {
             ms.translate(guiLeft + 3, guiTop + 16, 100);
             GuiHelper.startStencil(graphics, 0, 0, 250, 85);
             MoleculeRenderer renderer = species.getRenderer();
-            ms.translate(0d, (double)-renderer.getHeight() / 2d, 0);
+            ms.translate((double)-renderer.getWidth() / 2d, (double)-renderer.getHeight() / 2d, 0);
             renderer.render(125, 42, graphics);
             GuiHelper.endStencil();
             ms.popPose();

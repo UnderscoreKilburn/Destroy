@@ -166,6 +166,7 @@ public class MoleculeRenderer {
         RenderType renderType = RenderType.translucent();
         UIRenderHelper.flipForGuiRender(poseStack);
         model.renderInto(poseStack, buffer.getBuffer(renderType));
+        buffer.endBatch();
 
         poseStack.popPose();
     };
@@ -192,6 +193,7 @@ public class MoleculeRenderer {
         RenderType renderType = RenderType.solid();
         UIRenderHelper.flipForGuiRender(poseStack);
         model.renderInto(poseStack, buffer.getBuffer(renderType));
+        buffer.endBatch();
 
         poseStack.popPose();
     };

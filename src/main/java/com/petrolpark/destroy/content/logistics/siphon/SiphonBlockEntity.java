@@ -46,7 +46,6 @@ public class SiphonBlockEntity extends SmartBlockEntity implements IHaveLabGoggl
     public ScrollValueBehaviour settings;
 
     public DestroyAdvancementBehaviour advancementBehaviour;
-    private boolean giveAdvancementWhenEmptied = false;
 
     public SiphonBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -71,14 +70,12 @@ public class SiphonBlockEntity extends SmartBlockEntity implements IHaveLabGoggl
     protected void read(CompoundTag tag, boolean clientPacket) {
         super.read(tag, clientPacket);
         leftToDrain = tag.getInt("LeftToDrain");
-        if (tag.contains("GiveAdvancementWhenEmptied", Tag.TAG_BYTE)) giveAdvancementWhenEmptied = tag.getBoolean("GiveAdvancementWhenEmptied"); 
     };
 
     @Override
     protected void write(CompoundTag tag, boolean clientPacket) {
         super.write(tag, clientPacket);
         tag.putInt("LeftToDrain", leftToDrain);
-        if (advancementBehaviour.getPlayer() != null) tag.putBoolean("GiveAdvanementWhenEmptied", giveAdvancementWhenEmptied);
     };
 
     @Override
@@ -111,8 +108,10 @@ public class SiphonBlockEntity extends SmartBlockEntity implements IHaveLabGoggl
             public FluidStack drain(int maxDrain, FluidAction action) {
                 maxDrain = Math.min(maxDrain, leftToDrain);
                 FluidStack drained = super.drain(maxDrain, action);
-                if (action.execute()) leftToDrain -= drained.getAmount();
-                checkAdvancement();
+                if (action.execute()) {
+                    leftToDrain -= drained.getAmount();
+                    if(!drained.isEmpty()) checkAdvancement();
+                }
                 return drained;
             };
 
@@ -122,13 +121,15 @@ public class SiphonBlockEntity extends SmartBlockEntity implements IHaveLabGoggl
                 if (toDrain.isEmpty()) return FluidStack.EMPTY;
                 toDrain.setAmount(Math.min(resource.getAmount(), leftToDrain));
                 FluidStack drained = super.drain(toDrain, action);
-                if (action.execute()) leftToDrain -= drained.getAmount();
-                checkAdvancement();
+                if (action.execute()) {
+                    leftToDrain -= drained.getAmount();
+                    if(!drained.isEmpty()) checkAdvancement();
+                }
                 return drained;
             };
 
             private void checkAdvancement() {
-                if (giveAdvancementWhenEmptied && leftToDrain == 0) {
+                if (leftToDrain == 0) {
                     advancementBehaviour.awardDestroyAdvancement(DestroyAdvancementTrigger.SIPHON);
                 };
             };

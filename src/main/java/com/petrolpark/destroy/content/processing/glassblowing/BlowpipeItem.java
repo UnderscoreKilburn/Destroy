@@ -205,7 +205,12 @@ public class BlowpipeItem extends BlockItem implements CustomArmPoseItem {
             tag.putBoolean("Blowing", false);
         };
 
-        if (increaseProgress && progress < BlowpipeBlockEntity.BLOWING_DURATION) tag.putInt("Progress", progress + 1);
+        if (increaseProgress && progress < BlowpipeBlockEntity.BLOWING_DURATION) {
+            tag.putInt("Progress", progress + 1);
+            if(progress < BlowpipeBlockEntity.BLOWING_DURATION && progress + 1 >= BlowpipeBlockEntity.BLOWING_DURATION && entity instanceof Player player) {
+                DestroyAdvancementTrigger.BLOWPIPE.award(level, player);
+            }
+        }
     };
 
     @Override
@@ -227,9 +232,6 @@ public class BlowpipeItem extends BlockItem implements CustomArmPoseItem {
             tag.putInt("Progress", 0);
             tag.putInt("LastProgress", 0);
             tag.put("Tank", new FluidTank(BlowpipeBlockEntity.TANK_CAPACITY).writeToNBT(new CompoundTag())); // Empty the Tank
-            if (livingEntity instanceof Player player) {
-                DestroyAdvancementTrigger.BLOWPIPE.award(level, player);
-            };
         };
         return stack;
     };

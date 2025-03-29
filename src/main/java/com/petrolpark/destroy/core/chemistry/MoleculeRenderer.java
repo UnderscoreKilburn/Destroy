@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import com.jozufozu.flywheel.core.model.ModelUtil;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import com.petrolpark.destroy.Destroy;
 import com.simibubi.create.foundation.gui.UIRenderHelper;
 import com.simibubi.create.foundation.render.SuperByteBuffer;
 import net.minecraft.client.Minecraft;
@@ -404,7 +405,10 @@ public class MoleculeRenderer {
             Vec3 z = zig.normalize();
             Vec3 axis = bond.cross(z);
             Quaternionf q = new Quaternionf(axis.x(), axis.y(), axis.z(), (float)bond.dot(z) + (float)Math.sqrt(bond.lengthSqr() * z.lengthSqr()));
-            return new BondRenderInstance(type, new Quaternionf(q.normalize()));
+            if(!q.normalize().isFinite())
+                q = new Quaternionf(0f, 0f, 0f, 1f); // identity
+
+            return new BondRenderInstance(type, q);
         };
 
         @Override

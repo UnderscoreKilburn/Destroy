@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.math.IntMath;
 import com.google.gson.JsonObject;
 import com.petrolpark.destroy.chemistry.legacy.LegacyMixture;
 import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;
@@ -41,7 +42,11 @@ public class SaltFluidIngredient extends ConcentrationRangeFluidIngredient<SaltF
 
     @Override
     protected boolean testMixture(LegacyMixture mixture) {
-        return mixture.hasUsableMolecule(cation, minConcentration * cation.getCharge(), maxConcentration * cation.getCharge(), (molecule) -> molecule == anion) && mixture.hasUsableMolecule(anion, minConcentration * -anion.getCharge(), maxConcentration * -anion.getCharge(), (molecule) -> molecule == cation);
+        int gcd = IntMath.gcd(cation.getCharge(), -anion.getCharge());
+        float cationMultiplier = (float)-anion.getCharge() / gcd;
+        float anionMultiplier = (float)cation.getCharge() / gcd;
+        return mixture.hasUsableMolecule(cation, minConcentration * cationMultiplier, maxConcentration * cationMultiplier, (molecule) -> molecule == anion)
+            && mixture.hasUsableMolecule(anion, minConcentration * anionMultiplier, maxConcentration * anionMultiplier, (molecule) -> molecule == cation);
     };
 
     @Override

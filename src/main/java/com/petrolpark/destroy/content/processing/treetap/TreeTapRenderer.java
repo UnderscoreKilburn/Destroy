@@ -1,5 +1,6 @@
 package com.petrolpark.destroy.content.processing.treetap;
 
+import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.petrolpark.destroy.client.DestroyPartials;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;    
@@ -21,7 +22,7 @@ public class TreeTapRenderer extends KineticBlockEntityRenderer<TreeTapBlockEnti
 
     @Override
 	protected void renderSafe(TreeTapBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-		//if (Backend.canUseInstancing(be.getLevel())) return;
+		if (Backend.canUseInstancing(be.getLevel())) return;
 
         BlockState state = be.getBlockState();
         Direction facing = state.getValue(TreeTapBlock.HORIZONTAL_FACING);
@@ -31,7 +32,6 @@ public class TreeTapRenderer extends KineticBlockEntityRenderer<TreeTapBlockEnti
             .rotate(9f * Mth.sin(getAngleForTe(be, be.getBlockPos(), facing.getClockWise().getAxis())), facing.getClockWise().getAxis())
             .rotateToFace(facing.getOpposite())
             .unCentre()
-            .translate(0f, 12 / 16f, 7 / 16f)
             .light(light)
             .renderInto(ms, buffer.getBuffer(RenderType.solid()));
 

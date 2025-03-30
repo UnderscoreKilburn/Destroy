@@ -14,6 +14,7 @@ import com.petrolpark.compat.create.item.directional.DirectionalTransportedItemS
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.nbt.CompoundTag;
@@ -97,6 +98,10 @@ public class CircuitMaskItem extends CircuitPatternItem {
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
         if (stack.getOrCreateTag().contains("HideContaminants")) return;
+
+        if(level == null) // Fixes a crash caused by Jade
+            level = Minecraft.getInstance().level;
+
         List<UUID> previousPunchers = getContaminants(stack);
         tooltipComponents.add(Component.literal(" "));
         tooltipComponents.add(DestroyLang.translate("tooltip.circuit_mask.punched_by", previousPunchers.size()).style(ChatFormatting.GRAY).component());

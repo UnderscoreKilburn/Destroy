@@ -1,5 +1,6 @@
 package com.petrolpark.destroy.content.processing.sieve;
 
+import com.jozufozu.flywheel.backend.Backend;
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -25,6 +26,8 @@ public class MechanicalSieveRenderer extends KineticBlockEntityRenderer<Mechanic
     @Override
     protected void renderSafe(MechanicalSieveBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
+        if (Backend.canUseInstancing(be.getLevel())) return;
+
         BlockState state = be.getBlockState();
         boolean x = state.getValue(MechanicalSieveBlock.X);
         VertexConsumer vc = buffer.getBuffer(RenderType.cutoutMipped());

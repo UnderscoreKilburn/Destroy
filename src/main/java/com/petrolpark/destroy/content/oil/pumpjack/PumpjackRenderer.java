@@ -1,9 +1,11 @@
 package com.petrolpark.destroy.content.oil.pumpjack;
 
+import com.jozufozu.flywheel.backend.Backend;
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.petrolpark.destroy.client.DestroyPartials;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.render.SuperByteBuffer;
@@ -12,6 +14,7 @@ import com.simibubi.create.foundation.utility.AngleHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,10 +27,9 @@ public class PumpjackRenderer extends SafeBlockEntityRenderer<PumpjackBlockEntit
 
     @Override
     protected void renderSafe(PumpjackBlockEntity pumpjack, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
-        //if (Backend.canUseInstancing(pumpjack.getLevel())) return; Can't use instancing because it can't render cutout for some reason
+        if (Backend.canUseInstancing(pumpjack.getLevel())) return;
 
-        Float angle = pumpjack.getTargetAngle();
-		if (angle == null) angle = 0f;
+        float angle = pumpjack.getRenderAngle();
 
         BlockState blockState = pumpjack.getBlockState();
         Direction facing = PumpjackBlock.getFacing(blockState);

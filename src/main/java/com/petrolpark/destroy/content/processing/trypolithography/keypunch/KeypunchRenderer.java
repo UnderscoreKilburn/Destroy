@@ -1,5 +1,6 @@
 package com.petrolpark.destroy.content.processing.trypolithography.keypunch;
 
+import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.petrolpark.destroy.client.DestroyPartials;
 import com.simibubi.create.AllPartialModels;
@@ -25,6 +26,9 @@ public class KeypunchRenderer extends KineticBlockEntityRenderer<KeypunchBlockEn
 
     @Override
     protected void renderSafe(KeypunchBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+        super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
+        if (Backend.canUseInstancing(be.getLevel())) return;
+
         BlockState blockState = be.getBlockState();
         CircuitPunchingBehaviour behaviour = be.punchingBehaviour;
         float renderedHeadOffset = behaviour.getRenderedPistonOffset(partialTicks);
@@ -34,8 +38,6 @@ public class KeypunchRenderer extends KineticBlockEntityRenderer<KeypunchBlockEn
         headRender.translate((4 + 2 * (pistonPos % 4)) / 16f, - (6.1f + (renderedHeadOffset * 12.5f)) / 16f, (4 + 2 * (pistonPos / 4)) / 16f)
             .light(light)
             .renderInto(ms, buffer.getBuffer(RenderType.solid()));
-            
-        super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
     };
 
 	@Override

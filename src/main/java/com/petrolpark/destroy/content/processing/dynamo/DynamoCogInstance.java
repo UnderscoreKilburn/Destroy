@@ -16,12 +16,6 @@ public class DynamoCogInstance extends SingleRotatingInstance<KineticBlockEntity
     };
 
     @Override
-    public void updateLight() {
-        super.updateLight();
-        relight(pos);
-    };
-
-    @Override
     protected Instancer<RotatingData> getModel() {
         BlockState state = blockEntity.getBlockState();
         return getRotatingMaterial().getModel(state.getValue(DynamoBlock.ARC_FURNACE) ? DestroyPartials.ARC_FURNACE_SHAFT : DestroyPartials.DYNAMO_SHAFT, blockEntity.getBlockState());

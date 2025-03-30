@@ -7,6 +7,7 @@ import com.petrolpark.destroy.content.logistics.siphon.SiphonBlockEntity;
 import com.petrolpark.destroy.content.logistics.siphon.SiphonRenderer;
 import com.petrolpark.destroy.content.oil.pumpjack.PumpjackBlockEntity;
 import com.petrolpark.destroy.content.oil.pumpjack.PumpjackCamBlockEntity;
+import com.petrolpark.destroy.content.oil.pumpjack.PumpjackInstance;
 import com.petrolpark.destroy.content.oil.pumpjack.PumpjackRenderer;
 import com.petrolpark.destroy.content.processing.ageing.AgeingBarrelBlockEntity;
 import com.petrolpark.destroy.content.processing.ageing.AgeingBarrelRenderer;
@@ -24,15 +25,17 @@ import com.petrolpark.destroy.content.processing.extrusion.ExtrusionDieBlockEnti
 import com.petrolpark.destroy.content.processing.glassblowing.BlowpipeBlockEntity;
 import com.petrolpark.destroy.content.processing.glassblowing.BlowpipeBlockEntityRenderer;
 import com.petrolpark.destroy.content.processing.sieve.MechanicalSieveBlockEntity;
+import com.petrolpark.destroy.content.processing.sieve.MechanicalSieveInstance;
 import com.petrolpark.destroy.content.processing.sieve.MechanicalSieveRenderer;
 import com.petrolpark.destroy.content.processing.treetap.TreeTapBlockEntity;
+import com.petrolpark.destroy.content.processing.treetap.TreeTapInstance;
 import com.petrolpark.destroy.content.processing.treetap.TreeTapRenderer;
 import com.petrolpark.destroy.content.processing.trypolithography.keypunch.KeypunchBlockEntity;
+import com.petrolpark.destroy.content.processing.trypolithography.keypunch.KeypunchInstance;
 import com.petrolpark.destroy.content.processing.trypolithography.keypunch.KeypunchRenderer;
 import com.petrolpark.destroy.content.redstone.programmer.RedstoneProgrammerBlockEntity;
 import com.petrolpark.destroy.content.redstone.programmer.RedstoneProgrammerBlockEntityRenderer;
 import com.petrolpark.destroy.content.sandcastle.SandCastleBlockEntity;
-import com.petrolpark.destroy.core.block.entity.instance.HorizontalShaftlessCogwheelInstance;
 import com.petrolpark.destroy.core.chemistry.storage.ElementTankBlockEntity;
 import com.petrolpark.destroy.core.chemistry.storage.ElementTankRenderer;
 import com.petrolpark.destroy.core.chemistry.storage.SimpleMixtureTankBlockEntity.SimplePlaceableMixtureTankBlockEntity;
@@ -138,7 +141,7 @@ public class DestroyBlockEntityTypes {
 
     public static final BlockEntityEntry<KeypunchBlockEntity> KEYPUNCH = REGISTRATE
         .blockEntity("keypunch", KeypunchBlockEntity::new)
-        .instance(() -> HorizontalShaftlessCogwheelInstance::new)
+        .instance(() -> KeypunchInstance::new)
         .validBlocks(DestroyBlocks.KEYPUNCH)
         .renderer(() -> KeypunchRenderer::new)
         .register();
@@ -151,6 +154,7 @@ public class DestroyBlockEntityTypes {
 
     public static final BlockEntityEntry<MechanicalSieveBlockEntity> MECHANICAL_SIEVE = REGISTRATE
         .blockEntity("mechanical_sieve", MechanicalSieveBlockEntity::new)
+        .instance(() -> MechanicalSieveInstance::new)
         .validBlock(DestroyBlocks.MECHANICAL_SIEVE)
         .renderer(() -> MechanicalSieveRenderer::new)
         .register();
@@ -163,7 +167,7 @@ public class DestroyBlockEntityTypes {
 
     public static final BlockEntityEntry<PumpjackBlockEntity> PUMPJACK = REGISTRATE
         .blockEntity("pumpjack", PumpjackBlockEntity::new)
-		//.instance(() -> PumpjackInstance::new, false) Can't use instancing because that can't render cutout for some reason
+		.instance(() -> PumpjackInstance::new)
 		.validBlocks(DestroyBlocks.PUMPJACK)
 		.renderer(() -> PumpjackRenderer::new)
 		.register();
@@ -198,6 +202,7 @@ public class DestroyBlockEntityTypes {
 
     public static final BlockEntityEntry<TreeTapBlockEntity> TREE_TAP = REGISTRATE
         .blockEntity("tree_tap", TreeTapBlockEntity::new)
+        .instance(() -> TreeTapInstance::new)
         .validBlock(DestroyBlocks.TREE_TAP)
         .renderer(() -> TreeTapRenderer::new)
         .register();

@@ -149,6 +149,24 @@ public class PumpjackBlockEntity extends SmartBlockEntity implements IHaveGoggle
 		return angle;
     };
 
+    public float getRenderAngle() {
+        Float angle = getTargetAngle();
+        if(angle == null)
+        {
+            BlockState blockState = getBlockState();
+            Direction facing = PumpjackBlock.getFacing(blockState);
+            Direction.Axis axis = facing.getCounterClockWise().getAxis();
+            BlockPos pos = getCamPos();
+            double d = (((axis == Direction.Axis.X) ? 0 : pos.getX()) + ((axis == Direction.Axis.Y) ? 0 : pos.getY())
+                + ((axis == Direction.Axis.Z) ? 0 : pos.getZ())) % 2;
+            angle = d == 0 ? 22.5f * Mth.PI / 180.f : 0f;
+
+            if (axis.isHorizontal() && (facing.getAxis() == Axis.X ^ facing.getAxisDirection() == AxisDirection.NEGATIVE))
+                angle *= -1;
+        }
+        return angle;
+    };
+
     @OnlyIn(Dist.CLIENT)
     public void playClientSound() {
         if (getTargetAngle() == null) return;
@@ -164,14 +182,18 @@ public class PumpjackBlockEntity extends SmartBlockEntity implements IHaveGoggle
         };
     };
 
+    public BlockPos getCamPos() {
+        Direction facing = PumpjackBlock.getFacing(getBlockState());
+        return getBlockPos().relative(facing, 1);
+    }
+
     @Nullable
     @SuppressWarnings("null")
     public PumpjackCamBlockEntity getCam() {
         PumpjackCamBlockEntity cam = source.get();
         if (cam == null || cam.isRemoved() || !cam.canPower(getBlockPos())) {
             if (cam != null) source = new WeakReference<>(null);
-            Direction facing = PumpjackBlock.getFacing(getBlockState());
-            BlockEntity anyCamAt = getLevel().getBlockEntity(getBlockPos().relative(facing, 1)); // It thinks getLevel() might be null
+            BlockEntity anyCamAt = getLevel().getBlockEntity(getCamPos()); // It thinks getLevel() might be null
             if (anyCamAt instanceof PumpjackCamBlockEntity newCam && newCam.canPower(getBlockPos())) {
                 cam = newCam;
 				source = new WeakReference<>(cam);

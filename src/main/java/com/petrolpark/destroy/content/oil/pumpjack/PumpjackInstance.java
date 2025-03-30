@@ -8,6 +8,7 @@ import com.jozufozu.flywheel.core.materials.model.ModelData;
 import com.petrolpark.destroy.client.DestroyPartials;
 import com.simibubi.create.foundation.utility.AngleHelper;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 
@@ -17,6 +18,8 @@ public class PumpjackInstance extends BlockEntityInstance<PumpjackBlockEntity> i
 	protected final ModelData linkage;
 	protected final ModelData beam;
     protected final ModelData pump;
+
+    private static final double beamRotation = Math.asin(5 / 17d);
 
     public PumpjackInstance(MaterialManager materialManager, PumpjackBlockEntity blockEntity) {
         super(materialManager, blockEntity);
@@ -31,7 +34,7 @@ public class PumpjackInstance extends BlockEntityInstance<PumpjackBlockEntity> i
             .getModel(DestroyPartials.PUMPJACK_LINKAGE, blockState)
             .createInstance();
 
-        beam = materialManager.defaultSolid()
+        beam = materialManager.defaultCutout()
             .material(Materials.TRANSFORMED)
             .getModel(DestroyPartials.PUMPJACK_BEAM, blockState)
             .createInstance();
@@ -44,14 +47,7 @@ public class PumpjackInstance extends BlockEntityInstance<PumpjackBlockEntity> i
 
     @Override
     public void beginFrame() {
-        Float angle = blockEntity.getTargetAngle();
-		if (angle == null) {
-			cam.setEmptyTransform();
-			linkage.setEmptyTransform();
-			beam.setEmptyTransform();
-            pump.setEmptyTransform();
-			return;
-		};
+        float angle = blockEntity.getRenderAngle();
 
         Direction facing = PumpjackBlock.getFacing(blockState);
 
@@ -65,10 +61,10 @@ public class PumpjackInstance extends BlockEntityInstance<PumpjackBlockEntity> i
             .unCentre();
 
         transformed(linkage, facing)
-            .translate(0d, -5 / 16d, 1d)
+            .translate(0d, -4.5 / 16d, 1d)
             .translate(0d, Mth.sin(angle) * 5 / 16d, -Mth.cos(angle) * 5 / 16d)
             .centre()
-            .rotateX(Mth.cos(angle) * 10d)
+            .rotateXRadians((Mth.cos(angle)) * beamRotation * 0.73d)
             .centre()
             .translate(0d, 0d, -1d)
             .unCentre()
@@ -77,7 +73,7 @@ public class PumpjackInstance extends BlockEntityInstance<PumpjackBlockEntity> i
         transformed(beam, facing)
             .translate(0d, 1d, 0d)
             .centre()
-            .rotateX((Mth.sin(angle) - 1) * -18d)
+            .rotateXRadians((Mth.sin(angle)) * -beamRotation)
             .centre()
             .translate(0d, -1d, 0d)
             .unCentre()

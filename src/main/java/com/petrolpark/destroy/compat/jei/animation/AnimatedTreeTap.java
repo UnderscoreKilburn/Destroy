@@ -25,8 +25,7 @@ public class AnimatedTreeTap extends AnimatedKinetics {
 
 		blockElement(DestroyPartials.TREE_TAP_ARM)
 			.rotateBlock(9f * Mth.sin(AnimationTickHolder.getRenderTime() / 4f), 0, 0)
-            .withRotationOffset(new Vec3(0, -4 / 16f, -1 / 16f))
-            .atLocal(0f, - 12 / 16f, 7 / 16f)
+            .withRotationOffset(new Vec3(0, 0.5, 0.5))
 			.scale(scale)
 			.render(graphics);
 

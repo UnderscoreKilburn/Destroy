@@ -73,7 +73,7 @@ public class BlowpipeBlockEntityRenderer extends SafeBlockEntityRenderer<Blowpip
         };
 
         for (int j = 0; j < shapes; j++) {
-            DestroyFluidRenderer.renderFluidBoxWithAlpha(fluid, - radii[j], -radii[j], ends[j] - 1/ 128f, radii[j], radii[j], ends[j+1] + 1 / 128f, buffer, ms, light, fluidOpacity);
+            DestroyFluidRenderer.renderFluidBoxWithAlpha(fluid, - radii[j] - 1/ 512f, -radii[j] - 1/ 128f, ends[j] - 1/ 512f, radii[j] + 1 / 512f, radii[j] + 1 / 128f, ends[j+1] + 1 / 512f, buffer, ms, light, fluidOpacity);
         };
     };
     

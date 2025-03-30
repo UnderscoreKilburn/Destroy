@@ -2,10 +2,14 @@ package com.petrolpark.destroy.content.processing.treetap;
 
 import com.jozufozu.flywheel.api.MaterialManager;
 import com.jozufozu.flywheel.api.instance.DynamicInstance;
+import com.jozufozu.flywheel.core.Materials;
+import com.jozufozu.flywheel.core.materials.model.ModelData;
 import com.jozufozu.flywheel.core.materials.oriented.OrientedData;
 import com.petrolpark.destroy.client.DestroyPartials;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.content.kinetics.base.ShaftInstance;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import org.joml.Quaternionf;
@@ -15,15 +19,15 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 
 public class TreeTapInstance extends ShaftInstance<TreeTapBlockEntity> implements DynamicInstance {
 
-    final Direction facing;
-    protected final OrientedData arm;
+    protected final ModelData arm;
 
     public TreeTapInstance(MaterialManager materialManager, TreeTapBlockEntity blockEntity) {
         super(materialManager, blockEntity);
 
-        facing = blockState.getValue(HORIZONTAL_FACING);
-        arm = getOrientedMaterial().getModel(DestroyPartials.TREE_TAP_ARM, blockState, facing).createInstance()
-            .setPivot(0.5f, 0.5f, 0.5f);
+        arm = materialManager.defaultSolid()
+            .material(Materials.TRANSFORMED)
+            .getModel(DestroyPartials.TREE_TAP_ARM, blockState)
+            .createInstance();
 
         updateAnimation();
     }
@@ -46,11 +50,13 @@ public class TreeTapInstance extends ShaftInstance<TreeTapBlockEntity> implement
     }
 
     private void updateAnimation() {
-        float angle = 9f * Mth.sin((float)Math.toRadians((AnimationTickHolder.getRenderTime() * blockEntity.getSpeed() * 3f / 10) % 360));
+        Direction facing = blockState.getValue(TreeTapBlock.HORIZONTAL_FACING);
 
-        Vector3f axis = facing.getCounterClockWise().step();
-
-        arm.setPosition(getInstancePosition())
-            .setRotation(new Quaternionf().rotationAxis((float)Math.toRadians(angle), axis));
+        arm.loadIdentity()
+            .translate(getInstancePosition())
+            .centre()
+            .rotate(9f * Mth.sin(KineticBlockEntityRenderer.getAngleForTe(blockEntity, blockEntity.getBlockPos(), facing.getClockWise().getAxis())), facing.getClockWise().getAxis())
+            .rotateToFace(facing.getOpposite())
+            .unCentre();
     }
 }

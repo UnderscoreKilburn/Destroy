@@ -24,9 +24,9 @@ public class AnimatedSieve extends AnimatedKinetics {
         ms.pushPose();
         TransformStack.cast(ms)
             .translate(0d, -0.5d, 0.5d)
-            .rotateZ(90)
-            .rotateY(getCurrentAngle())
-            .translateBack(0.5d, 0d, 0.5d);
+            .rotateY(90)
+            .rotateZ(getCurrentAngle())
+            .translateBack(0.5d, -0.5d, 0d);
 		blockElement(DestroyPartials.MECHANICAL_SIEVE_SHAFT)
 			.render(graphics);
         ms.popPose();

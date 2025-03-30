@@ -59,7 +59,7 @@ public class MechanicalSieveRenderer extends KineticBlockEntityRenderer<Mechanic
 
     @Override
     protected SuperByteBuffer getRotatedModel(MechanicalSieveBlockEntity be, BlockState state) {
-        return CachedBufferer.partialFacingVertical(DestroyPartials.MECHANICAL_SIEVE_SHAFT, state, state.getValue(MechanicalSieveBlock.X) ? Direction.EAST : Direction.SOUTH);
+        return CachedBufferer.partialFacing(DestroyPartials.MECHANICAL_SIEVE_SHAFT, state, state.getValue(MechanicalSieveBlock.X) ? Direction.EAST : Direction.SOUTH);
     };
     
 };

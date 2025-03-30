@@ -13,6 +13,7 @@ import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;
 import com.petrolpark.destroy.chemistry.legacy.ReadOnlyMixture;
 import com.petrolpark.destroy.chemistry.legacy.index.DestroyMolecules;
 import com.petrolpark.destroy.chemistry.minecraft.MixtureFluid;
+import com.petrolpark.destroy.compat.jei.render.MoleculeBatchRenderer;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
 import com.petrolpark.destroy.core.chemistry.MoleculeDisplayItem;
 import com.petrolpark.destroy.core.chemistry.MoleculeDisplayItem.MoleculeTooltip;
@@ -23,10 +24,12 @@ import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import mezz.jei.api.ingredients.IIngredientType;
+import mezz.jei.api.ingredients.rendering.BatchRenderElement;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -111,14 +114,17 @@ public class MoleculeJEIIngredient {
 
         public static final ResourceLocation FONT_LOCATION = Destroy.asResource("charge");
         public static final Style FONT = Style.EMPTY.withFont(FONT_LOCATION);
+        private final MoleculeBatchRenderer.Cache batchRenderer = new MoleculeBatchRenderer.Cache();
 
         @Override
         public void render(GuiGraphics graphics, LegacySpecies ingredient) {
             MoleculeRenderer renderer = ingredient.getRenderer();
 
+            MultiBufferSource.BufferSource buffer = graphics.bufferSource();
             PoseStack poseStack = graphics.pose();
             poseStack.pushPose();
-            renderer.renderItem(0, 0, 16, 16, graphics);
+            renderer.renderItem(0, 0, 16, 16, poseStack, buffer);
+            buffer.endBatch();
 
             if(ingredient.getCharge() != 0)
             {
@@ -139,6 +145,11 @@ public class MoleculeJEIIngredient {
 
             //graphics.renderItem(MoleculeDisplayItem.with(ingredient), 0, 0); // TODO check positioning
         };
+
+        @Override
+        public void renderBatch(GuiGraphics graphics, List<BatchRenderElement<LegacySpecies>> elements) {
+            batchRenderer.renderBatch(graphics, elements);
+        }
 
         @Override
         public void getTooltip(ITooltipBuilder tooltip, LegacySpecies ingredient, TooltipFlag tooltipFlag) {

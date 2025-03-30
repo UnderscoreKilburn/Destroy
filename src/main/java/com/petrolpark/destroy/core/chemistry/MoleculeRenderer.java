@@ -1,25 +1,29 @@
 package com.petrolpark.destroy.core.chemistry;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import com.jozufozu.flywheel.core.model.ModelUtil;
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
-import com.petrolpark.destroy.Destroy;
 import com.simibubi.create.foundation.gui.UIRenderHelper;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.client.RenderTypeGroup;
+import net.minecraftforge.client.model.IModelBuilder;
+import net.minecraftforge.client.model.pipeline.QuadBakingVertexConsumer;
+import net.minecraftforge.client.textures.UnitTextureAtlasSprite;
 import org.joml.Math;
 import org.joml.Quaternionf;
 
@@ -50,7 +54,8 @@ public class MoleculeRenderer {
     protected static final double SCALE = 23d;
     protected static final double BOND_LENGTH = SCALE / 2;
 
-    protected SuperByteBuffer model;
+    //protected SuperByteBuffer model;
+    protected BakedModel model;
 
     /**
      * The list of Atoms and Bonds to render, and their locations.
@@ -126,16 +131,15 @@ public class MoleculeRenderer {
             bb = bb.minmax(new AABB(pair.getFirst(), pair.getFirst()));
         };
 
-        // Bake all rendered objects into a single buffer
-        BufferBuilder builder = new BufferBuilder(512);
-        builder.begin(VertexFormat.Mode.QUADS, RenderType.translucent().format());
+        // Bake all rendered objects into a single model
+        IModelBuilder builder = IModelBuilder.of(false, true, true, ItemTransforms.NO_TRANSFORMS, ItemOverrides.EMPTY,
+            UnitTextureAtlasSprite.INSTANCE, RenderTypeGroup.EMPTY);
+        QuadBakingVertexConsumer buffer = new QuadBakingVertexConsumer(builder::addUnculledFace);
+        buffer.setTintIndex(-1);
         for (Pair<Vec3, IRenderableMoleculePart> pair : RENDERED_OBJECTS) {
-            pair.getSecond().renderInto(builder, pair.getFirst());
+            pair.getSecond().renderInto(buffer, pair.getFirst());
         };
-
-        BufferBuilder.RenderedBuffer renderedBuffer = builder.end();
-        model = new SuperByteBuffer(renderedBuffer.vertexBuffer(), renderedBuffer.drawState());
-        renderedBuffer.release();
+        model = builder.build();
     };
 
     public int getWidth() {
@@ -156,26 +160,19 @@ public class MoleculeRenderer {
         poseStack.translate(center.x - bb.minX + xPosition, center.y - bb.minY + yPosition, -200);
         poseStack.mulPose(Axis.YP.rotationDegrees(AnimationTickHolder.getRenderTime()));
         poseStack.translate(-center.x, -center.y, -center.z);
-/*
-        for (Pair<Vec3, IRenderableMoleculePart> pair : RENDERED_OBJECTS) {
-            pair.getSecond().render(graphics, pair.getFirst());
-        };
-*/
-        Minecraft mc = Minecraft.getInstance();
-        MultiBufferSource.BufferSource buffer = mc.renderBuffers()
-            .bufferSource();
-        RenderType renderType = RenderType.translucent();
+
         UIRenderHelper.flipForGuiRender(poseStack);
-        model.renderInto(poseStack, buffer.getBuffer(renderType));
-        buffer.endBatch();
+        Lighting.setupFor3DItems();
+        Minecraft.getInstance().getItemRenderer().renderModelLists(model, ItemStack.EMPTY, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
+            poseStack, graphics.bufferSource().getBuffer(Sheets.cutoutBlockSheet()));
+        graphics.flush();
 
         poseStack.popPose();
     };
 
-    public void renderItem(int xPosition, int yPosition, int width, int height, GuiGraphics graphics) {
+    public void renderItem(int xPosition, int yPosition, int width, int height, PoseStack poseStack, MultiBufferSource.BufferSource buffer) {
         float scale = java.lang.Math.min(0.5f, java.lang.Math.min((width+2)/(getWidth()+1f), (height+2)/(getHeight()+1f)));
 
-        PoseStack poseStack = graphics.pose();
         poseStack.pushPose();
         Vec3 center = bb.getCenter();
         poseStack.translate(xPosition + width/2, yPosition + height/2, 50);
@@ -183,18 +180,11 @@ public class MoleculeRenderer {
         poseStack.mulPose(Axis.YP.rotationDegrees(AnimationTickHolder.getRenderTime()));
         poseStack.scale(scale, scale, scale);
         poseStack.translate(-center.x, -center.y, -center.z);
-/*
-        for (Pair<Vec3, IRenderableMoleculePart> pair : RENDERED_OBJECTS) {
-            pair.getSecond().render(graphics, pair.getFirst());
-        };
-*/
-        Minecraft mc = Minecraft.getInstance();
-        MultiBufferSource.BufferSource buffer = mc.renderBuffers()
-            .bufferSource();
-        RenderType renderType = RenderType.solid();
+
         UIRenderHelper.flipForGuiRender(poseStack);
-        model.renderInto(poseStack, buffer.getBuffer(renderType));
-        buffer.endBatch();
+        Lighting.setupFor3DItems();
+        Minecraft.getInstance().getItemRenderer().renderModelLists(model, ItemStack.EMPTY, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
+            poseStack, buffer.getBuffer(Sheets.cutoutBlockSheet()));
 
         poseStack.popPose();
     };
@@ -440,7 +430,7 @@ public class MoleculeRenderer {
 
             Minecraft.getInstance().getBlockRenderer().getModelRenderer()
                 .renderModel(poseStack.last(), builder, Blocks.AIR.defaultBlockState(), type().getPartial().get(), 1, 1, 1,
-                    LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ModelUtil.VIRTUAL_DATA, null);
+                    0, OverlayTexture.NO_OVERLAY, ModelUtil.VIRTUAL_DATA, RenderType.solid());
         };
     };
 
@@ -467,7 +457,7 @@ public class MoleculeRenderer {
 
             Minecraft.getInstance().getBlockRenderer().getModelRenderer()
                 .renderModel(poseStack.last(), builder, Blocks.AIR.defaultBlockState(), atom.getPartial().get(), 1, 1, 1,
-                    LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ModelUtil.VIRTUAL_DATA, null);
+                    0, OverlayTexture.NO_OVERLAY, ModelUtil.VIRTUAL_DATA, RenderType.solid());
         };
     };
 };

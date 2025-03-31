@@ -49,6 +49,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
+import com.petrolpark.destroy.chemistry.api.util.Constants;
+
 public class CoolerBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
 
     private static final int TANK_CAPACITY = 1000;
@@ -99,7 +101,7 @@ public class CoolerBlockEntity extends SmartBlockEntity implements IHaveGoggleIn
                 totalMolesPerBucket += concentration;
                 if (molecule.hasTag(DestroyMolecules.Tags.REFRIGERANT)) {
                     totalRefrigerantMolesPerBucket += concentration;
-                    coolingPower += DestroyAllConfigs.SERVER.blocks.coolerEfficiency.getF() * concentration * amount * molecule.getMolarHeatCapacity() / 100;
+                    coolingPower += DestroyAllConfigs.SERVER.blocks.coolerEfficiency.getF() * concentration * amount * molecule.getMolarHeatCapacity() * 10 / Constants.MILLIBUCKETS_PER_LITER;
                 };
             };
 
@@ -107,7 +109,7 @@ public class CoolerBlockEntity extends SmartBlockEntity implements IHaveGoggleIn
 
             
         } else if (fluidStack.getFluid().is(Fluids.COOLANT.tag)) {
-            coolingPower += fluidStack.getAmount(); // One bucket of coolant = 50 seconds of coling
+            coolingPower += fluidStack.getAmount(); // One bucket of coolant = 50 seconds of cooling
         }
 
         if (coolingPower > 0f) {

@@ -193,17 +193,22 @@ public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveL
             boolean shouldUpdateFluidMixture = false;
             Vat vat = getVatOptional().get();
             if (tankBehaviour.isEmpty()) return;
-            double fluidAmount = getCapacity() / Constants.MILLIBUCKETS_PER_LITER; // Converts getFluidAmount() in mB to liters
+            float fluidAmount = (float)getCapacity() / Constants.MILLIBUCKETS_PER_LITER; // Converts getFluidAmount() in mB to liters
 
             int cyclesPerTick = getSimulationLevel();
 
             // Heating
             for (int cycle = 0; cycle < cyclesPerTick; cycle++) {
                 float energyChange = heatingPower;
+
+                // Treat the walls of the Vat like an additional volume of material with its own heat capacity
+                float vatSideVolume = vat.getSideBlockPositions().size() * 1000f / Constants.MILLIBUCKETS_PER_LITER;
+                float vatSideHeatCapacity = 3000f;
+
                 energyChange += (Pollution.getLocalTemperature(getLevel(), getBlockPos()) - cachedMixture.getTemperature()) * vat.getConductance(); // Fourier's Law (sort of), the divide by 20 is for 20 ticks per second
                 energyChange /= 20 * cyclesPerTick;
                 if (Math.abs(energyChange / (fluidAmount * cachedMixture.getVolumetricHeatCapacity())) > 0.001f && fluidAmount != 0d) { // Only bother heating if the temperature change will be somewhat significant
-                    cachedMixture.heat(energyChange / (float)fluidAmount);
+                    cachedMixture.heatWithBuffer(energyChange / fluidAmount, fluidAmount, vatSideHeatCapacity, vatSideVolume);
                     cachedMixture.disturbEquilibrium();
                 } else {
                     break;

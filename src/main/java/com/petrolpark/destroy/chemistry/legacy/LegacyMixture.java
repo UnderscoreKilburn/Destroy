@@ -408,7 +408,14 @@ public class LegacyMixture extends ReadOnlyMixture {
      * @param energy In joules per bucket
      */
     public void heat(float energyDensity) {
-        float volumetricHeatCapacity = getVolumetricHeatCapacity();
+        heat(energyDensity, getVolumetricHeatCapacity());
+    };
+
+    public void heatWithBuffer(float energyDensity, float volume, float bufferVolumetricHeatCapacity, float bufferVolume) {
+        heat(energyDensity, (getVolumetricHeatCapacity() * volume + bufferVolumetricHeatCapacity * bufferVolume) / (volume + bufferVolume));
+    };
+
+    public void heat(float energyDensity, float volumetricHeatCapacity) {
         if (volumetricHeatCapacity == 0f) return;
 
         float temperatureChange = energyDensity / volumetricHeatCapacity; // The theoretical temperature change if no boiling or condensation occurs
@@ -420,7 +427,7 @@ public class LegacyMixture extends ReadOnlyMixture {
                 
                 temperatureChange = nextHigherBoilingPoint.getFirst() - temperature; // Only increase the temperature by enough to get to the next BP
                 temperature += temperatureChange; // Raise the Mixture to the boiling point
-                energyDensity -= temperatureChange * getVolumetricHeatCapacity(); // Energy leftover once the Mixture has been raised to the boiling point
+                energyDensity -= temperatureChange * volumetricHeatCapacity; // Energy leftover once the Mixture has been raised to the boiling point
 
                 LegacySpecies molecule = nextHigherBoilingPoint.getSecond();
                 float liquidConcentration = getConcentrationOf(molecule) * (1f - states.get(molecule)); // The moles per bucket of liquid Molecules
@@ -448,7 +455,7 @@ public class LegacyMixture extends ReadOnlyMixture {
 
                 temperatureChange = nextLowerBoilingPoint.getFirst() - temperature; // Only decrease the temperature by enough to get to the next condensation point
                 temperature += temperatureChange; // Decrease the Mixture to the boiling point
-                energyDensity -= temperatureChange * getVolumetricHeatCapacity(); // Additional energy once the Mixture has been lowered to the condensation point
+                energyDensity -= temperatureChange * volumetricHeatCapacity; // Additional energy once the Mixture has been lowered to the condensation point
 
                 LegacySpecies molecule = nextLowerBoilingPoint.getSecond();
                 float gasConcentration = getConcentrationOf(molecule) * states.get(molecule);

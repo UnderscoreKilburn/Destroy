@@ -1,5 +1,5 @@
 {
-    "max_pressure_difference": 1000000,
+    "max_pressure_difference": 4000000,
     "conductivity": 35,
     "transparent": false,
     "blocks": [

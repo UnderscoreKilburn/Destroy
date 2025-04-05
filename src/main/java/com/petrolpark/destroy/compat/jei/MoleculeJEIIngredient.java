@@ -118,37 +118,41 @@ public class MoleculeJEIIngredient {
 
         @Override
         public void render(GuiGraphics graphics, LegacySpecies ingredient) {
-            MoleculeRenderer renderer = ingredient.getRenderer();
+            if(DestroyAllConfigs.CLIENT.chemistry.fancyMoleculeRendering.get()) {
+                MoleculeRenderer renderer = ingredient.getRenderer();
 
-            MultiBufferSource.BufferSource buffer = graphics.bufferSource();
-            PoseStack poseStack = graphics.pose();
-            poseStack.pushPose();
-            renderer.renderItem(0, 0, 16, 16, poseStack, buffer);
-            buffer.endBatch();
-
-            if(ingredient.getCharge() != 0)
-            {
-                String s = ingredient.getCharge() > 0 ? "+" : "-";
-                int col = 0xFFFFFF;
-
-                if(Math.abs(ingredient.getCharge()) > 1)
-                    s = Math.abs(ingredient.getCharge()) + s;
-
+                MultiBufferSource.BufferSource buffer = graphics.bufferSource();
+                PoseStack poseStack = graphics.pose();
                 poseStack.pushPose();
-                poseStack.translate(0, 0, 100);
-                Font fontRenderer = Minecraft.getInstance().font;
-                graphics.drawString(fontRenderer, FormattedCharSequence.forward(s, FONT), -1, -1, col, true);
+                renderer.renderItem(0, 0, 16, 16, poseStack, buffer);
+                buffer.endBatch();
+
+                if (ingredient.getCharge() != 0)
+                {
+                    String s = ingredient.getCharge() > 0 ? "+" : "-";
+                    int col = 0xFFFFFF;
+
+                    if (Math.abs(ingredient.getCharge()) > 1)
+                        s = Math.abs(ingredient.getCharge()) + s;
+
+                    poseStack.pushPose();
+                    poseStack.translate(0, 0, 100);
+                    Font fontRenderer = Minecraft.getInstance().font;
+                    graphics.drawString(fontRenderer, FormattedCharSequence.forward(s, FONT), -1, -1, col, true);
+                    poseStack.popPose();
+                }
                 poseStack.popPose();
-            }
-
-            poseStack.popPose();
-
-            //graphics.renderItem(MoleculeDisplayItem.with(ingredient), 0, 0); // TODO check positioning
+            } else {
+                graphics.renderItem(MoleculeDisplayItem.with(ingredient), 0, 0); // TODO check positioning
+            };
         };
 
         @Override
         public void renderBatch(GuiGraphics graphics, List<BatchRenderElement<LegacySpecies>> elements) {
-            batchRenderer.renderBatch(graphics, elements);
+            if(DestroyAllConfigs.CLIENT.chemistry.fancyMoleculeRendering.get())
+                batchRenderer.renderBatch(graphics, elements);
+            else
+                IIngredientRenderer.super.renderBatch(graphics, elements);
         }
 
         @Override

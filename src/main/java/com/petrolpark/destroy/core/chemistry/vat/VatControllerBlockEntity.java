@@ -332,7 +332,10 @@ public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveL
 
         UVPower = tag.getFloat("UVPower");
         averageOutsideRelativeTemperature = tag.getFloat("AverageOutsideRelativeTemperature");
-        vatTemperature = tag.getFloat("VatTemperature");
+        if(tag.contains("VatTemperature"))
+            vatTemperature = tag.getFloat("VatTemperature");
+        else
+            vatTemperature = getLevel() == null ? 289f : Pollution.getLocalTemperature(getLevel(), getBlockPos()); // Initialize default temperature if we're loading from a previous version
 
         // Vat
         if (tag.contains("Vat", Tag.TAG_COMPOUND)) {

@@ -3,17 +3,14 @@ package com.petrolpark.destroy.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.contraptions.MountedFluidStorage;
-import com.simibubi.create.content.fluids.tank.CreativeFluidTankBlockEntity;
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.FluidStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.petrolpark.destroy.core.fluid.GeniusFluidTankBehaviour.GeniusFluidTank;
 
@@ -43,7 +40,7 @@ public abstract class MountedFluidStorageMixin {
         ),
         remap = false
     )
-    private static SmartFluidTank deserializeGeniusMountedTank(int capacity, Consumer updateCallback, Operation<SmartFluidTank> original) {
+    private static SmartFluidTank deserializeGeniusMountedTank(int capacity, Consumer<FluidStack> updateCallback, Operation<SmartFluidTank> original) {
         return new GeniusFluidTank(capacity, updateCallback);
     }
 

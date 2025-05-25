@@ -106,7 +106,8 @@ public class AgeingBarrelRenderer extends SmartBlockEntityRenderer<AgeingBarrelB
         float units = tank.getTotalUnits(partialTicks);
         float maxY = minY + (Mth.clamp(units / barrel.getTank().getCapacity(), 0, 1) * 8 / 12f);
         if (units < 1 || tank.getRenderedFluid().isEmpty()) return minY;
-        FluidRenderer.renderFluidBox(tank.getRenderedFluid().getRawFluid(), tank.getRenderedFluid().getAmount(), 2 / 16f, minY, 2 / 16f, 14 / 16f, maxY, 14 / 16f, buffer, ms, light, false, true);
+        FluidRenderer.renderFluidBox(tank.getRenderedFluid().getRawFluid(), tank.getRenderedFluid().getAmount(), 2 / 16f, minY, 2 / 16f, 14 / 16f, maxY, 14 / 16f,
+            buffer, ms, light, false, true, tank.getRenderedFluid().getTag());
         return maxY;
     };
 

@@ -26,7 +26,8 @@ public class SimpleMixtureTankRenderer<T extends SimpleMixtureTankBlockEntity> e
         if (fs.isEmpty()) return;
         Vector3f l = renderInfo.getFluidBoxDimensions().getFirst();
         Vector3f u = renderInfo.getFluidBoxDimensions().getSecond();
-        FluidRenderer.renderFluidBox(fs.getFluid(), fs.getAmount(), l.x / 16f, l.y / 16f, l.z / 16f, u.x / 16f, (l.y + (u.y - l.y) * renderInfo.getFluidLevel(container, partialTicks)) / 16f, u.z / 16f, bufferSource.getBuffer(RenderTypes.entityTranslucentBlockMipped()), ms, light, true, true);
+        FluidRenderer.renderFluidBox(fs.getFluid(), fs.getAmount(), l.x / 16f, l.y / 16f, l.z / 16f, u.x / 16f, (l.y + (u.y - l.y) * renderInfo.getFluidLevel(container, partialTicks)) / 16f, u.z / 16f,
+            bufferSource, ms, light, true, true, fs.getTag());
     };
 
     public static interface ISimpleMixtureTankRenderInformation<C> {

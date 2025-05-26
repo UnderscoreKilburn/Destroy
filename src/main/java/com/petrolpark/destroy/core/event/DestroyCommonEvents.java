@@ -120,6 +120,7 @@ import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.level.SaplingGrowTreeEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -444,9 +445,8 @@ public class DestroyCommonEvents {
 
     /**
      * Allow Redstone Link Frequencies to be added to Redstone Programmers without setting the Programmer itself as a Frequency,
-     * and allow IPickUpPutDownBlock's Items to be consumed even if in Creative,
-     * and allow empty Test Tubes to be filled from Fluid Tanks,
-     * and prevent Flint and Steel from working if its Fireproof
+     * prevent Flint and Steel from working if its Fireproof,
+     * and prevent the default filling interaction between mixture storage items and Create's fluid containers
      */
     @SubscribeEvent
     public static final void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
@@ -487,6 +487,10 @@ public class DestroyCommonEvents {
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.SUCCESS);
         };
+
+        // Prevent default fluid transfer interaction with Create's fluid containers
+        if (stack.getItem() instanceof IMixtureStorageItem)
+            event.setUseBlock(Event.Result.DENY);
     };
 
     /**

@@ -13,6 +13,8 @@ import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.animation.AnimationTickHolder;
 
 import net.createmod.catnip.math.VecHelper;
+import net.createmod.catnip.platform.ForgeCatnipServices;
+import net.createmod.catnip.render.FluidRenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -87,7 +89,7 @@ public class AgeingBarrelRenderer extends SmartBlockEntityRenderer<AgeingBarrelB
         ms.pushPose();
         if (renderYeast) {
             // I know it says FluidRenderer but I'm just using it to render a generic texture, sue me
-            FluidRenderer.renderStillTiledFace(Direction.UP, 2 / 16f, 2 / 16f, 14 / 16f, 14 / 16f, fluidLevel + 0.01f, FluidRenderer.getFluidBuilder(buffer), ms, light, 0xFFFFFFFF,
+            ForgeCatnipServices.FLUID_RENDERER.renderStillTiledFace(Direction.UP, 2 / 16f, 2 / 16f, 14 / 16f, 14 / 16f, fluidLevel + 0.01f, FluidRenderHelper.getFluidBuilder(buffer), ms, light, 0xFFFFFFFF,
                 Minecraft.getInstance()
 			    .getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
                 .apply(Destroy.asResource("block/yeast_overlay"))
@@ -106,8 +108,8 @@ public class AgeingBarrelRenderer extends SmartBlockEntityRenderer<AgeingBarrelB
         float units = tank.getTotalUnits(partialTicks);
         float maxY = minY + (Mth.clamp(units / barrel.getTank().getCapacity(), 0, 1) * 8 / 12f);
         if (units < 1 || tank.getRenderedFluid().isEmpty()) return minY;
-        FluidRenderer.renderFluidBox(tank.getRenderedFluid().getRawFluid(), tank.getRenderedFluid().getAmount(), 2 / 16f, minY, 2 / 16f, 14 / 16f, maxY, 14 / 16f,
-            buffer, ms, light, false, true, tank.getRenderedFluid().getTag());
+        ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(tank.getRenderedFluid(), 2 / 16f, minY, 2 / 16f, 14 / 16f, maxY, 14 / 16f,
+            buffer, ms, light, false, true);
         return maxY;
     };
 

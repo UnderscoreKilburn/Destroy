@@ -327,7 +327,7 @@ public class CentrifugeBlockEntity extends KineticBlockEntity implements IDirect
                                 break findCounterions;
                             };
 
-                            float counterionMolesRequired = -moles * (float)counterion.getCharge() / (float)molecule.getCharge();
+                            float counterionMolesRequired = -moles * (float)molecule.getCharge() / (float)counterion.getCharge();
                             float proportionAvailable = phasedMoleculesRemainingMoles.get(phasedCounterion) / counterionMolesRequired;
 
                             if (debug) {

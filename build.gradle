@@ -130,10 +130,6 @@ repositories {
         dirs "../petrolpark_local_maven/petrolpark/petrolpark-${minecraft_version}/${petrolpark_library_version}"
     }
 
-    flatDir {
-        dirs "../petrolpark_local_maven/cbc-${minecraft_version}/"
-    }
-
     maven {
         // Curios
         url = "https://maven.theillusivec4.top/"

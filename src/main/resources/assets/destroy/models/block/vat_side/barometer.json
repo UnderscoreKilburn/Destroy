@@ -1,37 +1,35 @@
 {
 	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
 	"textures": {
-		"3": "destroy:block/vat_side_barometer",
-		"4": "create:block/gauge",
-		"6": "create:block/pipes"
+		"3": "destroy:block/vat_side_barometer"
 	},
 	"elements": [
 		{
-			"name": "GaugeButton",
-			"from": [7.5, 7.5, 17.5],
-			"to": [8.6, 8.6, 18.5],
+			"name": "casing",
+			"from": [2, 2, 16],
+			"to": [14, 14, 18],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
-				"north": {"uv": [0, 9.5, 0.5, 10], "texture": "#4"},
-				"east": {"uv": [0, 9.5, 0.5, 10], "texture": "#4"},
-				"south": {"uv": [0, 9.5, 0.5, 10], "texture": "#4"},
-				"west": {"uv": [0, 9.5, 0.5, 10], "texture": "#4"},
-				"up": {"uv": [0, 9.5, 0.5, 10], "rotation": 90, "texture": "#4"},
-				"down": {"uv": [0, 9.5, 0.5, 10], "rotation": 270, "texture": "#4"}
+				"north": {"uv": [7, 0, 13, 6], "texture": "#3"},
+				"east": {"uv": [6, 0, 7, 6], "texture": "#3"},
+				"south": {"uv": [0, 0, 6, 6], "texture": "#3"},
+				"west": {"uv": [6, 0, 7, 6], "rotation": 180, "texture": "#3"},
+				"up": {"uv": [6, 0, 7, 6], "rotation": 270, "texture": "#3"},
+				"down": {"uv": [6, 0, 7, 6], "rotation": 90, "texture": "#3"}
 			}
 		},
 		{
-			"name": "GuageMetalBack",
-			"from": [3, 3, 16],
-			"to": [13, 13, 18],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"name": "interior",
+			"from": [2, 2, 18],
+			"to": [14, 14, 17],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 10]},
 			"faces": {
-				"north": {"uv": [1.05, 11.05, 5.95, 15.95], "texture": "#6"},
-				"east": {"uv": [11, 0, 13, 10], "texture": "#3"},
-				"south": {"uv": [0, 0, 10, 10], "texture": "#3"},
-				"west": {"uv": [11, 0, 13, 10], "rotation": 180, "texture": "#3"},
-				"up": {"uv": [11, 0, 13, 10], "rotation": 270, "texture": "#3"},
-				"down": {"uv": [11, 0, 13, 10], "rotation": 90, "texture": "#3"}
+				"east": {"uv": [6.5, 0, 7, 6], "texture": "#3"},
+				"south": {"uv": [0, 6, 6, 12], "texture": "#3"},
+				"west": {"uv": [6.5, 0, 7, 6], "rotation": 180, "texture": "#3"},
+				"up": {"uv": [6.5, 0, 7, 6], "rotation": 270, "texture": "#3"},
+				"down": {"uv": [6.5, 0, 7, 6], "rotation": 90, "texture": "#3"}
 			}
 		}
 	]

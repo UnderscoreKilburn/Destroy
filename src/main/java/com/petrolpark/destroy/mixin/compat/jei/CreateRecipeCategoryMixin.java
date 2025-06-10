@@ -108,7 +108,7 @@ public abstract class CreateRecipeCategoryMixin<T extends Recipe<?>> {
             } else {
                 tooltip.set(0, name);
             };
-            tooltip.addAll(1, mixtureTooltip);
+            tooltip.addAll(mixtureTooltip);
         };
     };
 };

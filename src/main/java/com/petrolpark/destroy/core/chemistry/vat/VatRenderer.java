@@ -85,7 +85,8 @@ public class VatRenderer extends SafeBlockEntityRenderer<VatControllerBlockEntit
                         .uncenter()
                         .translate(2 / 16f, 0, 0)
                         .translate(0d, dialPivot, dialPivot)
-                        .rotateXDegrees(-90 - 180 * Mth.clamp(controller.getClientPressure(partialTicks) / controller.getVatOptional().get().getMaxPressure(), -1f, 1f))
+                        .rotateXDegrees(-90 + 155 - 310 * Mth.clamp(
+                            (controller.getClientPressure(partialTicks) + VatControllerBlockEntity.AIR_PRESSURE) / (controller.getVatOptional().get().getMaxPressure() + VatControllerBlockEntity.AIR_PRESSURE), 0f, 1f))
                         .light(light)
                         .renderInto(ms, vbSolid);
                     ms.popPose();

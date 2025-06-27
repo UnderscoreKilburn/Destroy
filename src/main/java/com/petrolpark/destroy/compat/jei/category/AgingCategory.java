@@ -58,10 +58,7 @@ public class AgingCategory extends PetrolparkRecipeCategory<AgeingRecipe> {
 
         // Add the Fluid Ingredient
         FluidIngredient fluidIngredient = recipe.getRequiredFluid();
-        builder.addSlot(RecipeIngredientRole.INPUT, xOffset, 33)
-            .setBackground(getRenderedSlot(), -1, -1)
-            .addIngredients(ForgeTypes.FLUID_STACK, fluidIngredient.getMatchingFluidStacks())
-                .addTooltipCallback(CreateRecipeCategoryAccessor::invokeAddPotionTooltip);
+        addFluidSlot(builder, xOffset, 33, fluidIngredient);
 
         // Add the Item Ingredient(s)
         for (Pair<Ingredient, MutableInt> pair : condensedIngredients) {
@@ -82,10 +79,7 @@ public class AgingCategory extends PetrolparkRecipeCategory<AgeingRecipe> {
 
         // Add the Fluid result
         FluidStack resultantFluid = recipe.getFluidResults().get(0);
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 142, 35)
-            .setBackground(getRenderedSlot(), -1, -1)
-            .addIngredient(ForgeTypes.FLUID_STACK, resultantFluid)
-            .addTooltipCallback(CreateRecipeCategoryAccessor::invokeAddPotionTooltip);
+        addFluidSlot(builder, 142, 35, resultantFluid);
     };
 
     @Override

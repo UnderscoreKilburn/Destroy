@@ -23,10 +23,7 @@ public class ElementTankFillingCategory extends PetrolparkRecipeCategory<Element
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ElementTankFillingRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 2, 2)
-            .setBackground(getRenderedSlot(), -1, -1)
-            .addIngredients(ForgeTypes.FLUID_STACK, recipe.getRequiredFluid().getMatchingFluidStacks())
-            .addTooltipCallback(CreateRecipeCategoryAccessor::invokeAddPotionTooltip);
+        addFluidSlot(builder, 2, 2, recipe.getRequiredFluid());
 
         builder.addSlot(RecipeIngredientRole.INPUT, 25, 22)
             .setBackground(getRenderedSlot(), -1, -1)

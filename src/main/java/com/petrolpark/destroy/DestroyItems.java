@@ -159,7 +159,7 @@ public class DestroyItems {
         .tag(DestroyTags.Items.DESTROY_INGOTS.tag, forgeItemTag("ingots/rhodium"), Tags.Items.INGOTS, ItemTags.TRIM_MATERIALS)
         .register(),
     STAINLESS_STEEL_INGOT = REGISTRATE.item("stainless_steel_ingot", Item::new)
-        .tag(DestroyTags.Items.DESTROY_INGOTS.tag, forgeItemTag("ingots/steel"), forgeItemTag("ingots/stainless_steel"), Tags.Items.INGOTS, ItemTags.TRIM_MATERIALS)
+        .tag(DestroyTags.Items.DESTROY_INGOTS.tag, forgeItemTag("ingots/stainless_steel"), Tags.Items.INGOTS, ItemTags.TRIM_MATERIALS)
         .register(),
     PURE_GOLD_INGOT = REGISTRATE.item("pure_gold_ingot", Item::new)
         .tag(DestroyTags.Items.DESTROY_INGOTS.tag, Tags.Items.INGOTS, ItemTags.PIGLIN_LOVED, ItemTags.TRIM_MATERIALS)
@@ -171,10 +171,10 @@ public class DestroyItems {
         .tag(forgeItemTag("plates/zinc"), forgeItemTag("plates"))
         .register(),
     STAINLESS_STEEL_SHEET = REGISTRATE.item("stainless_steel_sheet", Item::new)
-        .tag(forgeItemTag("plates/steel"), forgeItemTag("plates/stainless_steel"), forgeItemTag("plates"))
+        .tag(forgeItemTag("plates/stainless_steel"), forgeItemTag("plates"))
         .register(),
     STAINLESS_STEEL_ROD = REGISTRATE.item("stainless_steel_rod", Item::new)
-        .tag(forgeItemTag("rods/steel"), forgeItemTag("rods/stainless_steel"), Tags.Items.RODS)
+        .tag(forgeItemTag("rods/stainless_steel"), Tags.Items.RODS)
         .register();
 
     public static final ItemEntry<OxidizingItem>

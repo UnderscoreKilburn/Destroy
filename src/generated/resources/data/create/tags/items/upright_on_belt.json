@@ -12,7 +12,7 @@
     "destroy:napalm_sundae",
     "destroy:tear_bottle",
     "destroy:urine_bottle",
-    "#destroy:syringes",
-    "#destroy:spray_bottles"
+    "#destroy:spray_bottles",
+    "#destroy:syringes"
   ]
 }

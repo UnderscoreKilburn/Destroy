@@ -30,17 +30,8 @@ public class MixtureConversionCategory extends PetrolparkRecipeCategory<MixtureC
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, MixtureConversionRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 2, 2)
-            .setBackground(getRenderedSlot(), -1, -1)
-            .addIngredients(ForgeTypes.FLUID_STACK, recipe.getFluidIngredients().get(0).getMatchingFluidStacks())
-            .setFluidRenderer(recipe.getFluidIngredients().get(0).getRequiredAmount(), false, 16, 16)
-            .addTooltipCallback(CreateRecipeCategoryAccessor::invokeAddPotionTooltip);
-
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 107, 2)
-            .setBackground(getRenderedSlot(), -1, -1)
-            .addIngredients(ForgeTypes.FLUID_STACK, recipe.getFluidResults())
-            .setFluidRenderer(recipe.getFluidResults().get(0).getAmount(), false, 16, 16) // make fluid take up the full slot
-            .addTooltipCallback(CreateRecipeCategoryAccessor::invokeAddPotionTooltip);
+        addFluidSlot(builder, 2, 2, recipe.getFluidIngredients().get(0));
+        addFluidSlot(builder, 107, 2, recipe.getFluidResults().get(0));
     };
     
     @SuppressWarnings("removal")

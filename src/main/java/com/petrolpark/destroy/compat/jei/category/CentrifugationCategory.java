@@ -38,25 +38,11 @@ public class CentrifugationCategory extends PetrolparkRecipeCategory<Centrifugat
         FluidStack denseOutputFluid = recipe.getDenseOutputFluid();
         FluidStack lightOutputFluid = recipe.getLightOutputFluid();
 
-        builder
-            .addSlot(RecipeIngredientRole.INPUT, 3, 3)
-            .setBackground(getRenderedSlot(), -1, -1)
-            .addIngredients(ForgeTypes.FLUID_STACK, inputFluid.getMatchingFluidStacks())
-            .addTooltipCallback(CreateRecipeCategoryAccessor::invokeAddPotionTooltip);
+        addFluidSlot(builder, 3, 3, inputFluid);
         addOptionalRequiredBiomeSlot(builder, recipe, 3, 19);
 
-        builder
-            .addSlot(RecipeIngredientRole.OUTPUT, 99, 38)
-            .setBackground(getRenderedSlot(), -1, -1)
-            .addIngredient(ForgeTypes.FLUID_STACK, denseOutputFluid)
-            .addTooltipCallback(CreateRecipeCategoryAccessor::invokeAddPotionTooltip);
-
-        builder
-            .addSlot(RecipeIngredientRole.OUTPUT, 33, 96)
-            .setBackground(getRenderedSlot(), -1, -1)
-            .addIngredient(ForgeTypes.FLUID_STACK, lightOutputFluid)
-            .addTooltipCallback(CreateRecipeCategoryAccessor::invokeAddPotionTooltip);
-        
+        addFluidSlot(builder, 99, 38, denseOutputFluid);
+        addFluidSlot(builder, 33, 96, lightOutputFluid);
     };
 
     @Override

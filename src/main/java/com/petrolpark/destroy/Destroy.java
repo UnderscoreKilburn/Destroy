@@ -1,12 +1,5 @@
 package com.petrolpark.destroy;
 
-import com.simibubi.create.AllContraptionTypes;
-import com.simibubi.create.content.equipment.potatoCannon.AllPotatoProjectileBlockHitActions;
-import com.simibubi.create.content.equipment.potatoCannon.AllPotatoProjectileEntityHitActions;
-import com.simibubi.create.content.equipment.potatoCannon.AllPotatoProjectileRenderModes;
-import com.simibubi.create.content.kinetics.fan.processing.AllFanProcessingTypes;
-import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes;
-import com.simibubi.create.content.logistics.item.filter.attribute.AllItemAttributeTypes;
 import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 

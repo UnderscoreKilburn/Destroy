@@ -40,11 +40,7 @@ public class TappingCategory extends PetrolparkRecipeCategory<TappingRecipe> {
             .setBackground(getRenderedSlot(), -1, -1)
             .addIngredients(recipe.getIngredients().get(0));
 
-        FluidStack fs = recipe.getFluidResults().get(0);
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 131, 50)
-            .setBackground(getRenderedSlot(), -1, -1)
-            .addIngredient(ForgeTypes.FLUID_STACK, fs)
-            .addTooltipCallback(CreateRecipeCategoryAccessor::invokeAddPotionTooltip);
+        addFluidSlot(builder, 131, 50, recipe.getFluidResults().get(0));
     };
 
     @Override

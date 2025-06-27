@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    {"id":"destroy:beaker","required":false},
+    {"id":"destroy:measuring_cylinder","required":false},
+    {"id":"destroy:round_bottomed_flask","required":false}
+  ]
+}

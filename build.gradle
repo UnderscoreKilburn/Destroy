@@ -212,6 +212,10 @@ dependencies {
     // Farmer's Delight
     compileOnly fg.deobf("curse.maven:farmers-delight-398521:${farmersdelight_version}")
 
+    // Supplementaries
+    implementation fg.deobf("maven.modrinth:moonlight:${moonlight_version}")
+    implementation fg.deobf("maven.modrinth:supplementaries:${supplementaries_version}")
+
     // Curios
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}+${minecraft_version}:api")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}+${minecraft_version}")

@@ -62,7 +62,8 @@ public class MechanicalSieveVisual extends SingleAxisRotatingVisual<MechanicalSi
             .center()
             .rotateYDegrees(AngleHelper.horizontalAngle(facing))
             .uncenter()
-            .translate(offset, 0d , 0d);
+            .translate(offset, 0d , 0d)
+            .setChanged();
 
         linkages.setIdentityTransform()
             .translate(getVisualPosition())
@@ -70,6 +71,7 @@ public class MechanicalSieveVisual extends SingleAxisRotatingVisual<MechanicalSi
             .rotateYDegrees(AngleHelper.horizontalAngle(facing))
             .translate(offset, 0d , 0d)
             .rotateZ(-angle)
-            .uncenter();
+            .uncenter()
+            .setChanged();
     }
 }

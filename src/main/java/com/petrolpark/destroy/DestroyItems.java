@@ -3,6 +3,7 @@ package com.petrolpark.destroy;
 import static com.petrolpark.destroy.Destroy.REGISTRATE;
 import static com.simibubi.create.AllTags.forgeItemTag;
 
+import com.petrolpark.PetrolparkItemDisplayContexts;
 import com.petrolpark.compat.CompatMods;
 import com.petrolpark.compat.curios.CuriosSetup;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
@@ -795,8 +796,14 @@ public class DestroyItems {
     public static final ItemEntry<CircuitMaskItem> CIRCUIT_MASK = REGISTRATE.item("circuit_mask", CircuitMaskItem::new)
         .properties(p -> p
             .stacksTo(1)
-        ).register();
+        ).model((c, p) -> p.generated(c, Destroy.asResource("item/circuit_mask_border")).transforms().transform(PetrolparkItemDisplayContexts.BELT)
+            .rotation(0, 180, 0)
+            .scale(1.98f, 1.98f, 1.98f))
+        .register();
     public static final ItemEntry<CircuitBoardItem> CIRCUIT_BOARD = REGISTRATE.item("circuit_board", CircuitBoardItem::new)
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/circuit_board")).transforms().transform(PetrolparkItemDisplayContexts.BELT)
+            .rotation(0, 180, 0)
+            .scale(1.98f, 1.98f, 1.98f))
         .register();
 
     public static final ItemEntry<Item>

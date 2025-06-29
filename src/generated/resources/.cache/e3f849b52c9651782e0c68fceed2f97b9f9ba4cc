@@ -1,4 +1,4 @@
-// 1.20.1	2025-06-29T03:30:38.9029081	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2025-06-29T06:54:34.0162455	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 9583bbca7c5e03f2ebe6d1611730c81873bed9d4 assets/destroy/blockstates/aging_barrel.json
 391a63a1be808a7eaeb2ac4bf47aac0c1d2a1e05 assets/destroy/blockstates/anfo_block.json
 a0487e31c10af4a6745a8cad3e9d0747d098b315 assets/destroy/blockstates/arc_furnace_lid.json
@@ -211,8 +211,8 @@ cb4fcf28063a1c9a48a53296191b544383abe48b assets/destroy/models/item/chromium_ing
 016ca9c441b5549e5783f2bb0a89491c3d0e8ca1 assets/destroy/models/item/chromium_nugget.json
 007d48ff5450ce66609f04ec773a36e8be966042 assets/destroy/models/item/chromium_periodic_table_block.json
 89ae6410f5af049a9a44291f14385e1a709206a5 assets/destroy/models/item/chromium_powder.json
-4285dda90f0fd2db602f16c2021c05e5025b890d assets/destroy/models/item/circuit_board.json
-caa822e85b1abb261be2c71e54f0373272ad5901 assets/destroy/models/item/circuit_mask.json
+e0f1660f6ab61e2887fa009b26e23276e9da84f1 assets/destroy/models/item/circuit_board.json
+cf1ce9b6b6246e649aa34dd221efedbd00338c69 assets/destroy/models/item/circuit_mask.json
 35f3742a939bb2cbf49cc8d461f8c610cdef7901 assets/destroy/models/item/cisplatin_syringe.json
 8eed3007cb15cfad319b3636b714b109356a3bfc assets/destroy/models/item/clay_monolith.json
 1897af2f83aa66b94473be1478109b8031bed7c6 assets/destroy/models/item/coal_infused_beetroot.json

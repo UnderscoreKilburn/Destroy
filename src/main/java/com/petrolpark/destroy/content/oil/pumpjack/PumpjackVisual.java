@@ -3,28 +3,20 @@ package com.petrolpark.destroy.content.oil.pumpjack;
 import com.petrolpark.destroy.client.DestroyPartials;
 
 import dev.engine_room.flywheel.api.instance.Instance;
-import dev.engine_room.flywheel.api.visual.BlockEntityVisual;
-import dev.engine_room.flywheel.api.visual.DynamicVisual;
-import dev.engine_room.flywheel.api.visualization.VisualManager;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
-import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.visual.AbstractBlockEntityVisual;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 import net.createmod.catnip.math.AngleHelper;
-import net.minecraft.client.model.geom.builders.MaterialDefinition;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.material.MaterialRuleList;
-import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public class PumpjackInstance extends AbstractBlockEntityVisual<PumpjackBlockEntity> implements SimpleDynamicVisual {
+public class PumpjackVisual extends AbstractBlockEntityVisual<PumpjackBlockEntity> implements SimpleDynamicVisual {
 
     protected final TransformedInstance cam;
     protected final TransformedInstance linkage;
@@ -33,28 +25,24 @@ public class PumpjackInstance extends AbstractBlockEntityVisual<PumpjackBlockEnt
 
     private static final double beamRotation = Math.asin(5 / 17d);
 
-    public PumpjackInstance(VisualizationContext ctx, PumpjackBlockEntity blockEntity, float partialTick) {
+    public PumpjackVisual(VisualizationContext ctx, PumpjackBlockEntity blockEntity, float partialTick) {
         super(ctx, blockEntity, partialTick);
 
         cam = ctx.instancerProvider().instancer(InstanceTypes.TRANSFORMED, Models.partial(DestroyPartials.PUMPJACK_CAM)).createInstance();
-
         linkage = ctx.instancerProvider().instancer(InstanceTypes.TRANSFORMED, Models.partial(DestroyPartials.PUMPJACK_LINKAGE)).createInstance();
-
         beam = ctx.instancerProvider().instancer(InstanceTypes.TRANSFORMED, Models.partial(DestroyPartials.PUMPJACK_BEAM)).createInstance();
-
         pump = ctx.instancerProvider().instancer(InstanceTypes.TRANSFORMED, Models.partial(DestroyPartials.PUMPJACK_PUMP)).createInstance();
-    };
+
+        animate(partialTick);
+    }
 
     @Override
     public void beginFrame(Context ctx) {
-        Float angle = blockEntity.getRenderAngle();
-		if (angle == null) {
-			cam.setZeroTransform();
-			linkage.setZeroTransform();
-			beam.setZeroTransform();
-            pump.setZeroTransform();
-			return;
-		};
+        animate(ctx.partialTick());
+    }
+
+    private void animate(float pt) {
+        float angle = blockEntity.getRenderAngle();
 
         Direction facing = PumpjackBlock.getFacing(blockState);
 
@@ -65,7 +53,8 @@ public class PumpjackInstance extends AbstractBlockEntityVisual<PumpjackBlockEnt
             .center()
             .translate(0d, 0d, -1d)
             .uncenter()
-            .uncenter();
+            .uncenter()
+            .setChanged();
 
         transformed(linkage, facing)
             .translate(0d, -4.5 / 16d, 1d)
@@ -75,7 +64,8 @@ public class PumpjackInstance extends AbstractBlockEntityVisual<PumpjackBlockEnt
             .center()
             .translate(0d, 0d, -1d)
             .uncenter()
-            .uncenter();
+            .uncenter()
+            .setChanged();
 
         transformed(beam, facing)
             .translate(0d, 1d, 0d)
@@ -84,11 +74,13 @@ public class PumpjackInstance extends AbstractBlockEntityVisual<PumpjackBlockEnt
             .center()
             .translate(0d, -1d, 0d)
             .uncenter()
-            .uncenter();
+            .uncenter()
+            .setChanged();
 
         transformed(pump, facing)
-            .translate(0d, (3 / 16) - (Mth.sin(angle) * 3 / 16d), 0d);
-    };
+            .translate(0d, (3 / 16) - (Mth.sin(angle) * 3 / 16d), 0d)
+            .setChanged();
+    }
 
     protected TransformedInstance transformed(TransformedInstance modelData, Direction facing) {
 		return modelData.setIdentityTransform()
@@ -101,7 +93,10 @@ public class PumpjackInstance extends AbstractBlockEntityVisual<PumpjackBlockEnt
 
     @Override
     public void collectCrumblingInstances(Consumer<@Nullable Instance> consumer) {
-
+        consumer.accept(cam);
+        consumer.accept(linkage);
+        consumer.accept(beam);
+        consumer.accept(pump);
     }
 
     @Override

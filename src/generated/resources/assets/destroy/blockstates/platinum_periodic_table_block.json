@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "destroy:block/platinum_periodic_table_block",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "destroy:block/platinum_periodic_table_block"
+    },
+    "facing=south": {
+      "model": "destroy:block/platinum_periodic_table_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "destroy:block/platinum_periodic_table_block",
+      "y": 270
+    }
+  }
+}

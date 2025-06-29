@@ -46,6 +46,7 @@ import com.petrolpark.destroy.core.item.WithSecondaryItem;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags.AllItemTags;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
+import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
@@ -78,6 +79,7 @@ public class DestroyItems {
 
     POLLUTION_SYMBOL = REGISTRATE.item("pollution_symbol", Item::new)
         .removeTab(CreativeModeTabs.SEARCH)
+        .model((c, p) -> p.generated(c, Destroy.asResource("block/warning_sign/smog")))
         .register();
 
     public static final ItemEntry<MoleculeDisplayItem> MOLECULE_DISPLAY = REGISTRATE.item("molecule_display", MoleculeDisplayItem::new)
@@ -334,7 +336,9 @@ public class DestroyItems {
     SWISS_ARMY_KNIFE = REGISTRATE.item("swiss_army_knife", (p) -> new SwissArmyKnifeItem(5f, -1f, Tiers.DIAMOND, p))    
         .properties(p -> p
             .durability(1600)
-        ).register();
+        )
+        .model(AssetLookup.existingItemModel())
+        .register();
 
     public static final ItemEntry<Item>
 
@@ -412,7 +416,8 @@ public class DestroyItems {
     SEISMOMETER = REGISTRATE.item("seismometer", SeismometerItem::new)
         .properties(p -> p
             .stacksTo(1)
-        ).register();
+        ).model(AssetLookup.itemModelWithPartials())
+        .register();
 
     public static final ItemEntry<SeismographItem>
 
@@ -481,7 +486,7 @@ public class DestroyItems {
     MASHED_POTATO = REGISTRATE.item("mashed_potato", Item::new)
         .properties(p -> p
             .food(DestroyFoods.MASHED_POTATO)
-        ).register(),
+        ).tag(DestroyTags.Items.PAPER_PULPABLE.tag).register(),
     EMPTY_CARTON = REGISTRATE.item("empty_carton", Item::new)
         .tag(AllItemTags.UPRIGHT_ON_BELT.tag)
         .register();
@@ -527,7 +532,6 @@ public class DestroyItems {
             .stacksTo(16)
         ).tag(DestroyTags.Items.ALCOHOLIC_DRINKS.tag)
         .tag(AllItemTags.UPRIGHT_ON_BELT.tag)
-        .tag(DestroyTags.Items.ALCOHOLIC_DRINKS.tag)
         .register(),
 
     MOONSHINE_BOTTLE = REGISTRATE.item("moonshine_bottle", p -> new AlcoholicDrinkItem(p, 3))
@@ -537,7 +541,6 @@ public class DestroyItems {
             .stacksTo(16)
         ).tag(DestroyTags.Items.ALCOHOLIC_DRINKS.tag)
         .tag(AllItemTags.UPRIGHT_ON_BELT.tag)
-        .tag(DestroyTags.Items.ALCOHOLIC_DRINKS.tag)
         .register();
     
     public static final ItemEntry<ChorusWineItem>
@@ -549,7 +552,6 @@ public class DestroyItems {
             .stacksTo(16)
         ).tag(DestroyTags.Items.ALCOHOLIC_DRINKS.tag)
         .tag(AllItemTags.UPRIGHT_ON_BELT.tag)
-        .tag(DestroyTags.Items.ALCOHOLIC_DRINKS.tag)
         .register();
 
     // SEQUENCED ASSEMBLY INTERMEDIATES
@@ -561,6 +563,7 @@ public class DestroyItems {
         .register(),
     UNFINISHED_CATALYTIC_CONVERTER = REGISTRATE.item("unfinished_catalytic_converter", SequencedAssemblyItem::new)
         .tab(null)
+        .model(AssetLookup.existingItemModel())
         .register(),
     UNFINISHED_CIRCUIT_BOARD = REGISTRATE.item("unfinished_circuit_board", SequencedAssemblyItem::new)
         .tab(null)
@@ -573,6 +576,7 @@ public class DestroyItems {
         .register(),
     UNFINISHED_UNVARNISHED_PLYWOOD = REGISTRATE.item("unfinished_unvarnished_plywood", SequencedAssemblyItem::new)
         .tab(null)
+        .model(AssetLookup.existingItemModel())
         .register(),
     UNPROCESSED_MASHED_POTATO = REGISTRATE.item("unprocessed_mashed_potato", SequencedAssemblyItem::new)
         .tab(null)
@@ -621,42 +625,55 @@ public class DestroyItems {
     public static final ItemEntry<WithSecondaryItem> 
 
     COAL_INFUSED_BEETROOT = REGISTRATE.item("coal_infused_beetroot", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.COAL)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register(),
     COPPER_INFUSED_BEETROOT = REGISTRATE.item("copper_infused_beetroot", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.RAW_COPPER)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register(),
     DIAMOND_INFUSED_BEETROOT = REGISTRATE.item("diamond_infused_beetroot", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.DIAMOND)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register(),
     EMERALD_INFUSED_BEETROOT = REGISTRATE.item("emerald_infused_beetroot", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.EMERALD)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register(),
     FLUORITE_INFUSED_BEETROOT = REGISTRATE.item("fluorite_infused_beetroot", p -> new WithSecondaryItem(p, i -> FLUORITE.asStack()))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register(),
     GOLD_INFUSED_BEETROOT = REGISTRATE.item("gold_infused_beetroot", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.RAW_GOLD)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register(),
     IRON_INFUSED_BEETROOT = REGISTRATE.item("iron_infused_beetroot", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.RAW_IRON)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register(),
     LAPIS_INFUSED_BEETROOT = REGISTRATE.item("lapis_infused_beetroot", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.LAPIS_LAZULI)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register(),
     NICKEL_INFUSED_BEETROOT = REGISTRATE.item("nickel_infused_beetroot", p -> new WithSecondaryItem(p, i -> RAW_NICKEL.asStack()))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register(),
     NETHER_CROCOITE_INFUSED_BEETROOT = REGISTRATE.item("nether_crocoite_infused_beetroot", p -> new WithSecondaryItem(p, i -> NETHER_CROCOITE.asStack()))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register(),
     QUARTZ_INFUSED_BEETROOT = REGISTRATE.item("quartz_infused_beetroot", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.QUARTZ)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register(),
     REDSTONE_INFUSED_BEETROOT = REGISTRATE.item("redstone_infused_beetroot", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.REDSTONE)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register(),
     ZINC_INFUSED_BEETROOT = REGISTRATE.item("zinc_infused_beetroot", p -> new WithSecondaryItem(p, i -> AllItems.RAW_ZINC.asStack()))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/hefty_beetroot"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.HEFTY_BEETROOTS.tag)
         .register();
     
@@ -671,42 +688,55 @@ public class DestroyItems {
     public static final ItemEntry<WithSecondaryItem> 
 
     COAL_INFUSED_BEETROOT_ASHES = REGISTRATE.item("coal_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.COAL)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register(),
     COPPER_INFUSED_BEETROOT_ASHES = REGISTRATE.item("copper_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.RAW_COPPER)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register(),
     DIAMOND_INFUSED_BEETROOT_ASHES = REGISTRATE.item("diamond_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.DIAMOND)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register(),
     EMERALD_INFUSED_BEETROOT_ASHES = REGISTRATE.item("emerald_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.EMERALD)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register(),
     FLUORITE_INFUSED_BEETROOT_ASHES = REGISTRATE.item("fluorite_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> FLUORITE.asStack()))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register(),
     GOLD_INFUSED_BEETROOT_ASHES = REGISTRATE.item("gold_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.RAW_GOLD)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register(),
     IRON_INFUSED_BEETROOT_ASHES = REGISTRATE.item("iron_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.RAW_IRON)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register(),
     LAPIS_INFUSED_BEETROOT_ASHES = REGISTRATE.item("lapis_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.LAPIS_LAZULI)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register(),
     NETHER_CROCOITE_INFUSED_BEETROOT_ASHES = REGISTRATE.item("nether_crocoite_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> NETHER_CROCOITE.asStack()))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register(),
     NICKEL_INFUSED_BEETROOT_ASHES = REGISTRATE.item("nickel_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> RAW_NICKEL.asStack()))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register(),
     QUARTZ_INFUSED_BEETROOT_ASHES = REGISTRATE.item("quartz_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.QUARTZ)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register(),
     REDSTONE_INFUSED_BEETROOT_ASHES = REGISTRATE.item("redstone_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> new ItemStack(Items.REDSTONE)))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register(),
     ZINC_INFUSED_BEETROOT_ASHES = REGISTRATE.item("zinc_infused_beetroot_ashes", p -> new WithSecondaryItem(p, i -> AllItems.RAW_ZINC.asStack()))
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/beetroot_ashes"), Destroy.asResource("item/"+c.getName())))
         .tag(DestroyTags.Items.BEETROOT_ASHES.tag)
         .register();
 
@@ -721,16 +751,19 @@ public class DestroyItems {
     ASPIRIN_SYRINGE = REGISTRATE.item("aspirin_syringe", AspirinSyringeItem::new)
         .tag(DestroyTags.Items.SYRINGES.tag)
         .color(() -> () -> (stack, tintIndex) -> tintIndex == 0 ? 16716136 : -1)
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/syringe_overlay"), Destroy.asResource("item/syringe")))
         .register(),
 
     BABY_BLUE_SYRINGE = REGISTRATE.item("baby_blue_syringe", p -> new BabyBlueSyringeItem(p, 1200, 1))
         .tag(DestroyTags.Items.SYRINGES.tag)
         .color(() -> () -> (stack, tintIndex) -> tintIndex == 0 ? 8825802 : -1)
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/syringe_overlay"), Destroy.asResource("item/syringe")))
         .register(),
 
     CISPLATIN_SYRINGE = REGISTRATE.item("cisplatin_syringe", CisplatinSyringeItem::new)
         .tag(DestroyTags.Items.SYRINGES.tag)
         .color(() -> () -> (stack, tintIndex) -> tintIndex == 0 ? 11459547 : -1)
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/syringe_overlay"), Destroy.asResource("item/syringe")))
         .register();
 
     // UNCATEGORISED

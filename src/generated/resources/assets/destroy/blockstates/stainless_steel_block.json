@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "destroy:block/stainless_steel_block"
+    }
+  }
+}

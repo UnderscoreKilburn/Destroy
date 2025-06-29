@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "destroy:block/chiseled_rhodium_block_end",
+    "side": "destroy:block/chiseled_rhodium_block"
+  }
+}

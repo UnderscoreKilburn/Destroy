@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "x=false": {
+      "model": "destroy:block/mechanical_sieve/block"
+    },
+    "x=true": {
+      "model": "destroy:block/mechanical_sieve/block",
+      "y": 90
+    }
+  }
+}

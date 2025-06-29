@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "destroy:block/catalytic_converter",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "destroy:block/catalytic_converter",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "destroy:block/catalytic_converter",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "destroy:block/catalytic_converter",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "destroy:block/catalytic_converter"
+    },
+    "facing=west": {
+      "model": "destroy:block/catalytic_converter",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

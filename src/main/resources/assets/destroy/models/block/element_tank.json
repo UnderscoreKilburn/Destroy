@@ -1,9 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "destroy:block/element_tank_side",
-    "side": "destroy:block/borosilicate_glass",
-    "top": "destroy:block/element_tank_end"
-  },
-  "render_type": "cutout_mipped"
-}

@@ -1,0 +1,7 @@
+{
+  "parent": "destroy:block/periodic_table/base",
+  "textures": {
+    "front": "destroy:block/periodic_table/zinc",
+    "side": "create:block/zinc_block"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "destroy:block/creative_pump/block",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "destroy:block/creative_pump/block",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "destroy:block/creative_pump/block",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "destroy:block/creative_pump/block",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "destroy:block/creative_pump/block"
+    },
+    "facing=west": {
+      "model": "destroy:block/creative_pump/block",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

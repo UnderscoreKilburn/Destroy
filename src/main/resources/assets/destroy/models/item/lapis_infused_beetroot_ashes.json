@@ -1,7 +1,0 @@
-{
-    "parent": "minecraft:item/generated",
-    "textures": {
-      "layer0": "destroy:item/beetroot_ashes",
-      "layer1": "destroy:item/lapis_infused_beetroot_ashes"
-    }
-  }

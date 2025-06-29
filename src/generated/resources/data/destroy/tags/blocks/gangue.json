@@ -1,19 +1,18 @@
 {
-    "replace": false,
-    "values": [
-        "#minecraft:terracotta",
-        "#forge:stone",
-        "#forge:gravel",
-        "#minecraft:base_stone_overworld",
-        "#minecraft:base_stone_nether",
-        "minecraft:end_stone",
-        "#minecraft:dirt",
-        "minecraft:clay",
-        "minecraft:snow_block",
-        "minecraft:powder_snow",
-        "#forge:cobblestone",
-        "#forge:sandstone",
-        "#forge:sand",
-        "#forge:netherrack"
-    ]
+  "values": [
+    "minecraft:clay",
+    "minecraft:snow_block",
+    "minecraft:end_stone",
+    "minecraft:powder_snow",
+    "#minecraft:terracotta",
+    "#minecraft:base_stone_overworld",
+    "#minecraft:base_stone_nether",
+    "#minecraft:dirt",
+    "#forge:stone",
+    "#forge:gravel",
+    "#forge:cobblestone",
+    "#forge:sandstone",
+    "#forge:sand",
+    "#forge:netherrack"
+  ]
 }

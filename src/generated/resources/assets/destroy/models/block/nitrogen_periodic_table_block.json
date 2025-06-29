@@ -1,0 +1,7 @@
+{
+  "parent": "destroy:block/periodic_table/tank_base",
+  "textures": {
+    "fluid": "destroy:fluid/gas",
+    "front": "destroy:block/periodic_table/nitrogen"
+  }
+}

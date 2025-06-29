@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "destroy:block/blowpipe",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "destroy:block/blowpipe",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "destroy:block/blowpipe",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "destroy:block/blowpipe",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "destroy:block/blowpipe"
+    },
+    "facing=west": {
+      "model": "destroy:block/blowpipe",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

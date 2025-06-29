@@ -1,7 +1,0 @@
-{
-    "parent": "block/cube_all",
-    "textures": {
-        "all": "destroy:block/molten_borosilicate_glass"
-    },
-    "render_type": "translucent"
-}

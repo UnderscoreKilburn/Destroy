@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=east,powered=false,waterlogged=false": {
+      "model": "destroy:block/redstone_programmer/block",
+      "y": 90
+    },
+    "facing=east,powered=false,waterlogged=true": {
+      "model": "destroy:block/redstone_programmer/block",
+      "y": 90
+    },
+    "facing=east,powered=true,waterlogged=false": {
+      "model": "destroy:block/redstone_programmer/block_powered",
+      "y": 90
+    },
+    "facing=east,powered=true,waterlogged=true": {
+      "model": "destroy:block/redstone_programmer/block_powered",
+      "y": 90
+    },
+    "facing=north,powered=false,waterlogged=false": {
+      "model": "destroy:block/redstone_programmer/block"
+    },
+    "facing=north,powered=false,waterlogged=true": {
+      "model": "destroy:block/redstone_programmer/block"
+    },
+    "facing=north,powered=true,waterlogged=false": {
+      "model": "destroy:block/redstone_programmer/block_powered"
+    },
+    "facing=north,powered=true,waterlogged=true": {
+      "model": "destroy:block/redstone_programmer/block_powered"
+    },
+    "facing=south,powered=false,waterlogged=false": {
+      "model": "destroy:block/redstone_programmer/block",
+      "y": 180
+    },
+    "facing=south,powered=false,waterlogged=true": {
+      "model": "destroy:block/redstone_programmer/block",
+      "y": 180
+    },
+    "facing=south,powered=true,waterlogged=false": {
+      "model": "destroy:block/redstone_programmer/block_powered",
+      "y": 180
+    },
+    "facing=south,powered=true,waterlogged=true": {
+      "model": "destroy:block/redstone_programmer/block_powered",
+      "y": 180
+    },
+    "facing=west,powered=false,waterlogged=false": {
+      "model": "destroy:block/redstone_programmer/block",
+      "y": 270
+    },
+    "facing=west,powered=false,waterlogged=true": {
+      "model": "destroy:block/redstone_programmer/block",
+      "y": 270
+    },
+    "facing=west,powered=true,waterlogged=false": {
+      "model": "destroy:block/redstone_programmer/block_powered",
+      "y": 270
+    },
+    "facing=west,powered=true,waterlogged=true": {
+      "model": "destroy:block/redstone_programmer/block_powered",
+      "y": 270
+    }
+  }
+}

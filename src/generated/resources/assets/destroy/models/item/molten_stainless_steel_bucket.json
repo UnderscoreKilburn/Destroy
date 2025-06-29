@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "destroy:item/molten_stainless_steel_bucket"
+  }
+}

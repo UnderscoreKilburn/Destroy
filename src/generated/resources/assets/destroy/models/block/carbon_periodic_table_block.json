@@ -1,0 +1,7 @@
+{
+  "parent": "destroy:block/periodic_table/base",
+  "textures": {
+    "front": "destroy:block/periodic_table/carbon",
+    "side": "destroy:block/carbon_fiber_block"
+  }
+}

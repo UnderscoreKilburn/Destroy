@@ -7,6 +7,7 @@ import com.petrolpark.destroy.compat.createbigcannons.item.CustomExplosiveMixCha
 import com.petrolpark.destroy.compat.createbigcannons.item.CustomExplosiveMixShellBlockItem;
 import com.petrolpark.destroy.compat.jei.DestroyJEISetup;
 
+import com.simibubi.create.foundation.data.BlockStateGen;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -19,7 +20,8 @@ public class CreateBigCannonsBlocks {
         .initialProperties(CBCBlocks.POWDER_CHARGE)
         .properties(p -> p
             .noLootTable() // Handled in CustomExplosiveMixChargeBlock class
-        ).onRegister(block -> MunitionPropertiesHandler.registerBlockPropellantHandler(block, DestroyMunitionPropertiesHandlers.CUSTOM_EXPLOSIVE_MIX_CHARGE))
+        ).blockstate(BlockStateGen.axisBlockProvider(false))
+        .onRegister(block -> MunitionPropertiesHandler.registerBlockPropellantHandler(block, DestroyMunitionPropertiesHandlers.CUSTOM_EXPLOSIVE_MIX_CHARGE))
         .item(CustomExplosiveMixChargeBlockItem::new)
         .onRegister(item -> DestroyJEISetup.CUSTOM_MIX_EXPLOSIVES.add(() -> new ItemStack(item)))
         .build()
@@ -29,7 +31,8 @@ public class CreateBigCannonsBlocks {
         .initialProperties(CBCBlocks.FLUID_SHELL)
         .properties(p -> p
             .noLootTable() // Handled in CustomExplosiveMixChargeBlock class
-        ).item(CustomExplosiveMixShellBlockItem::new)
+        ).blockstate(BlockStateGen.directionalBlockProvider(false))
+        .item(CustomExplosiveMixShellBlockItem::new)
         .onRegister(item -> DestroyJEISetup.CUSTOM_MIX_EXPLOSIVES.add(() -> new ItemStack(item)))
         .build()
         .register();

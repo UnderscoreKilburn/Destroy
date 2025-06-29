@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "blushing=false,facing=east,powered=false": {
+      "model": "destroy:block/colorimeter",
+      "y": 90
+    },
+    "blushing=false,facing=east,powered=true": {
+      "model": "destroy:block/colorimeter_powered",
+      "y": 90
+    },
+    "blushing=false,facing=north,powered=false": {
+      "model": "destroy:block/colorimeter"
+    },
+    "blushing=false,facing=north,powered=true": {
+      "model": "destroy:block/colorimeter_powered"
+    },
+    "blushing=false,facing=south,powered=false": {
+      "model": "destroy:block/colorimeter",
+      "y": 180
+    },
+    "blushing=false,facing=south,powered=true": {
+      "model": "destroy:block/colorimeter_powered",
+      "y": 180
+    },
+    "blushing=false,facing=west,powered=false": {
+      "model": "destroy:block/colorimeter",
+      "y": 270
+    },
+    "blushing=false,facing=west,powered=true": {
+      "model": "destroy:block/colorimeter_powered",
+      "y": 270
+    },
+    "blushing=true,facing=east,powered=false": {
+      "model": "destroy:block/colorimeter_blushing",
+      "y": 90
+    },
+    "blushing=true,facing=east,powered=true": {
+      "model": "destroy:block/colorimeter_blushing_powered",
+      "y": 90
+    },
+    "blushing=true,facing=north,powered=false": {
+      "model": "destroy:block/colorimeter_blushing"
+    },
+    "blushing=true,facing=north,powered=true": {
+      "model": "destroy:block/colorimeter_blushing_powered"
+    },
+    "blushing=true,facing=south,powered=false": {
+      "model": "destroy:block/colorimeter_blushing",
+      "y": 180
+    },
+    "blushing=true,facing=south,powered=true": {
+      "model": "destroy:block/colorimeter_blushing_powered",
+      "y": 180
+    },
+    "blushing=true,facing=west,powered=false": {
+      "model": "destroy:block/colorimeter_blushing",
+      "y": 270
+    },
+    "blushing=true,facing=west,powered=true": {
+      "model": "destroy:block/colorimeter_blushing_powered",
+      "y": 270
+    }
+  }
+}

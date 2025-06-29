@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "bottom=false,top=false": {
+      "model": "destroy:block/bubble_cap/neither"
+    },
+    "bottom=false,top=true": {
+      "model": "destroy:block/bubble_cap/top"
+    },
+    "bottom=true,top=false": {
+      "model": "destroy:block/bubble_cap/bottom"
+    },
+    "bottom=true,top=true": {
+      "model": "destroy:block/bubble_cap/both"
+    }
+  }
+}

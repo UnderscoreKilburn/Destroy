@@ -58,6 +58,7 @@ import com.petrolpark.destroy.core.chemistry.vat.VatSideBlock;
 import com.petrolpark.destroy.core.chemistry.vat.observation.colorimeter.ColorimeterBlock;
 import com.petrolpark.destroy.core.chemistry.vat.observation.colorimeter.ColorimeterBlockEntity;
 import com.petrolpark.destroy.core.chemistry.vat.uv.BlacklightBlock;
+import com.petrolpark.destroy.core.data.DestroyBlockStateGen;
 import com.petrolpark.destroy.core.explosion.DynamiteBlock;
 import com.petrolpark.destroy.core.explosion.PrimeableBombBlock;
 import com.petrolpark.destroy.core.explosion.PrimedBombEntity;
@@ -70,8 +71,10 @@ import com.petrolpark.destroy.core.pollution.pollutometer.PollutometerDisplaySou
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.AllTags.AllBlockTags;
+import com.simibubi.create.Create;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
+import com.simibubi.create.content.fluids.PipeAttachmentModel;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.block.connected.SimpleCTBehaviour;
 import com.simibubi.create.foundation.data.AssetLookup;
@@ -84,24 +87,26 @@ import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.GlassBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -110,6 +115,8 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.common.Tags;
 
 public class DestroyBlocks {
@@ -122,6 +129,7 @@ public class DestroyBlocks {
             .mapColor(MapColor.COLOR_BROWN)
             .noOcclusion()
         ).transform(TagGen.axeOnly())
+        .blockstate(DestroyBlockStateGen.agingBarrel())
         .item()
         .tag(DestroyTags.Items.LIABLE_TO_CHANGE.tag)
         .transform(customItemModel())
@@ -131,7 +139,8 @@ public class DestroyBlocks {
         .initialProperties(AllBlocks.SHAFT)
         .properties(p -> p
             .mapColor(MapColor.NONE)
-        ).item(BlowpipeItem::new)
+        ).blockstate(BlockStateGen.directionalBlockProvider(false))
+        .item(BlowpipeItem::new)
         .build()
         .register();
 
@@ -142,13 +151,15 @@ public class DestroyBlocks {
             .noOcclusion()
         ).transform(displaySource(DestroyDisplaySources.BUBBLE_CAP))
         .transform(TagGen.pickaxeOnly())
+        .blockstate(DestroyBlockStateGen.bubbleCap())
         .item()
-        .transform(customItemModel())
+        .transform(customItemModel("_", "both"))
         .register();
 
     public static final BlockEntry<CatalyticConverterBlock> CATALYTIC_CONVERTER = REGISTRATE.block("catalytic_converter", CatalyticConverterBlock::new)
         .initialProperties(SharedProperties::copperMetal)
         .transform(TagGen.pickaxeOnly())
+        .blockstate((c, p) -> p.directionalBlock(c.get(), AssetLookup.standardModel(c, p)))
         .item()
         .build()
         .register();
@@ -161,7 +172,7 @@ public class DestroyBlocks {
         ).transform(displaySource(DestroyDisplaySources.CENTRIFUGE_INPUT))
         .transform(displaySource(DestroyDisplaySources.CENTRIFUGE_DENSE_OUTPUT))
         .transform(displaySource(DestroyDisplaySources.CENTRIFUGE_LIGHT_OUTPUT))
-        .blockstate((c,p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c,p)))
+        .blockstate(BlockStateGen.horizontalBlockProvider(true))
         .transform(TagGen.pickaxeOnly())
         .transform(DestroyStress.setImpact(5.0))
         .item()
@@ -172,6 +183,11 @@ public class DestroyBlocks {
         .initialProperties(() -> Blocks.OBSERVER)
         .transform(TagGen.pickaxeOnly())
         .transform(displaySource(DestroyDisplaySources.COLORIMETER))
+        .blockstate((c,p) -> {
+            p.horizontalBlock(c.get(), state -> p.models().getExistingFile(p.modLoc("block/" + c.getName()
+                + (state.getValue(ColorimeterBlock.BLUSHING) ? "_blushing" : "")
+                + (state.getValue(ColorimeterBlock.POWERED) ? "_powered" : ""))));
+        })
         .item()
         .build()
         .register();
@@ -183,6 +199,7 @@ public class DestroyBlocks {
             .noOcclusion()
             .sound(DestroySoundTypes.COOLER)
         ).transform(TagGen.pickaxeOnly())
+        .blockstate(DestroyBlockStateGen.simpleBlock("cooler/brazier"))
         .item()
         .transform(customItemModel())
         .register();
@@ -193,17 +210,20 @@ public class DestroyBlocks {
             .mapColor(MapColor.COLOR_PURPLE)
             .forceSolidOn()
         ).transform(TagGen.pickaxeOnly())
+        .blockstate(BlockStateGen.directionalBlockProviderIgnoresWaterlogged(true))
+        .onRegister(CreateRegistrate.blockModel(() -> PipeAttachmentModel::withAO))
         .item()
         .properties(p -> p
             .rarity(Rarity.EPIC)
-        ).build()
+        ).transform(customItemModel())
         .register();
 
     public static final BlockEntry<MixedExplosiveBlock> CUSTOM_EXPLOSIVE_MIX = REGISTRATE.block("custom_explosive_mix", MixedExplosiveBlock::new)
         .initialProperties(() -> Blocks.TNT)
         .properties(p -> p
             .mapColor(MapColor.SNOW)
-        ).item(MixedExplosiveBlockItem::new)
+        ).blockstate(DestroyBlockStateGen.simpleBlock())
+        .item(MixedExplosiveBlockItem::new)
         .onRegister(registerPrimeableBombDispenserBehaviour())
         .build()
         .register();
@@ -215,6 +235,10 @@ public class DestroyBlocks {
             .noOcclusion()
         ).transform(TagGen.pickaxeOnly())
         .transform(DestroyStress.setImpact(6.0))
+        .blockstate((c,p) -> {
+            BlockStateGen.horizontalAxisBlock(c, p, state -> p.models().getExistingFile(p.modLoc("block/" + c.getName()
+                + (state.getValue(DynamoBlock.ARC_FURNACE) ? "/arc_furnace_dynamo_block" : "/block"))));
+        })
         .item(AssemblyOperatorBlockItem::new)
         .tag(DestroyTags.Items.LIABLE_TO_CHANGE.tag)
         .transform(customItemModel())
@@ -223,6 +247,7 @@ public class DestroyBlocks {
     public static final BlockEntry<ArcFurnaceLidBlock> ARC_FURNACE_LID = REGISTRATE.block("arc_furnace_lid", ArcFurnaceLidBlock::new)
         .initialProperties(AllBlocks.BASIN)
         .transform(TagGen.pickaxeOnly())
+        .blockstate((c, p) -> BlockStateGen.horizontalAxisBlock(c, p, state -> p.models().getExistingFile(p.modLoc("block/dynamo/arc_furnace_lid_block"))))
         .register();
 
     public static final BlockEntry<ElementTankBlock> ELEMENT_TANK = REGISTRATE.block("element_tank", ElementTankBlock::new)
@@ -236,6 +261,11 @@ public class DestroyBlocks {
             .isSuffocating(DestroyBlocks::never)
             .isViewBlocking(DestroyBlocks::never)
         ).transform(TagGen.pickaxeOnly())
+        .addLayer(() -> RenderType::cutoutMipped)
+        .blockstate((c, p) -> p.horizontalBlock(c.get(),
+            Destroy.asResource("block/borosilicate_glass"),
+            Destroy.asResource("block/element_tank_side"),
+            Destroy.asResource("block/element_tank_end")))
         .item()
         .build()
         .register();
@@ -244,19 +274,22 @@ public class DestroyBlocks {
         .initialProperties(SharedProperties::softMetal)
         .properties(BlockBehaviour.Properties::noCollission
         ).transform(TagGen.pickaxeOnly())
+        .blockstate(BlockStateGen.axisBlockProvider(false))
         .item()
-        .transform(customItemModel())
+        .build()
         .register();
 
     public static final BlockEntry<KeypunchBlock> KEYPUNCH = REGISTRATE.block("keypunch", KeypunchBlock::new)
         .initialProperties(SharedProperties::softMetal)
         .properties(BlockBehaviour.Properties::noOcclusion
         ).transform(TagGen.axeOrPickaxe())
+        .blockstate(BlockStateGen.horizontalBlockProvider(true))
         .item(AssemblyOperatorBlockItem::new)
         .transform(customItemModel())
         .register();
 
     public static final BlockEntry<MeasuringCylinderBlock> MEASURING_CYLINDER = REGISTRATE.block("measuring_cylinder", MeasuringCylinderBlock::new)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .item(MeasuringCylinderBlockItem::new)
         .properties(p -> p
             .stacksTo(1)
@@ -268,6 +301,8 @@ public class DestroyBlocks {
         .properties(BlockBehaviour.Properties::noOcclusion
         ).transform(DestroyStress.setImpact(0.5d))
         .transform(TagGen.axeOrPickaxe())
+        //.blockstate(BlockStateGen.horizontalAxisBlockProvider(true)) // augh
+        .blockstate(DestroyBlockStateGen.bullshitHorizontalAxisBlock(MechanicalSieveBlock.X, true))
         .item()
         .transform(customItemModel())
         .register();
@@ -279,6 +314,7 @@ public class DestroyBlocks {
             .noOcclusion()
         ).transform(displaySource(DestroyDisplaySources.POLLUTOMETER))
         .transform(TagGen.pickaxeOnly())
+        .blockstate(BlockStateGen.horizontalBlockProvider(true))
         .item()
         .transform(customItemModel())
         .register();
@@ -291,8 +327,10 @@ public class DestroyBlocks {
             .isSuffocating((state, level, pos) -> false)
         ).transform(TagGen.pickaxeOnly())
         .transform(DestroyStress.setImpact(8.0))
+        .blockstate((c, p) -> p.horizontalBlock(c.get(), state -> p.models().getExistingFile(p.modLoc("block/pumpjack/base"))))
         .item(PumpjackBlockItem::new)
-        .transform(customItemModel())
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/" + c.getName())))
+        .build()
         .register();
 
     public static final BlockEntry<PumpjackCamBlock> PUMPJACK_CAM = REGISTRATE.block("pumpjack_cam", PumpjackCamBlock::new)
@@ -302,7 +340,7 @@ public class DestroyBlocks {
             .noOcclusion()
             .isSuffocating((state, level, pos) -> false)
         ).transform(TagGen.pickaxeOnly())
-        .blockstate(BlockStateGen.horizontalAxisBlockProvider(false))
+        .blockstate(DestroyBlockStateGen.nothing())
         .register();
 
     public static final BlockEntry<PumpjackStructuralBlock> PUMPJACK_STRUCTURAL = REGISTRATE.block("pumpjack_structure", PumpjackStructuralBlock::new)
@@ -312,17 +350,20 @@ public class DestroyBlocks {
             .noOcclusion()
             .isSuffocating((state, level, pos) -> false)
         ).transform(TagGen.pickaxeOnly())
-        .blockstate((c, p) -> p.getVariantBuilder(c.get())
-            .forAllStatesExcept(BlockStateGen.mapToAir(p), PumpjackStructuralBlock.FACING)
-        ).register();
+        .blockstate(DestroyBlockStateGen.nothing())
+        .register();
 
     public static final BlockEntry<RedstoneProgrammerBlock> REDSTONE_PROGRAMMER = REGISTRATE.block("redstone_programmer", RedstoneProgrammerBlock::new)
         .initialProperties(SharedProperties::wooden)
         .properties(p -> p
             .noOcclusion()
             .noLootTable() // Handled in RedstoneProgrammerBlock class
-        ).item(RedstoneProgrammerBlockItem::new)
-        .build()
+        ).blockstate((c, p) -> p.getVariantBuilder(c.get()).forAllStates(state -> ConfiguredModel.builder()
+                .modelFile(AssetLookup.forPowered(c, p).apply(state))
+                .rotationY(((int)state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
+                .build()))
+        .item(RedstoneProgrammerBlockItem::new)
+        .transform(customItemModel("_", "block"))
         .register();
 
     public static final BlockEntry<SandCastleBlock> SAND_CASTLE = REGISTRATE.block("sand_castle", SandCastleBlock::new)
@@ -333,13 +374,20 @@ public class DestroyBlocks {
             .noLootTable()
             .instabreak()
             .sound(SoundType.SAND)
-        ).register();
+        ).blockstate((c, p) -> BlockStateGen.simpleBlock(c, p, state -> p.models().getExistingFile(p.modLoc(
+            switch(state.getValue(SandCastleBlock.MATERIAL)) {
+                case SAND -> "block/sand_castle";
+                case RED_SAND -> "block/red_sand_castle";
+                case SOUL_SAND -> "block/soul_sand_castle";
+            }))
+        )).register();
 
     public static final BlockEntry<SiphonBlock> SIPHON = REGISTRATE.block("siphon", SiphonBlock::new)
         .initialProperties(AllBlocks.FLUID_TANK)
         .properties(p -> p
             .mapColor(MapColor.METAL)
         ).transform(TagGen.pickaxeOnly())
+        .blockstate((c, p) -> BlockStateGen.simpleBlock(c, p, AssetLookup.forPowered(c, p, "siphon")))
         .item()
         .build()
         .register();
@@ -348,6 +396,7 @@ public class DestroyBlocks {
         .initialProperties(() -> Blocks.OAK_PLANKS)
         .properties(p -> p
         ).tag(BlockTags.MINEABLE_WITH_AXE)
+        .blockstate(DestroyBlockStateGen.bullshitHorizontalAxisBlock(TestTubeRackBlock.X, false))
         .item()
         .build()
         .register();
@@ -355,20 +404,25 @@ public class DestroyBlocks {
     public static final BlockEntry<TreeTapBlock> TREE_TAP = REGISTRATE.block("tree_tap", TreeTapBlock::new)
         .initialProperties(AllBlocks.DEPLOYER)
         .transform(TagGen.axeOrPickaxe())
+        .blockstate(BlockStateGen.horizontalBlockProvider(true))
         .item()
-        .build()
+        .transform(customItemModel())
         .register();
 
     public static final BlockEntry<VatControllerBlock> VAT_CONTROLLER = REGISTRATE.block("vat_controller", VatControllerBlock::new)
         .initialProperties(SharedProperties::copperMetal)
         .properties(BlockBehaviour.Properties::noOcclusion
-        ).onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(DestroySpriteShifts.STAINLESS_STEEL_BLOCK)))
-        .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, DestroySpriteShifts.STAINLESS_STEEL_BLOCK,
+        ).onRegister(connectedTextures(() -> new EncasedCTBehaviour(DestroySpriteShifts.STAINLESS_STEEL_BLOCK)))
+        .onRegister(casingConnectivity((block, cc) -> cc.make(block, DestroySpriteShifts.STAINLESS_STEEL_BLOCK,
 			(s, f) -> f != s.getValue(VatControllerBlock.FACING)))
         ).transform(displaySource(DestroyDisplaySources.VAT_CONTROLLER_ALL))
         .transform(displaySource(DestroyDisplaySources.VAT_CONTROLLER_SOLUTION))
         .transform(displaySource(DestroyDisplaySources.VAT_CONTROLLER_GAS))
         .transform(TagGen.pickaxeOnly())
+        .blockstate((c, p) -> p.horizontalBlock(c.get(),
+            Destroy.asResource("block/stainless_steel_block"),
+            Destroy.asResource("block/vat_controller"),
+            Destroy.asResource("block/stainless_steel_block")))
         .item()
         .build()
         .register();
@@ -381,11 +435,13 @@ public class DestroyBlocks {
         .transform(displaySource(DestroyDisplaySources.VAT_SIDE_ALL))
         .transform(displaySource(DestroyDisplaySources.VAT_SIDE_SOLUTION))
         .transform(displaySource(DestroyDisplaySources.VAT_SIDE_GAS))
+        .blockstate(DestroyBlockStateGen.nothing())
         .register();
 
     public static final BlockEntry<UrineCauldronBlock> URINE_CAULDRON = REGISTRATE.block("urine_cauldron", p -> new UrineCauldronBlock(p, DestroyCauldronInteractions.URINE))
         .initialProperties(() -> Blocks.WATER_CAULDRON)
         .tag(BlockTags.CAULDRONS)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .register();
 
     public static final BlockEntry<BlacklightBlock> BLACKLIGHT = REGISTRATE.block("blacklight", BlacklightBlock::new)
@@ -395,7 +451,9 @@ public class DestroyBlocks {
             .sound(SoundType.GLASS)
             .forceSolidOn()
         ).transform(TagGen.pickaxeOnly())
+        .blockstate(DestroyBlockStateGen.blacklight())
         .item()
+        .model((c, p) -> p.generated(c, Destroy.asResource("item/" + c.getName())))
         .build()
         .register();
 
@@ -403,12 +461,14 @@ public class DestroyBlocks {
     
     BEAKER = REGISTRATE.block("beaker", SimplePlaceableMixtureTankBlock.of(() -> DestroyAllConfigs.SERVER.blocks.beakerCapacity.get(), 5.5f, 0.5f, 5.5f, 10.5f, 7f, 10.5f, DestroyVoxelShapes.BEAKER))
         .initialProperties(MEASURING_CYLINDER)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .item(SimplePlaceableMixtureTankBlockItem::new)
         .build()
         .register(),
 
     ROUND_BOTTOMED_FLASK = REGISTRATE.block("round_bottomed_flask", SimplePlaceableMixtureTankBlock.of(() -> DestroyAllConfigs.SERVER.blocks.roundBottomedFlaskCapacity.get(), 5.5f, 0.5f, 5.5f, 10.5f, 4.5f, 10.5f, DestroyVoxelShapes.ROUND_BOTTOMED_FLASK))
         .initialProperties(BEAKER)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .item(SimplePlaceableMixtureTankBlockItem::new)
         .build()
         .register();
@@ -419,7 +479,8 @@ public class DestroyBlocks {
         .initialProperties(() -> Blocks.TNT)
         .properties(p -> p
             .mapColor(MapColor.COLOR_PINK)
-        ).item()
+        ).blockstate(DestroyBlockStateGen.cubeBottomTop("anfo"))
+        .item()
         .tag(DestroyTags.Items.LIABLE_TO_CHANGE.tag)
         .onRegister(registerPrimeableBombDispenserBehaviour())
         .build()
@@ -429,7 +490,8 @@ public class DestroyBlocks {
         .initialProperties(() -> Blocks.TNT)
         .properties(p -> p
             .mapColor(MapColor.COLOR_ORANGE)
-        ).item()
+        ).blockstate(DestroyBlockStateGen.cubeBottomTop("cordite"))
+        .item()
         .tag(DestroyTags.Items.LIABLE_TO_CHANGE.tag)
         .onRegister(registerPrimeableBombDispenserBehaviour())
         .build()
@@ -439,7 +501,8 @@ public class DestroyBlocks {
         .initialProperties(() -> Blocks.TNT)
         .properties(p -> p
             .mapColor(MapColor.COLOR_MAGENTA)
-        ).item()
+        ).blockstate(DestroyBlockStateGen.cubeBottomTop("dynamite"))
+        .item()
         .build()
         .register();
 
@@ -447,7 +510,8 @@ public class DestroyBlocks {
         .initialProperties(() -> Blocks.TNT)
         .properties(p -> p
             .mapColor(MapColor.COLOR_LIGHT_GREEN)
-        ).item()
+        ).blockstate(DestroyBlockStateGen.cubeBottomTop("nitrocellulose"))
+        .item()
         .tag(DestroyTags.Items.LIABLE_TO_CHANGE.tag)
         .tag(DestroyTags.Items.OBLITERATION_EXPLOSIVES.tag)
         .onRegister(registerPrimeableBombDispenserBehaviour())
@@ -458,7 +522,8 @@ public class DestroyBlocks {
         .initialProperties(() -> Blocks.TNT)
         .properties(p -> p
             .mapColor(MapColor.COLOR_YELLOW)
-        ).item()
+        ).blockstate(DestroyBlockStateGen.cubeBottomTop("picric_acid"))
+        .item()
         .tag(DestroyTags.Items.LIABLE_TO_CHANGE.tag)
         .onRegister(registerPrimeableBombDispenserBehaviour())
         .build()
@@ -637,6 +702,7 @@ public class DestroyBlocks {
         .tag(BlockTags.NEEDS_STONE_TOOL)
         .tag(Tags.Blocks.STORAGE_BLOCKS)
         .tag(BlockTags.BEACON_BASE_BLOCKS)
+        .tag(AllBlockTags.CASING.tag)
         .transform(TagGen.tagBlockAndItem("storage_blocks/stainless_steel"))
         .tag(Tags.Items.STORAGE_BLOCKS)
         .build()
@@ -645,6 +711,9 @@ public class DestroyBlocks {
     public static final BlockEntry<RotatedPillarBlock> CHISELED_RHODIUM_BLOCK = REGISTRATE.block("chiseled_rhodium_block", RotatedPillarBlock::new)
         .initialProperties(RHODIUM_BLOCK)
         .transform(TagGen.pickaxeOnly())
+        .blockstate((c, p) -> p.axisBlock(c.get(),
+            p.modLoc("block/chiseled_rhodium_block"),
+            p.modLoc("block/chiseled_rhodium_block_end")))
         .tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .tag(Tags.Blocks.STORAGE_BLOCKS)
         .tag(BlockTags.BEACON_BASE_BLOCKS)
@@ -744,7 +813,7 @@ public class DestroyBlocks {
             .instrument(NoteBlockInstrument.BASEDRUM)
             .sound(SoundType.NETHERRACK)
             .requiresCorrectToolForDrops()
-        ).onRegister(CreateRegistrate.connectedTextures(() -> new SimpleCTBehaviour(DestroySpriteShifts.NETHER_CROCOITE_BLOCK)))
+        ).onRegister(connectedTextures(() -> new SimpleCTBehaviour(DestroySpriteShifts.NETHER_CROCOITE_BLOCK)))
         .transform(TagGen.pickaxeOnly())
         .loot((lt, b) -> lt.add(b, RegistrateBlockLootTables.createSilkTouchDispatchTable(b, lt.applyExplosionDecay(b, LootItem.lootTableItem(DestroyItems.NETHER_CROCOITE.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0f, 5.0f))).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))))))
         .tag(BlockTags.NEEDS_IRON_TOOL)
@@ -762,6 +831,7 @@ public class DestroyBlocks {
     MAGIC_BEETROOT_SHOOTS = REGISTRATE.block("magic_beetroot_shoots", MagicBeetrootShootsBlock::new)
         .addLayer(() -> RenderType::cutout)
         .initialProperties(() -> Blocks.BEETROOTS)
+        .blockstate(DestroyBlockStateGen.simpleBlock(new ResourceLocation("block/beetroots_stage0")))
         .register();
 
     public static final BlockEntry<FullyGrownCropBlock>
@@ -770,6 +840,7 @@ public class DestroyBlocks {
         .loot((lt, b) ->
             lt.add(b, lt.createCropDrops(b, Items.GOLDEN_CARROT, Items.GOLDEN_CARROT, LootItemBlockStatePropertyCondition.hasBlockStateProperties(b)))
         ).initialProperties(() -> Blocks.CARROTS)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(BlockTags.CROPS)
         .register();
 
@@ -777,244 +848,152 @@ public class DestroyBlocks {
 
     HEFTY_BEETROOT = REGISTRATE.block("hefty_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.HEFTY_BEETROOT))
         .initialProperties(() -> Blocks.BEETROOTS)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     COAL_INFUSED_BEETROOT = REGISTRATE.block("coal_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.COAL_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     COPPER_INFUSED_BEETROOT = REGISTRATE.block("copper_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.COPPER_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     DIAMOND_INFUSED_BEETROOT = REGISTRATE.block("diamond_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.DIAMOND_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     EMERALD_INFUSED_BEETROOT = REGISTRATE.block("emerald_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.EMERALD_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     FLUORITE_INFUSED_BEETROOT = REGISTRATE.block("fluorite_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.FLUORITE_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     GOLD_INFUSED_BEETROOT = REGISTRATE.block("gold_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.GOLD_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     IRON_INFUSED_BEETROOT = REGISTRATE.block("iron_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.IRON_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     LAPIS_INFUSED_BEETROOT = REGISTRATE.block("lapis_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.LAPIS_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     NICKEL_INFUSED_BEETROOT = REGISTRATE.block("nickel_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.NICKEL_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     NETHER_CROCOITE_INFUSED_BEETROOT = REGISTRATE.block("nether_crocoite_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.NETHER_CROCOITE_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     QUARTZ_INFUSED_BEETROOT = REGISTRATE.block("quartz_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.QUARTZ_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     REDSTONE_INFUSED_BEETROOT = REGISTRATE.block("redstone_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.REDSTONE_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register(),
 
     ZINC_INFUSED_BEETROOT = REGISTRATE.block("zinc_infused_beetroot", p -> new HeftyBeetrootBlock(p, DestroyItems.ZINC_INFUSED_BEETROOT))
         .initialProperties(HEFTY_BEETROOT)
+        .blockstate(DestroyBlockStateGen.simpleBlock())
         .tag(DestroyTags.Blocks.BEETROOTS.tag)
         .register();
 
     // Periodic Table blocks
+    public static BlockEntry<PeriodicTableBlock> solidPeriodicTableBlock(String name, NonNullSupplier<? extends Block> block, ResourceLocation sideTexture, String storageTag) {
+        return REGISTRATE.block(name + "_periodic_table_block", PeriodicTableBlock::new)
+            .initialProperties(block)
+            .transform(TagGen.pickaxeOnly())
+            .tag(Tags.Blocks.STORAGE_BLOCKS, AllTags.forgeBlockTag("storage_blocks/"+storageTag))
+            .blockstate(DestroyBlockStateGen.periodicTableSolidBlock(Destroy.asResource("block/periodic_table/" + name), sideTexture))
+            .item(PeriodicTableBlockItem::new)
+            .tag(Tags.Items.STORAGE_BLOCKS, forgeItemTag("storage_blocks/"+storageTag))
+            .build()
+            .register();
+    }
 
-    public static final BlockEntry<TankPeriodicTableBlock>
+    public static BlockEntry<PeriodicTableBlock> solidPeriodicTableBlock(String name, NonNullSupplier<? extends Block> block, ResourceLocation sideTexture) {
+        return solidPeriodicTableBlock(name, block, sideTexture, name);
+    }
 
-    HYDROGEN_PERIODIC_TABLE_BLOCK = REGISTRATE.block("hydrogen_periodic_table_block", p -> new TankPeriodicTableBlock(p, 0x20FFFFFF))
-        .initialProperties(SharedProperties::stone)
-        .properties(p -> p
-            .strength(2f)
-            .sound(SoundType.GLASS)
-            .noOcclusion()
-            .isValidSpawn(DestroyBlocks::never)
-            .isRedstoneConductor(DestroyBlocks::never)
-            .isSuffocating(DestroyBlocks::never)
-            .isViewBlocking(DestroyBlocks::never)
-        ).transform(TagGen.pickaxeOnly())
-        .item(TankPeriodicTableBlockItem::new)
-        .build()
-        .register();
+    public static BlockEntry<PeriodicTableBlock> solidPeriodicTableBlock(String name, NonNullSupplier<? extends Block> block) {
+        return solidPeriodicTableBlock(name, block, Destroy.asResource("block/" + name + "_block"));
+    }
 
-    public static final BlockEntry<PeriodicTableBlock>
+    public static BlockEntry<TankPeriodicTableBlock> fluidPeriodicTableBlock(String name, int color, ResourceLocation fluidTexture) {
+        return REGISTRATE.block(name + "_periodic_table_block", p -> new TankPeriodicTableBlock(p, color))
+            .initialProperties(SharedProperties::stone)
+            .properties(p -> p
+                .strength(2f)
+                .sound(SoundType.GLASS)
+                .noOcclusion()
+                .isValidSpawn(DestroyBlocks::never)
+                .isRedstoneConductor(DestroyBlocks::never)
+                .isSuffocating(DestroyBlocks::never)
+                .isViewBlocking(DestroyBlocks::never)
+            ).transform(TagGen.pickaxeOnly())
+            .blockstate(DestroyBlockStateGen.periodicTableFluidBlock(Destroy.asResource("block/periodic_table/" + name), fluidTexture))
+            .item(TankPeriodicTableBlockItem::new)
+            .build()
+            .register();
+    }
 
-    CARBON_PERIODIC_TABLE_BLOCK = REGISTRATE.block("carbon_periodic_table_block", PeriodicTableBlock::new)
-        .initialProperties(CARBON_FIBER_BLOCK)
-        .tag(Tags.Blocks.STORAGE_BLOCKS, AllTags.forgeBlockTag("storage_blocks/carbon_fiber"))
-        .item(PeriodicTableBlockItem::new)
-        .tag(Tags.Items.STORAGE_BLOCKS, forgeItemTag("storage_blocks/carbon_fiber"))
-        .build()
-        .register();
-
-    public static final BlockEntry<TankPeriodicTableBlock>
-
-    NITROGEN_PERIODIC_TABLE_BLOCK = REGISTRATE.block("nitrogen_periodic_table_block", p -> new TankPeriodicTableBlock(p, 0x20FFFFFF))
-        .initialProperties(HYDROGEN_PERIODIC_TABLE_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .item(TankPeriodicTableBlockItem::new)
-        .build()
-        .register(),
-
-    OXYGEN_PERIODIC_TABLE_BLOCK = REGISTRATE.block("oxygen_periodic_table_block", p -> new TankPeriodicTableBlock(p, 0x20FFFFFF))
-        .initialProperties(HYDROGEN_PERIODIC_TABLE_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .item(TankPeriodicTableBlockItem::new)
-        .build()
-        .register(),
-
-    FLUORINE_PERIODIC_TABLE_BLOCK = REGISTRATE.block("fluorine_periodic_table_block", p -> new TankPeriodicTableBlock(p, 0x40F8F9A7))
-        .initialProperties(HYDROGEN_PERIODIC_TABLE_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .item(TankPeriodicTableBlockItem::new)
-        .build()
-        .register(),
-
-    CHLORINE_PERIODIC_TABLE_BLOCK = REGISTRATE.block("chlorine_periodic_table_block", p -> new TankPeriodicTableBlock(p, 0x40C0F9A7))
-        .initialProperties(HYDROGEN_PERIODIC_TABLE_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .item(TankPeriodicTableBlockItem::new)
-        .build()
-        .register();
+    public static BlockEntry<TankPeriodicTableBlock> fluidPeriodicTableBlock(String name, int color, boolean isLiquid) {
+        return fluidPeriodicTableBlock(name, color, Destroy.asResource(isLiquid ? "fluid/mixture_still" : "fluid/gas"));
+    }
 
     public static final BlockEntry<PeriodicTableBlock>
-
-    CHROMIUM_PERIODIC_TABLE_BLOCK = REGISTRATE.block("chromium_periodic_table_block", PeriodicTableBlock::new)
-        .initialProperties(CHROMIUM_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .tag(Tags.Blocks.STORAGE_BLOCKS, AllTags.forgeBlockTag("storage_blocks/chromium"))
-        .item(PeriodicTableBlockItem::new)
-        .tag(Tags.Items.STORAGE_BLOCKS, forgeItemTag("storage_blocks/chromium"))
-        .build()
-        .register(),
-
-    IRON_PERIODIC_TABLE_BLOCK = REGISTRATE.block("iron_periodic_table_block", PeriodicTableBlock::new)
-        .initialProperties(() -> Blocks.IRON_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .tag(Tags.Blocks.STORAGE_BLOCKS, Tags.Blocks.STORAGE_BLOCKS_IRON)
-        .item(PeriodicTableBlockItem::new)
-        .tag(Tags.Items.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS_IRON)
-        .build()
-        .register(),
-
-    NICKEL_PERIODIC_TABLE_BLOCK = REGISTRATE.block("nickel_periodic_table_block", PeriodicTableBlock::new)
-        .initialProperties(NICKEL_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .tag(Tags.Blocks.STORAGE_BLOCKS, AllTags.forgeBlockTag("storage_blocks/nickel"))
-        .item(PeriodicTableBlockItem::new)
-        .tag(Tags.Items.STORAGE_BLOCKS, forgeItemTag("storage_blocks/nickel"))
-        .build()
-        .register(),
-
-    COPPER_PERIODIC_TABLE_BLOCK = REGISTRATE.block("copper_periodic_table_block", PeriodicTableBlock::new)
-        .initialProperties(() -> Blocks.COPPER_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .tag(Tags.Blocks.STORAGE_BLOCKS, Tags.Blocks.STORAGE_BLOCKS_COPPER)
-        .item(PeriodicTableBlockItem::new)
-        .tag(Tags.Items.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS_COPPER)
-        .build()
-        .register(),
-
-    ZINC_PERIODIC_TABLE_BLOCK = REGISTRATE.block("zinc_periodic_table_block", PeriodicTableBlock::new)
-        .initialProperties(AllBlocks.ZINC_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .tag(Tags.Blocks.STORAGE_BLOCKS, AllTags.forgeBlockTag("storage_blocks/zinc"))
-        .item(PeriodicTableBlockItem::new)
-        .tag(Tags.Items.STORAGE_BLOCKS, forgeItemTag("storage_blocks/zinc"))
-        .build()
-        .register(),
-
-    RHODIUM_PERIODIC_TABLE_BLOCK = REGISTRATE.block("rhodium_periodic_table_block", PeriodicTableBlock::new)
-        .initialProperties(RHODIUM_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .tag(Tags.Blocks.STORAGE_BLOCKS, AllTags.forgeBlockTag("storage_blocks/rhodium"))
-        .item(PeriodicTableBlockItem::new)
-        .tag(Tags.Items.STORAGE_BLOCKS, forgeItemTag("storage_blocks/rhodium"))
-        .build()
-        .register(),
-
-    PALLADIUM_PERIODIC_TABLE_BLOCK = REGISTRATE.block("palladium_periodic_table_block", PeriodicTableBlock::new)
-        .initialProperties(PALLADIUM_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .tag(Tags.Blocks.STORAGE_BLOCKS, AllTags.forgeBlockTag("storage_blocks/palladium"))
-        .item(PeriodicTableBlockItem::new)
-        .tag(Tags.Items.STORAGE_BLOCKS, forgeItemTag("storage_blocks/palladium"))
-        .build()
-        .register(),
-
-    IODINE_PERIODIC_TABLE_BLOCK = REGISTRATE.block("iodine_periodic_table_block", PeriodicTableBlock::new)
-        .initialProperties(IODINE_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .tag(Tags.Blocks.STORAGE_BLOCKS, AllTags.forgeBlockTag("storage_blocks/iodine"))
-        .item(PeriodicTableBlockItem::new)
-        .tag(Tags.Items.STORAGE_BLOCKS, forgeItemTag("storage_blocks/iodine"))
-        .build()
-        .register(),
-
-    PLATINUM_PERIODIC_TABLE_BLOCK = REGISTRATE.block("platinum_periodic_table_block", PeriodicTableBlock::new)
-        .initialProperties(CHROMIUM_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .tag(Tags.Blocks.STORAGE_BLOCKS, AllTags.forgeBlockTag("storage_blocks/platinum"))
-        .item(PeriodicTableBlockItem::new)
-        .tag(Tags.Items.STORAGE_BLOCKS, forgeItemTag("storage_blocks/platinum"))
-        .build()
-        .register(),
-
-    GOLD_PERIODIC_TABLE_BLOCK = REGISTRATE.block("gold_periodic_table_block", PeriodicTableBlock::new)
-        .initialProperties(() -> Blocks.GOLD_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .tag(Tags.Blocks.STORAGE_BLOCKS, Tags.Blocks.STORAGE_BLOCKS_GOLD)
-        .item(PeriodicTableBlockItem::new)
-        .tag(Tags.Items.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS_GOLD)
-        .build()
-        .register();
+        IRON_PERIODIC_TABLE_BLOCK = solidPeriodicTableBlock("iron", () -> Blocks.IRON_BLOCK, new ResourceLocation("block/iron_block")),
+        GOLD_PERIODIC_TABLE_BLOCK = solidPeriodicTableBlock("gold", () -> Blocks.GOLD_BLOCK, new ResourceLocation("block/gold_block")),
+        COPPER_PERIODIC_TABLE_BLOCK = solidPeriodicTableBlock("copper", () -> Blocks.COPPER_BLOCK, new ResourceLocation("block/copper_block")),
+        CARBON_PERIODIC_TABLE_BLOCK = solidPeriodicTableBlock("carbon", CARBON_FIBER_BLOCK, Destroy.asResource("block/carbon_fiber_block"), "carbon_fiber"),
+        ZINC_PERIODIC_TABLE_BLOCK = solidPeriodicTableBlock("zinc", AllBlocks.ZINC_BLOCK, Create.asResource("block/zinc_block")),
+        CHROMIUM_PERIODIC_TABLE_BLOCK = solidPeriodicTableBlock("chromium", CHROMIUM_BLOCK),
+        NICKEL_PERIODIC_TABLE_BLOCK = solidPeriodicTableBlock("nickel", NICKEL_BLOCK),
+        PLATINUM_PERIODIC_TABLE_BLOCK = solidPeriodicTableBlock("platinum", PLATINUM_BLOCK),
+        PALLADIUM_PERIODIC_TABLE_BLOCK = solidPeriodicTableBlock("palladium", PALLADIUM_BLOCK),
+        RHODIUM_PERIODIC_TABLE_BLOCK = solidPeriodicTableBlock("rhodium", RHODIUM_BLOCK),
+        IODINE_PERIODIC_TABLE_BLOCK = solidPeriodicTableBlock("iodine", IODINE_BLOCK),
+        LEAD_PERIODIC_TABLE_BLOCK = solidPeriodicTableBlock("lead", LEAD_BLOCK);
 
     public static final BlockEntry<TankPeriodicTableBlock>
-
-    MERCURY_PERIODIC_TABLE_BLOCK = REGISTRATE.block("mercury_periodic_table_block", p -> new TankPeriodicTableBlock(p, 0xFFB3B3B3))
-        .initialProperties(HYDROGEN_PERIODIC_TABLE_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .item(TankPeriodicTableBlockItem::new)
-        .build()
-        .register();
-
-    public static final BlockEntry<PeriodicTableBlock>
-
-    LEAD_PERIODIC_TABLE_BLOCK = REGISTRATE.block("lead_periodic_table_block", PeriodicTableBlock::new)
-        .initialProperties(CHROMIUM_BLOCK)
-        .transform(TagGen.pickaxeOnly())
-        .tag(Tags.Blocks.STORAGE_BLOCKS, AllTags.forgeBlockTag("storage_blocks/lead"))
-        .item(PeriodicTableBlockItem::new)
-        .tag(Tags.Items.STORAGE_BLOCKS, forgeItemTag("storage_blocks/lead"))
-        .build()
-        .register();
+        HYDROGEN_PERIODIC_TABLE_BLOCK = fluidPeriodicTableBlock("hydrogen", 0x20FFFFFF, false),
+        NITROGEN_PERIODIC_TABLE_BLOCK = fluidPeriodicTableBlock("nitrogen", 0x20FFFFFF, false),
+        OXYGEN_PERIODIC_TABLE_BLOCK = fluidPeriodicTableBlock("oxygen", 0x20FFFFFF, false),
+        FLUORINE_PERIODIC_TABLE_BLOCK = fluidPeriodicTableBlock("fluorine", 0x40F8F9A7, false),
+        CHLORINE_PERIODIC_TABLE_BLOCK = fluidPeriodicTableBlock("chlorine", 0x40C0F9A7, false),
+        MERCURY_PERIODIC_TABLE_BLOCK = fluidPeriodicTableBlock("mercury", 0xFFB3B3B3, true);
 
     // FOOD
 
@@ -1037,6 +1016,9 @@ public class DestroyBlocks {
             .strength(0.2f)
         ).loot((lt, b) -> lt.add(b, RegistrateBlockLootTables.createSilkTouchDispatchTable(b, LootItem.lootTableItem(DestroyItems.RAW_FRIES).apply(SetItemCountFunction.setCount(ConstantValue.exactly(5f))))))
         .tag(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_HOE)
+        .blockstate((c, p) -> p.axisBlock(c.get(),
+            p.modLoc("block/raw_fries_block_side"),
+            p.modLoc("block/raw_fries_block_end")))
         .item()
         .build()
         .register();
@@ -1061,7 +1043,8 @@ public class DestroyBlocks {
         .properties(p -> p
             .strength(2f)
         ).tag(Tags.Blocks.GLASS, Tags.Blocks.GLASS_COLORLESS, BlockTags.MINEABLE_WITH_PICKAXE)
-        .onRegister(CreateRegistrate.connectedTextures(() -> new SimpleCTBehaviour(DestroySpriteShifts.BOROSILICATE_GLASS)))
+        .addLayer(() -> RenderType::cutoutMipped)
+        .onRegister(connectedTextures(() -> new SimpleCTBehaviour(DestroySpriteShifts.BOROSILICATE_GLASS)))
         .item()
         .tag(Tags.Items.GLASS, Tags.Items.GLASS_COLORLESS)
         .build()
@@ -1076,6 +1059,7 @@ public class DestroyBlocks {
             .instrument(NoteBlockInstrument.BASS)
             .strength(4.0f, 6.0f)
         ).tag(BlockTags.MINEABLE_WITH_AXE, BlockTags.PLANKS)
+        .blockstate(DestroyBlockStateGen.flippableRotatedPillar("plywood"))
         .item()
         .tag(ItemTags.PLANKS)
         .build()
@@ -1089,6 +1073,7 @@ public class DestroyBlocks {
             .strength(3.0f, 5.0f)
             .ignitedByLava()
         ).tag(BlockTags.MINEABLE_WITH_AXE, BlockTags.PLANKS)
+        .blockstate(DestroyBlockStateGen.flippableRotatedPillar("unvarnished_plywood"))
         .item(CombustibleBlockItem::new)
         .tag(ItemTags.PLANKS)
         .onRegister(i -> i.setBurnTime(2000))
@@ -1123,6 +1108,7 @@ public class DestroyBlocks {
             .mapColor(state -> state.getValue(FastCoolingMoltenPillarBlock.MOLTEN) ? MapColor.COLOR_ORANGE : MapColor.METAL)
             .lightLevel(state -> state.getValue(FastCoolingMoltenPillarBlock.MOLTEN) ? 15 : 0)
         ).tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        .blockstate(DestroyBlockStateGen.rotatedPillar("stainless_steel_rods"))
         .item()
         .build()
         .register();
@@ -1136,6 +1122,7 @@ public class DestroyBlocks {
             .lightLevel(state -> state.getValue(FastCoolingMoltenPillarBlock.MOLTEN) ? 15 : 0)
             .sound(SoundType.WOOL)
         ).tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.WOOL)
+        .blockstate(DestroyBlockStateGen.rotatedPillar("borosilicate_glass_fiber"))
         .item()
         .tag(ItemTags.WOOL)
         .build()
@@ -1157,10 +1144,11 @@ public class DestroyBlocks {
 
     INSULATED_STAINLESS_STEEL_BLOCK = REGISTRATE.block("insulated_stainless_steel_block", RotatedPillarBlock::new)
         .initialProperties(STAINLESS_STEEL_BLOCK)
-        .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(DestroySpriteShifts.STAINLESS_STEEL_BLOCK)))
-        .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, DestroySpriteShifts.STAINLESS_STEEL_BLOCK,
+        .onRegister(connectedTextures(() -> new EncasedCTBehaviour(DestroySpriteShifts.STAINLESS_STEEL_BLOCK)))
+        .onRegister(casingConnectivity((block, cc) -> cc.make(block, DestroySpriteShifts.STAINLESS_STEEL_BLOCK,
 			(s, f) -> f.getAxis() == s.getValue(RotatedPillarBlock.AXIS)))
         ).transform(TagGen.pickaxeOnly())
+        .blockstate(DestroyBlockStateGen.rotatedPillar(Destroy.asResource("block/insulated_stainless_steel_block"), Destroy.asResource("block/stainless_steel_block")))
         .item()
         .build()
         .register(),
@@ -1174,6 +1162,7 @@ public class DestroyBlocks {
         ).loot((lt, b) -> lt.add(b, RegistrateBlockLootTables.createSilkTouchDispatchTable(b, LootItem.lootTableItem(DestroyItems.CORDITE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(5f))))))
         .tag(BlockTags.MINEABLE_WITH_SHOVEL)
         .tag(BlockTags.MINEABLE_WITH_HOE)
+        .blockstate(DestroyBlockStateGen.rotatedPillar("extruded_cordite_block"))
         .item()
         .build()
         .register(),
@@ -1181,6 +1170,7 @@ public class DestroyBlocks {
     CLAY_MONOLITH = REGISTRATE.block("clay_monolith", RotatedPillarBlock::new)
         .initialProperties(() -> Blocks.CLAY)
         .tag(BlockTags.MINEABLE_WITH_SHOVEL)
+        .blockstate(DestroyBlockStateGen.rotatedPillar(new ResourceLocation("block/clay"), Destroy.asResource("block/clay_monolith_end")))
         .item()
         .build()
         .register(),
@@ -1188,6 +1178,7 @@ public class DestroyBlocks {
     CERAMIC_MONOLITH = REGISTRATE.block("ceramic_monolith", RotatedPillarBlock::new)
         .initialProperties(() -> Blocks.TERRACOTTA)
         .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        .blockstate(DestroyBlockStateGen.rotatedPillar("ceramic_monolith"))
         .item()
         .build()
         .register();

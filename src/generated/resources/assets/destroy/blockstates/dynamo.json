@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "arc_furnace=false,axis=x": {
+      "model": "destroy:block/dynamo/block",
+      "y": 90
+    },
+    "arc_furnace=false,axis=z": {
+      "model": "destroy:block/dynamo/block"
+    },
+    "arc_furnace=true,axis=x": {
+      "model": "destroy:block/dynamo/arc_furnace_dynamo_block",
+      "y": 90
+    },
+    "arc_furnace=true,axis=z": {
+      "model": "destroy:block/dynamo/arc_furnace_dynamo_block"
+    }
+  }
+}

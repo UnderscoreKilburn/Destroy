@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "destroy:block/centrifuge/block",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "destroy:block/centrifuge/block"
+    },
+    "facing=south": {
+      "model": "destroy:block/centrifuge/block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "destroy:block/centrifuge/block",
+      "y": 270
+    }
+  }
+}

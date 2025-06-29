@@ -1,0 +1,8 @@
+{
+  "parent": "destroy:block/cube_flippable_rotated_flipped",
+  "textures": {
+    "end": "destroy:block/unvarnished_plywood_end",
+    "side1": "destroy:block/unvarnished_plywood_side_1",
+    "side2": "destroy:block/unvarnished_plywood_side_2"
+  }
+}

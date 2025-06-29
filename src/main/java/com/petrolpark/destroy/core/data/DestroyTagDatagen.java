@@ -11,12 +11,14 @@ import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.Tags;
 
 public class DestroyTagDatagen {
 
@@ -59,6 +61,9 @@ public class DestroyTagDatagen {
             .addTag(DestroyTags.Items.SECONDARY_EXPLOSIVES.tag);
         prov.tag(DestroyTags.Items.TEST_TUBE_RACK_STORABLE.tag)
             .addTag(DestroyTags.Items.SYRINGES.tag);
+        prov.tag(DestroyTags.Items.PAPER_PULPABLE.tag)
+            .add(Items.PAPER, Items.SUGAR)
+            .addTag(ItemTags.LOGS);
 
         // Minecraft Tags
         prov.tag(ItemTags.TRIM_MATERIALS)
@@ -74,5 +79,33 @@ public class DestroyTagDatagen {
         prov.tag(DestroyTags.Blocks.BEETROOTS.tag)
             .add(Blocks.BEETROOTS);
 
+        prov.tag(DestroyTags.Blocks.ACID_RAIN_DESTRUCTIBLE.tag)
+            .add(Blocks.GRASS, Blocks.TALL_GRASS, Blocks.FERN, Blocks.LARGE_FERN, Blocks.SEAGRASS, Blocks.TALL_SEAGRASS,
+                Blocks.VINE, Blocks.WARPED_ROOTS, Blocks.NETHER_SPROUTS, Blocks.CRIMSON_ROOTS, Blocks.HANGING_ROOTS)
+            .addTag(BlockTags.CROPS)
+            .addTag(BlockTags.FLOWERS)
+            .addTag(BlockTags.LEAVES)
+            .addTag(BlockTags.SAPLINGS);
+
+        prov.tag(DestroyTags.Blocks.ACID_RAIN_DIRT_REPLACEABLE.tag)
+            .add(Blocks.GRASS_BLOCK)
+            .add(Blocks.PODZOL)
+            .add(Blocks.MYCELIUM);
+
+        prov.tag(DestroyTags.Blocks.GANGUE.tag)
+            .add(Blocks.CLAY)
+            .add(Blocks.SNOW_BLOCK)
+            .add(Blocks.END_STONE)
+            .add(Blocks.POWDER_SNOW)
+            .addTag(BlockTags.TERRACOTTA)
+            .addTag(BlockTags.BASE_STONE_OVERWORLD)
+            .addTag(BlockTags.BASE_STONE_NETHER)
+            .addTag(BlockTags.DIRT)
+            .addTag(Tags.Blocks.STONE)
+            .addTag(Tags.Blocks.GRAVEL)
+            .addTag(Tags.Blocks.COBBLESTONE)
+            .addTag(Tags.Blocks.SANDSTONE)
+            .addTag(Tags.Blocks.SAND)
+            .addTag(Tags.Blocks.NETHERRACK);
     };
 };

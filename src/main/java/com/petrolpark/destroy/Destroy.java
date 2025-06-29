@@ -1,5 +1,8 @@
 package com.petrolpark.destroy;
 
+import com.petrolpark.destroy.core.data.DestroyRegistrate;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.minecraftforge.data.loading.DatagenModLoader;
 import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 
@@ -25,7 +28,6 @@ import com.petrolpark.destroy.core.data.DestroyTagDatagen;
 import com.petrolpark.destroy.core.item.tooltip.IDynamicItemDescription;
 import com.petrolpark.destroy.core.item.tooltip.TempramentalItemDescription;
 import com.simibubi.create.content.equipment.goggles.GogglesItem;
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import net.createmod.catnip.lang.FontHelper.Palette;
@@ -50,10 +52,10 @@ public class Destroy {
 
     // Utility
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final boolean datagen = false;
+    public static final NonNullSupplier<Boolean> datagen = NonNullSupplier.lazy(DatagenModLoader::isRunningDataGen);
 
     // Registrate
-    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID);
+    public static final DestroyRegistrate REGISTRATE = DestroyRegistrate.create(MOD_ID);
 
     // Level-attached managers
     public static final CircuitPuncherHandler CIRCUIT_PUNCHER_HANDLER = new CircuitPuncherHandler();
@@ -84,7 +86,7 @@ public class Destroy {
         REGISTRATE.registerEventListeners(modEventBus);
 
         // Mod objects
-        if (!datagen) DestroySoundEvents.prepare(); // Sound datagen is broken and I can't be bothered to fix it
+        if (!datagen.get()) DestroySoundEvents.prepare(); // Sound datagen is broken and I can't be bothered to fix it
         DestroyCreativeModeTabs.register(modEventBus);
         DestroyTags.register();
         DestroyBlockEntityTypes.register();
@@ -115,7 +117,7 @@ public class Destroy {
         // Initiation Events
         modEventBus.addListener(Destroy::init);
         modEventBus.addListener(Destroy::onRegister);
-        if (!datagen) modEventBus.addListener(DestroySoundEvents::register);
+        if (!datagen.get()) modEventBus.addListener(DestroySoundEvents::register);
         modEventBus.addListener(DestroyClient::clientInit);
         modEventBus.addListener(EventPriority.LOWEST, Destroy::gatherData);
 

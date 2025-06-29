@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "axis=x,flipped=false": {
+      "model": "destroy:block/unvarnished_plywood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,flipped=true": {
+      "model": "destroy:block/unvarnished_plywood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,flipped=false": {
+      "model": "destroy:block/unvarnished_plywood",
+      "y": 90
+    },
+    "axis=y,flipped=true": {
+      "model": "destroy:block/unvarnished_plywood",
+      "y": 90
+    },
+    "axis=z,flipped=false": {
+      "model": "destroy:block/unvarnished_plywood",
+      "x": 90
+    },
+    "axis=z,flipped=true": {
+      "model": "destroy:block/unvarnished_plywood",
+      "x": 90
+    }
+  }
+}

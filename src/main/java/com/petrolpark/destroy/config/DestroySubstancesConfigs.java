@@ -2,6 +2,7 @@ package com.petrolpark.destroy.config;
 
 import java.util.EnumMap;
 
+import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.client.DestroyLang;
 
 import net.minecraft.sounds.SoundSource;
@@ -61,6 +62,7 @@ public class DestroySubstancesConfigs extends DestroyConfigBase {
     };
 
     public static boolean alcoholEnabled() {
+        if(Destroy.datagen.get()) return true;
         return DestroyAllConfigs.COMMON.enableAlcohol.get();
     };
 

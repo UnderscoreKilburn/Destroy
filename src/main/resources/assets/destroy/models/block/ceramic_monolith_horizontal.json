@@ -1,7 +1,0 @@
-{
-    "parent": "minecraft:block/cube_column_horizontal",
-    "textures": {
-      "end": "destroy:block/ceramic_monolith_end",
-      "side": "destroy:block/ceramic_monolith_side"
-    }
-  }

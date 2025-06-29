@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "destroy:block/dynamo/arc_furnace_lid_block",
+      "y": 90
+    },
+    "axis=z": {
+      "model": "destroy:block/dynamo/arc_furnace_lid_block"
+    }
+  }
+}

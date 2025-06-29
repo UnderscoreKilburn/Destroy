@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "destroy:block/iodine_block"
+    }
+  }
+}

@@ -18,7 +18,7 @@ public class BlankRecordItem extends RecordItem {
 
     @SuppressWarnings("deprecation")
     public BlankRecordItem(Properties properties) {
-        super(0, Destroy.datagen ? SoundEvents.STONE_STEP : DestroySoundEvents.SILENCE.getMainEvent(), properties, 5460);
+        super(0, Destroy.datagen.get() ? SoundEvents.STONE_STEP : DestroySoundEvents.SILENCE.getMainEvent(), properties, 5460);
     };
 
     @Override

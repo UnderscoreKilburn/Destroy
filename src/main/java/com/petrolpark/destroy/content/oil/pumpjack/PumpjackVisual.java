@@ -78,7 +78,7 @@ public class PumpjackVisual extends AbstractBlockEntityVisual<PumpjackBlockEntit
             .setChanged();
 
         transformed(pump, facing)
-            .translate(0d, (3 / 16) - (Mth.sin(angle) * 3 / 16d), 0d)
+            .translate(0d, -Mth.sin(angle) * 3 / 16d, 0d)
             .setChanged();
     }
 

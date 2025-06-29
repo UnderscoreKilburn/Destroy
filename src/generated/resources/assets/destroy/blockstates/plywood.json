@@ -6,7 +6,7 @@
       "y": 90
     },
     "axis=x,flipped=true": {
-      "model": "destroy:block/plywood",
+      "model": "destroy:block/plywood_flipped",
       "x": 90,
       "y": 90
     },
@@ -15,7 +15,7 @@
       "y": 90
     },
     "axis=y,flipped=true": {
-      "model": "destroy:block/plywood",
+      "model": "destroy:block/plywood_flipped",
       "y": 90
     },
     "axis=z,flipped=false": {
@@ -23,7 +23,7 @@
       "x": 90
     },
     "axis=z,flipped=true": {
-      "model": "destroy:block/plywood",
+      "model": "destroy:block/plywood_flipped",
       "x": 90
     }
   }

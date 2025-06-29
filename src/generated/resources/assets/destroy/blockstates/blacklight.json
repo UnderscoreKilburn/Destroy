@@ -33,10 +33,12 @@
       "y": 180
     },
     "facing=up,flipped=false": {
-      "model": "destroy:block/blacklight"
+      "model": "destroy:block/blacklight",
+      "x": 180
     },
     "facing=up,flipped=true": {
       "model": "destroy:block/blacklight",
+      "x": 180,
       "y": 90
     },
     "facing=west,flipped=false": {

@@ -77,7 +77,7 @@ public class DestroyBlockStateGen {
                     rX = 0;
                     rY = ((int)dir.toYRot() + 180) % 360;
                 } else {
-                    rX = dir == Direction.DOWN ? 0 : dir.getAxis().isHorizontal() ? 90 : 0;
+                    rX = dir == Direction.DOWN ? 0 : dir.getAxis().isHorizontal() ? 90 : 180;
                     rY = dir.getAxis().isVertical() ? (flipped ? 90 : 0) : ((int)dir.toYRot()) % 360;
                 }
 
@@ -136,7 +136,7 @@ public class DestroyBlockStateGen {
                     .texture("side1", p.modLoc("block/" + path + "_side_1"))
                     .texture("side2", p.modLoc("block/" + path + "_side_2"));
 
-            ModelFile model_flipped = p.models().withExistingParent(c.getName(), Destroy.asResource("block/cube_flippable_rotated_flipped"))
+            ModelFile model_flipped = p.models().withExistingParent(c.getName() + "_flipped", Destroy.asResource("block/cube_flippable_rotated_flipped"))
                 .texture("end", p.modLoc("block/" + path + "_end"))
                 .texture("side1", p.modLoc("block/" + path + "_side_1"))
                 .texture("side2", p.modLoc("block/" + path + "_side_2"));

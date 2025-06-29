@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import com.petrolpark.destroy.chemistry.legacy.LegacyReaction;
 import com.petrolpark.destroy.chemistry.legacy.ReactionResult;
 import com.petrolpark.destroy.core.chemistry.vat.VatControllerBlockEntity;
+import com.petrolpark.item.decay.IDecayingItem;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +39,9 @@ public class PrecipitateReactionResult extends ReactionResult {
 
     @Override
     public void onVatReaction(Level level, VatControllerBlockEntity vatController) {
-        ItemHandlerHelper.insertItemStacked(vatController.inventory, precipitate.get(), false);
+        ItemStack result = precipitate.get();
+        IDecayingItem.startDecay(result);
+        ItemHandlerHelper.insertItemStacked(vatController.inventory, result, false);
     };
 
     @Override

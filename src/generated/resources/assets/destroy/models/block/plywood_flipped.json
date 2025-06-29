@@ -1,5 +1,5 @@
 {
-  "parent": "destroy:block/cube_flippable_rotated",
+  "parent": "destroy:block/cube_flippable_rotated_flipped",
   "textures": {
     "end": "destroy:block/plywood_end",
     "side1": "destroy:block/plywood_side_1",

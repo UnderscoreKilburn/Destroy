@@ -360,7 +360,7 @@ public class DestroyBlocks {
             .noLootTable() // Handled in RedstoneProgrammerBlock class
         ).blockstate((c, p) -> p.getVariantBuilder(c.get()).forAllStates(state -> ConfiguredModel.builder()
                 .modelFile(AssetLookup.forPowered(c, p).apply(state))
-                .rotationY(((int)state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360)
+                .rotationY(((int)state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 0) % 360)
                 .build()))
         .item(RedstoneProgrammerBlockItem::new)
         .transform(customItemModel("_", "block"))

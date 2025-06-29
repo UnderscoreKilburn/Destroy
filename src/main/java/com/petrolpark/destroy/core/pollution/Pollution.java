@@ -99,7 +99,7 @@ public class Pollution {
     };
 
     public static class PonderCapabilityProvider extends CapabilityProvider<Pollution> {
-        
+
         public PonderCapabilityProvider() {
             super(() -> new Pollution(true));
         };
@@ -228,7 +228,10 @@ public class Pollution {
      */
     public static float getLocalTemperature(net.minecraft.world.level.Level level, BlockPos pos) {
         return level.getCapability(CAPABILITY).map(pollution -> {
-            return ((Pollution.Level)pollution).getOutdoorTemperature() + (10f * level.getBiome(pos).get().getBaseTemperature());
+            if(pollution instanceof Pollution.Level levelPollution)
+                return levelPollution.getOutdoorTemperature() + (10f * level.getBiome(pos).get().getBaseTemperature());
+            else
+                return 289f;
         }).orElse(289f);
     };
 

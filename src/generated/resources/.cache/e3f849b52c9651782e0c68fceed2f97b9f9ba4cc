@@ -1,9 +1,9 @@
-// 1.20.1	2025-06-29T06:54:34.0162455	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2025-06-29T17:55:17.9266683	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 9583bbca7c5e03f2ebe6d1611730c81873bed9d4 assets/destroy/blockstates/aging_barrel.json
 391a63a1be808a7eaeb2ac4bf47aac0c1d2a1e05 assets/destroy/blockstates/anfo_block.json
 a0487e31c10af4a6745a8cad3e9d0747d098b315 assets/destroy/blockstates/arc_furnace_lid.json
 d6d6fc8997c4485f7deed8f15d58cad6ddd917cf assets/destroy/blockstates/beaker.json
-5bfd938aaef4dd4bb2f87bc5123d1896737f54f8 assets/destroy/blockstates/blacklight.json
+e83811dec57802029d983eded79583c99770161f assets/destroy/blockstates/blacklight.json
 f486366e21d8d28ff20b31a25d659ef72932adaa assets/destroy/blockstates/blowpipe.json
 bfc26a9d8129741f08cae1cb35507608266b4b97 assets/destroy/blockstates/borosilicate_glass.json
 44904de93cb1b18d23874df377fd5e033afe51a3 assets/destroy/blockstates/borosilicate_glass_fiber.json
@@ -78,7 +78,7 @@ ab33e91720329ec59995fcc3e53a5ccc000b37ae assets/destroy/blockstates/palladium_bl
 58ee84dd56f2cf96c1c3e47ad95b564c2e86cd95 assets/destroy/blockstates/picric_acid_block.json
 c3dd0d5c04ebb427e3cad0ab320271e0941af1c5 assets/destroy/blockstates/platinum_block.json
 570a6ef8caf25d9e921731e481b7da5b3c84e1c6 assets/destroy/blockstates/platinum_periodic_table_block.json
-008bdcd6a08153fb4b0a50568b0e2ab08f2091d4 assets/destroy/blockstates/plywood.json
+81a75330d8e036793fbd7cf739b959317f492f66 assets/destroy/blockstates/plywood.json
 ee62abd86bce9ead3c6a83066e29b16ec31496dd assets/destroy/blockstates/pollutometer.json
 c868e111a9fee83fb155090c381b4d1637b5c19c assets/destroy/blockstates/pumpjack.json
 3dff9e1ec59415779195d2abfa9f07bc17b428a1 assets/destroy/blockstates/pumpjack_cam.json
@@ -87,7 +87,7 @@ fbb2a02a0ff80155130413270a6a025012b5c128 assets/destroy/blockstates/quartz_infus
 c3c2824ad30b936ddf3040c82ee187cc8ff625c1 assets/destroy/blockstates/raw_fries_block.json
 4bfe5f35e9c023abbe131503d540759905196f33 assets/destroy/blockstates/raw_nickel_block.json
 f126409921902b635da9d42a47d996db69419fdc assets/destroy/blockstates/redstone_infused_beetroot.json
-d316ad10a9ac99475f77a43db35d9f3be6003b4b assets/destroy/blockstates/redstone_programmer.json
+bc7ae0bec56c95bff678a1b83343931f6ae9adb0 assets/destroy/blockstates/redstone_programmer.json
 b8bd8b7f879fd065d8cd5d05bfea0a01226fe5e3 assets/destroy/blockstates/rhodium_block.json
 de30e4ade49a41e8f7344edb540dea1ef41c0685 assets/destroy/blockstates/rhodium_periodic_table_block.json
 ecc00d4d0d0447e78a15e8ab2972dd7e48b7349e assets/destroy/blockstates/round_bottomed_flask.json
@@ -97,7 +97,7 @@ ecc00d4d0d0447e78a15e8ab2972dd7e48b7349e assets/destroy/blockstates/round_bottom
 e4a3544443921c79cbb95e3087895feed1db0d36 assets/destroy/blockstates/stainless_steel_rods_block.json
 0d5568cf5979c96520a8fe6e2b83b3dc580b87b5 assets/destroy/blockstates/test_tube_rack.json
 4964a27ded37b29a295283bf5297b708cc95aa47 assets/destroy/blockstates/tree_tap.json
-a113fa770e3fd848cc3495e2654116c819a86947 assets/destroy/blockstates/unvarnished_plywood.json
+94693f309b93be4ac5116cbc223a69d0b6c006f6 assets/destroy/blockstates/unvarnished_plywood.json
 e1460889e62cf00cb4485c17aba93d6a91232571 assets/destroy/blockstates/urine_cauldron.json
 8445e0fe9c4b795ed169ed9665b3ced42b10c8c0 assets/destroy/blockstates/vat_controller.json
 3dff9e1ec59415779195d2abfa9f07bc17b428a1 assets/destroy/blockstates/vat_side.json
@@ -158,7 +158,8 @@ af39bec6b35b24082f2b6ab69278e4c613d51cc9 assets/destroy/models/block/palladium_p
 125f3c3094216c9fbd1ab9f94d03935658289ef7 assets/destroy/models/block/picric_acid_block.json
 e7fdae4f60a8f12c39d531b3bf7aadf6b1ef76bb assets/destroy/models/block/platinum_block.json
 e1975ad4645a8287d1a0dfec50f2a34e4983f087 assets/destroy/models/block/platinum_periodic_table_block.json
-cb35ad4ac3e803d50221411f1c974cdf5d21749a assets/destroy/models/block/plywood.json
+55df7ba1c9ae3654368588835c8dc4728498cbeb assets/destroy/models/block/plywood.json
+cb35ad4ac3e803d50221411f1c974cdf5d21749a assets/destroy/models/block/plywood_flipped.json
 7aca0fe326ffd1fc896c8c3d00fc9c77cac1de99 assets/destroy/models/block/raw_fries_block.json
 f6b6dd3632171d8fcc80a90772c05f9612900f21 assets/destroy/models/block/raw_fries_block_horizontal.json
 28d91d2dfb7648901f4fe3336554a71c08daac5f assets/destroy/models/block/raw_nickel_block.json
@@ -167,7 +168,8 @@ f6b6dd3632171d8fcc80a90772c05f9612900f21 assets/destroy/models/block/raw_fries_b
 1554e68f94ac329803cfd63e1c6aa7127087eb3e assets/destroy/models/block/stainless_steel_block.json
 44f89fc45e1df02f5997f2f1475d6ce2778157e2 assets/destroy/models/block/stainless_steel_rods_block.json
 51a4417345d2bb583de224bc2c0dad5dee90acfa assets/destroy/models/block/stainless_steel_rods_block_horizontal.json
-4fa290b08f6702889202d75cb09ff876ae9438a8 assets/destroy/models/block/unvarnished_plywood.json
+12e60d92b43353cc861724a478e097656a8df0cd assets/destroy/models/block/unvarnished_plywood.json
+4fa290b08f6702889202d75cb09ff876ae9438a8 assets/destroy/models/block/unvarnished_plywood_flipped.json
 d598f5e676e0745de68ba1bc8ab2aeea5d3730fd assets/destroy/models/block/vat_controller.json
 5d560bf8706b7b30a45751799fa3b8d8b377f2ef assets/destroy/models/block/zinc_periodic_table_block.json
 8be3c7905ca4b1981f379a559e3bf4f6e6164ec0 assets/destroy/models/item/abs.json

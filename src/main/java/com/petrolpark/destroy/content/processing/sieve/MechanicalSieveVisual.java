@@ -5,6 +5,7 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.simibubi.create.foundation.render.AllInstanceTypes;
+import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.instance.Instancer;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
@@ -14,6 +15,8 @@ import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 import net.createmod.catnip.math.AngleHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+
+import java.util.function.Consumer;
 
 public class MechanicalSieveVisual extends SingleAxisRotatingVisual<MechanicalSieveBlockEntity> implements SimpleDynamicVisual {
 
@@ -48,6 +51,13 @@ public class MechanicalSieveVisual extends SingleAxisRotatingVisual<MechanicalSi
         super._delete();
         sieve.delete();
         linkages.delete();
+    }
+
+    @Override
+    public void collectCrumblingInstances(Consumer<Instance> consumer) {
+        super.collectCrumblingInstances(consumer);
+        consumer.accept(sieve);
+        consumer.accept(linkages);
     }
 
     private void updateAnimation() {

@@ -198,6 +198,8 @@ dependencies {
 
     // JGraphT
     jarJar(implementation("org.jgrapht:jgrapht-core:[${jgrapht_version}]"))
+    jarJar(implementation("org.jheaps:jheaps:[0.14]"))
+    jarJar(implementation("org.apfloat:apfloat:[1.10.1]"))
 
     // CDK
     //implementation "org.openscience.cdk:cdk-bundle:2.9"

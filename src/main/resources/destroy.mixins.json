@@ -29,6 +29,7 @@
         "compat.jei.PackingCategoryMixin",
         "compat.supplementaries.SoftFluidStackImplMixin",
         "compat.supplementaries.SpongeInteractionMixin",
+        "patch.ContaminantMixin",
         "AbstractContainerMenuMixin",
         "AirCurrentMixin",
         "BasinBlockEntityMixin",

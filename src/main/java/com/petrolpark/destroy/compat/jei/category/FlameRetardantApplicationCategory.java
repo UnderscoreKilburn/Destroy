@@ -41,7 +41,8 @@ public class FlameRetardantApplicationCategory extends PetrolparkRecipeCategory<
     @Override
 	public void setRecipe(IRecipeLayoutBuilder builder, FlameRetardantApplicationRecipe recipe, IFocusGroup focuses) {
         boolean example = focuses.getFocuses(VanillaTypes.ITEM_STACK, RecipeIngredientRole.INPUT).findAny().isEmpty();
-        List<ItemStack> items = example ? exampleItems : focuses.getItemStackFocuses(RecipeIngredientRole.INPUT).map(IFocus::getTypedValue).map(ITypedIngredient::getIngredient).toList();
+        List<ItemStack> items = example ? exampleItems : focuses.getItemStackFocuses(RecipeIngredientRole.INPUT).map(IFocus::getTypedValue).map(ITypedIngredient::getIngredient)
+            .map(i -> i.copyWithCount(1)).toList();;
 
         builder.addSlot(RecipeIngredientRole.INPUT, 27, 51)
 		    .setBackground(getRenderedSlot(), -1, -1)

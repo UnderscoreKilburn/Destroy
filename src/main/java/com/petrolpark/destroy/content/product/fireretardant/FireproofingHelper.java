@@ -53,8 +53,8 @@ public class FireproofingHelper {
             .map(SingleFluidRecipe.class::cast)
             .filter(r  -> r.getRequiredFluid().test(availableFluid))
             .map(r -> {
-                availableFluid.shrink(100);
-                ItemStack result = stack.copy();
+                availableFluid.shrink(requiredAmount);
+                ItemStack result = stack.copyWithCount(1);
                 stack.shrink(1);
                 apply(world, result);
                 return result;

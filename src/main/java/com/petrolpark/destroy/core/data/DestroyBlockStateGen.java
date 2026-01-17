@@ -3,6 +3,8 @@ package com.petrolpark.destroy.core.data;
 import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.content.processing.ageing.AgingBarrelBlock;
 import com.petrolpark.destroy.content.processing.distillation.BubbleCapBlock;
+import com.petrolpark.destroy.content.processing.moltenblock.AbstractMoltenBlock;
+import com.petrolpark.destroy.content.processing.moltenblock.FastCoolingMoltenPillarBlock;
 import com.petrolpark.destroy.content.processing.sieve.MechanicalSieveBlock;
 import com.petrolpark.destroy.core.block.FlippableRotatedPillarBlock;
 import com.petrolpark.destroy.core.chemistry.vat.uv.BlacklightBlock;
@@ -127,6 +129,32 @@ public class DestroyBlockStateGen {
     }
     public static <B extends RotatedPillarBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockstateProvider> rotatedPillar(ResourceLocation side, ResourceLocation end) {
         return (c, p) -> p.axisBlock(c.get(), side, end);
+    }
+
+    public static <B extends RotatedPillarBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockstateProvider> moltenRotatedPillar(String path) {
+        return (c, p) -> {
+            ModelFile model = p.models().cubeColumn("block/" + path,
+                p.modLoc("block/" + path + "_side"),
+                p.modLoc("block/" + path + "_end"));
+
+            ModelFile model_molten = p.models().cubeColumn("block/molten_" + path,
+                p.modLoc("block/molten_" + path + "_side"),
+                p.modLoc("block/molten_" + path + "_end"));
+
+            p.getVariantBuilder(c.get())
+                .partialState().with(FlippableRotatedPillarBlock.AXIS, Direction.Axis.X).with(FastCoolingMoltenPillarBlock.MOLTEN, false)
+                .modelForState().rotationX(90).rotationY(90).modelFile(model).addModel()
+                .partialState().with(FlippableRotatedPillarBlock.AXIS, Direction.Axis.Y).with(FastCoolingMoltenPillarBlock.MOLTEN, false)
+                .modelForState().rotationY(90).modelFile(model).addModel()
+                .partialState().with(FlippableRotatedPillarBlock.AXIS, Direction.Axis.Z).with(FastCoolingMoltenPillarBlock.MOLTEN, false)
+                .modelForState().rotationX(90).modelFile(model).addModel()
+                .partialState().with(FlippableRotatedPillarBlock.AXIS, Direction.Axis.X).with(FastCoolingMoltenPillarBlock.MOLTEN, true)
+                .modelForState().rotationX(90).rotationY(90).modelFile(model_molten).addModel()
+                .partialState().with(FlippableRotatedPillarBlock.AXIS, Direction.Axis.Y).with(FastCoolingMoltenPillarBlock.MOLTEN, true)
+                .modelForState().rotationY(90).modelFile(model_molten).addModel()
+                .partialState().with(FlippableRotatedPillarBlock.AXIS, Direction.Axis.Z).with(FastCoolingMoltenPillarBlock.MOLTEN, true)
+                .modelForState().rotationX(90).modelFile(model_molten).addModel();
+        };
     }
 
     public static <B extends FlippableRotatedPillarBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockstateProvider> flippableRotatedPillar(String path) {

@@ -18,6 +18,7 @@ import dev.engine_room.flywheel.lib.model.ModelUtil;
 import net.createmod.catnip.math.VecHelper;
 import net.createmod.catnip.render.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
@@ -127,10 +128,13 @@ public class ExtrudableMovementBehaviour implements MovementBehaviour {
         // Making a new model every frame seems like a bad idea but it changes shape continually and I'm not smart enough to do it another way
         ms.pushPose();
         BakedModel model = new ExtrudedBlockModel(getBlockState(context), direction, progress);
-		SuperByteBuffer extrudedBlockBuffer = SuperBufferFactory.getInstance().createForBlock(model, Blocks.AIR.defaultBlockState());
+		SuperByteBuffer extrudedBlockBuffer = SuperBufferFactory.getInstance().createForBlock(model, getBlockState(context));
         if (modelTransform != null) extrudedBlockBuffer.transform(modelTransform);
         
-        extrudedBlockBuffer.renderInto(ms, vbSolid);
+        extrudedBlockBuffer
+            .light(LevelRenderer.getLightColor(renderWorld, context.localPos))
+            .useLevelLight(context.world, matrices.getWorld())
+            .renderInto(ms, vbSolid);
         ms.popPose();
     };
 

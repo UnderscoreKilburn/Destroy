@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "destroy:block/molten_borosilicate_glass_fiber_end",
+    "side": "destroy:block/molten_borosilicate_glass_fiber_side"
+  }
+}

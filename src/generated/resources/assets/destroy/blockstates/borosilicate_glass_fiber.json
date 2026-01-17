@@ -1,15 +1,29 @@
 {
   "variants": {
-    "axis=x": {
-      "model": "destroy:block/borosilicate_glass_fiber_horizontal",
+    "axis=x,molten=false": {
+      "model": "destroy:block/borosilicate_glass_fiber",
       "x": 90,
       "y": 90
     },
-    "axis=y": {
-      "model": "destroy:block/borosilicate_glass_fiber"
+    "axis=x,molten=true": {
+      "model": "destroy:block/molten_borosilicate_glass_fiber",
+      "x": 90,
+      "y": 90
     },
-    "axis=z": {
-      "model": "destroy:block/borosilicate_glass_fiber_horizontal",
+    "axis=y,molten=false": {
+      "model": "destroy:block/borosilicate_glass_fiber",
+      "y": 90
+    },
+    "axis=y,molten=true": {
+      "model": "destroy:block/molten_borosilicate_glass_fiber",
+      "y": 90
+    },
+    "axis=z,molten=false": {
+      "model": "destroy:block/borosilicate_glass_fiber",
+      "x": 90
+    },
+    "axis=z,molten=true": {
+      "model": "destroy:block/molten_borosilicate_glass_fiber",
       "x": 90
     }
   }

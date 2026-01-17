@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column_horizontal",
-  "textures": {
-    "end": "destroy:block/stainless_steel_rods_end",
-    "side": "destroy:block/stainless_steel_rods_side"
-  }
-}

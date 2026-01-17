@@ -1127,7 +1127,7 @@ public class DestroyBlocks {
             .mapColor(state -> state.getValue(FastCoolingMoltenPillarBlock.MOLTEN) ? MapColor.COLOR_ORANGE : MapColor.METAL)
             .lightLevel(state -> state.getValue(FastCoolingMoltenPillarBlock.MOLTEN) ? 15 : 0)
         ).tag(BlockTags.MINEABLE_WITH_PICKAXE)
-        .blockstate(DestroyBlockStateGen.rotatedPillar("stainless_steel_rods"))
+        .blockstate(DestroyBlockStateGen.moltenRotatedPillar("stainless_steel_rods_block"))
         .item()
         .build()
         .register();
@@ -1141,7 +1141,7 @@ public class DestroyBlocks {
             .lightLevel(state -> state.getValue(FastCoolingMoltenPillarBlock.MOLTEN) ? 15 : 0)
             .sound(SoundType.WOOL)
         ).tag(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.WOOL)
-        .blockstate(DestroyBlockStateGen.rotatedPillar("borosilicate_glass_fiber"))
+        .blockstate(DestroyBlockStateGen.moltenRotatedPillar("borosilicate_glass_fiber"))
         .item()
         .tag(ItemTags.WOOL)
         .build()

@@ -58,6 +58,11 @@ public class ExtrudedBlockModel extends CopycatModel {
         return quads;
     };
 
+    @Override
+    public List<BakedQuad> getQuads(BlockState state, Direction side, RandomSource rand, ModelData data, RenderType renderType) {
+        BlockState material = getMaterial(data);
+        return getCroppedQuads(state, side, rand, material != null ? material : getMaterial(ModelData.EMPTY), data, renderType);
+    };
 
     public static int[] scale(int[] vertexData, float factor) {
         vertexData = Arrays.copyOf(vertexData, vertexData.length);

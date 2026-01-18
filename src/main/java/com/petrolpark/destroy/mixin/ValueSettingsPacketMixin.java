@@ -36,8 +36,9 @@ public class ValueSettingsPacketMixin {
 				continue;
 			if (!valueSettingsBehaviour.acceptsValueSettings())
 				continue;
-			if (hand != null) {
+			if (hand != null && ((ValueSettingsPacketAccessor) this).getHitResult() != null) {
 				valueSettingsBehaviour.onShortInteract(player, hand, side, ((ValueSettingsPacketAccessor) this).getHitResult());
+				return;
 			};
             if (valueSettingsBehaviour instanceof BetterValueSettingsBehaviour smartValueSettingsBehaviour) {
                 smartValueSettingsBehaviour.acceptAccessInformation(hand, side);

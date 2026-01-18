@@ -9,7 +9,7 @@ import com.petrolpark.destroy.compat.jei.DestroyJEISetup;
 
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import net.minecraft.resources.ResourceLocation;
+
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;

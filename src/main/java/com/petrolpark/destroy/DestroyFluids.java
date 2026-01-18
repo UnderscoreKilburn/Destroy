@@ -112,7 +112,7 @@ public class DestroyFluids {
     };
 
     private static FluidBuilder<VirtualFluid, CreateRegistrate> coloredWaterFluid(String name, int color) {
-        return coloredFluid(name, color, new ResourceLocation("minecraft", "block/water_still"), new ResourceLocation("minecraft", "block/water_flow"));
+        return coloredFluid(name, color, ResourceLocation.fromNamespaceAndPath("minecraft", "block/water_still"), ResourceLocation.fromNamespaceAndPath("minecraft", "block/water_flow"));
     };
 
     private static FluidBuilder<VirtualFluid, CreateRegistrate> coloredSwirlingFluid(String name, int color) {

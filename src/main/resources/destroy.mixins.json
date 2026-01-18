@@ -22,7 +22,6 @@
         "compat.farmersdelight.CuttingBoardMixin",
         "compat.jei.BasinCategoryMixin",
         "compat.jei.CreateJEIMixin",
-        "compat.jei.CreateRecipeCategoryAccessor",
         "compat.jei.CreateRecipeCategoryMixin",
         "compat.jei.DeployingCategoryMixin",
         "compat.jei.MixingCategoryMixin",

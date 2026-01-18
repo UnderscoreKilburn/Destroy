@@ -1,5 +1,7 @@
 package com.petrolpark.destroy.compat.jei.animation;
 
+import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.addFluidSlot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +10,9 @@ import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.core.recipe.ingredient.fluid.RefrigerantDummyFluidIngredient;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.lang.Lang;
 
-import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.gui.Font;
@@ -22,8 +21,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.addFluidSlot;
 
 public class HeatConditionRenderer {
 

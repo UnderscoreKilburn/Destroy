@@ -1,8 +1,7 @@
 package com.petrolpark.destroy.compat.createbigcannons.ponder;
 
 import com.petrolpark.destroy.Destroy;
-import com.petrolpark.destroy.client.DestroyPonderScenes;
-import com.petrolpark.destroy.client.DestroyPonderTags;
+
 import net.createmod.ponder.api.registration.PonderPlugin;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;

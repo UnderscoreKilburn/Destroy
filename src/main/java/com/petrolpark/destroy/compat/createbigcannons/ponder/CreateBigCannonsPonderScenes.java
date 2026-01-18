@@ -5,14 +5,10 @@ import com.petrolpark.destroy.client.DestroyPonderTags;
 import com.petrolpark.destroy.compat.createbigcannons.block.CreateBigCannonsBlocks;
 import com.petrolpark.destroy.core.explosion.ExplosivesPonderScenes;
 
-import com.simibubi.create.Create;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;
-import net.createmod.ponder.foundation.registration.DefaultPonderSceneRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.ponder.CBCPonderTags;
-import rbasamoyai.createbigcannons.ponder.CannonLoadingScenes;
 
 public class CreateBigCannonsPonderScenes {
 

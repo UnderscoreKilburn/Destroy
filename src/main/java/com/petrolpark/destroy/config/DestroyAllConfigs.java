@@ -5,10 +5,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
 
-import com.simibubi.create.api.stress.BlockStressValues;
-import com.simibubi.create.infrastructure.config.CStress;
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -49,7 +48,7 @@ public class DestroyAllConfigs extends AllConfigs {
 			context.registerConfig(pair.getKey(), pair.getValue().specification);
         };
 
-		DestroyStress stress = SERVER.kinetics.stressValues;
+		DestroyStressConfigs stress = SERVER.kinetics.stressValues;
 		BlockStressValues.IMPACTS.registerProvider(stress::getImpact);
 		BlockStressValues.CAPACITIES.registerProvider(stress::getCapacity);
 	};

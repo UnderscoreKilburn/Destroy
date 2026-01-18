@@ -7,13 +7,6 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
-import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.animation.LerpedFloat;
-import net.createmod.catnip.lang.FontHelper;
-import net.createmod.catnip.math.VecHelper;
-import net.createmod.ponder.api.level.PonderLevel;
-import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Math;
 
@@ -25,8 +18,9 @@ import com.petrolpark.destroy.core.block.entity.IHaveLabGoggleInformation;
 import com.petrolpark.destroy.core.chemistry.vat.material.VatMaterial;
 import com.petrolpark.destroy.core.chemistry.vat.observation.RedstoneQuantityMonitorBehaviour;
 import com.petrolpark.destroy.core.chemistry.vat.uv.IUVLampBlock;
-import com.petrolpark.destroy.core.pollution.PollutionHelper;
 import com.petrolpark.destroy.core.pollution.Pollution.PollutionType;
+import com.petrolpark.destroy.core.pollution.PollutionHelper;
+import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;
 import com.simibubi.create.content.fluids.FluidFX;
@@ -37,6 +31,10 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.item.TooltipHelper;
 
+import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.lang.FontHelper;
+import net.createmod.catnip.math.VecHelper;
+import net.createmod.ponder.api.level.PonderLevel;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,6 +43,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;

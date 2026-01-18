@@ -1,18 +1,12 @@
 package com.petrolpark.destroy.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import java.util.Iterator;
-
-import net.createmod.catnip.math.BlockFace;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.petrolpark.destroy.DestroyFluids;
 import com.simibubi.create.content.fluids.FluidNetwork;
-import com.simibubi.create.content.fluids.PipeConnection;
-import com.simibubi.create.content.fluids.PipeConnection.Flow;
-import net.createmod.catnip.data.Pair;
 
 import net.minecraftforge.fluids.FluidStack;
 

@@ -1,5 +1,7 @@
 package com.petrolpark.destroy.core.chemistry.vat;
 
+import static com.petrolpark.compat.create.CreateClient.OUTLINER;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,7 +36,6 @@ import com.petrolpark.destroy.core.explosion.SmartExplosion;
 import com.petrolpark.destroy.core.fluid.gasparticle.BoilingFluidBubbleParticleData;
 import com.petrolpark.destroy.core.pollution.Pollution;
 import com.petrolpark.destroy.core.pollution.PollutionHelper;
-import com.simibubi.create.CreateClient;
 import com.simibubi.create.api.contraption.transformable.TransformableBlockEntity;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
@@ -47,10 +48,10 @@ import com.simibubi.create.foundation.item.SmartInventory;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.recipe.RecipeFinder;
 import com.simibubi.create.foundation.utility.CreateLang;
+
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.lang.FontHelper;
-
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction.Axis;
@@ -78,8 +79,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-
-import static com.petrolpark.compat.create.CreateClient.OUTLINER;
 
 public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveLabGoggleInformation, ISpecialWhenHoveredBlockEntity, ThresholdSwitchObservable, TransformableBlockEntity {
 

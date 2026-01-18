@@ -1,8 +1,9 @@
 package com.petrolpark.destroy.content.processing.dynamo;
 
+import static com.petrolpark.compat.create.CreateClient.OUTLINER;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.petrolpark.destroy.client.DestroyPartials;
-import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 
 import net.createmod.catnip.data.Iterate;
@@ -14,8 +15,6 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-
-import static com.petrolpark.compat.create.CreateClient.OUTLINER;
 
 public class DynamoRenderer extends KineticBlockEntityRenderer<DynamoBlockEntity> {
 

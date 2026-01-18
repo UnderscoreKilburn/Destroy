@@ -78,11 +78,11 @@ public abstract class CreateRecipeCategoryMixin<T extends Recipe<?>> {
     };
 
     @Inject(
-            method = "addPotionTooltip(Lmezz/jei/api/gui/ingredient/IRecipeSlotView;Ljava/util/List;)V",
-            at = @At(value = "INVOKE_ASSIGN", target = "Ljava/util/Optional;get()Ljava/lang/Object;"),
-            remap = false,
-            locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void inAddPotionTooltip(IRecipeSlotView view, List<Component> tooltip, CallbackInfo ci, Optional displayed) {
+        method = "addPotionTooltip(Lmezz/jei/api/gui/ingredient/IRecipeSlotView;Ljava/util/List;)V",
+        at = @At(value = "INVOKE_ASSIGN", target = "Ljava/util/Optional;get()Ljava/lang/Object;"),
+        remap = false,
+        locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void inAddPotionTooltip(IRecipeSlotView view, List<Component> tooltip, CallbackInfo ci, Optional<FluidStack> displayed) {
         if (DestroyFluids.isMixture((FluidStack) displayed.get())) {
             Component name = DestroyLang.translate("mixture.mixture").component();
             boolean iupac = DestroyAllConfigs.CLIENT.chemistry.iupacNames.get();

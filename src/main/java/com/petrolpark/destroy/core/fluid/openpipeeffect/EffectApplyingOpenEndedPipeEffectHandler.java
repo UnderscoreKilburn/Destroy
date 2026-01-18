@@ -2,8 +2,8 @@ package com.petrolpark.destroy.core.fluid.openpipeeffect;
 
 import java.util.List;
 
+import com.petrolpark.destroy.MoveToPetrolparkLibrary;
 import com.simibubi.create.api.effect.OpenPipeEffectHandler;
-import com.simibubi.create.content.fluids.OpenEndedPipe;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,6 +12,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 
+@MoveToPetrolparkLibrary
 public class EffectApplyingOpenEndedPipeEffectHandler implements OpenPipeEffectHandler {
 
     protected final MobEffectInstance effect;

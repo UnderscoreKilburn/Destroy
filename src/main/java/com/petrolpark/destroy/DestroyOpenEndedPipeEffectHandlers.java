@@ -4,10 +4,7 @@ import com.petrolpark.destroy.core.fluid.openpipeeffect.BurningOpenEndedPipeEffe
 import com.petrolpark.destroy.core.fluid.openpipeeffect.EffectApplyingOpenEndedPipeEffectHandler;
 import com.petrolpark.destroy.core.pollution.PollutingOpenEndedPipeEffectHandler;
 import com.simibubi.create.api.effect.OpenPipeEffectHandler;
-import com.simibubi.create.api.registry.SimpleRegistry;
-import com.simibubi.create.content.fluids.OpenEndedPipe;
 
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 
 public class DestroyOpenEndedPipeEffectHandlers {

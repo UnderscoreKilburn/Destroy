@@ -1,9 +1,10 @@
 package com.petrolpark.destroy.core.block.entity;
 
+import static com.petrolpark.compat.create.CreateClient.OUTLINER;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.core.bettervaluesettings.SidedScrollValueBehaviour;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
@@ -11,9 +12,7 @@ import com.simibubi.create.CreateClient;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBox.TextValueBox;
 import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.lang.Lang;
 
-import net.createmod.catnip.outliner.Outliner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -28,8 +27,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-
-import static com.petrolpark.compat.create.CreateClient.OUTLINER;
 
 /**
  * Mostly a copy of the non-side-specific {@link com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueRenderer Scroll-value renderer}.

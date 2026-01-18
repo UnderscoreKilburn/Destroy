@@ -1,18 +1,15 @@
 package com.petrolpark.destroy.compat.jei.category;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
 import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.content.product.fireretardant.FireproofingHelper;
 import com.petrolpark.destroy.content.product.fireretardant.FlameRetardantApplicationRecipe;
-import com.petrolpark.destroy.mixin.compat.jei.CreateRecipeCategoryAccessor;
 import com.simibubi.create.compat.jei.category.animations.AnimatedSpout;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IJeiHelpers;
@@ -25,7 +22,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-
 
 public class FlameRetardantApplicationCategory extends PetrolparkRecipeCategory<FlameRetardantApplicationRecipe> {
 

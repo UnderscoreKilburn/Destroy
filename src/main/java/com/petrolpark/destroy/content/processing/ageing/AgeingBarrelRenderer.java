@@ -89,7 +89,7 @@ public class AgeingBarrelRenderer extends SmartBlockEntityRenderer<AgeingBarrelB
         ms.pushPose();
         if (renderYeast) {
             // I know it says FluidRenderer but I'm just using it to render a generic texture, sue me
-            ForgeCatnipServices.FLUID_RENDERER.renderStillTiledFace(Direction.UP, 2 / 16f, 2 / 16f, 14 / 16f, 14 / 16f, fluidLevel + 0.01f, FluidRenderHelper.getFluidBuilder(buffer), ms, light, 0xFFFFFFFF,
+            FluidRenderHelper.renderStillTiledFace(Direction.UP, 2 / 16f, 2 / 16f, 14 / 16f, 14 / 16f, fluidLevel + 0.01f, FluidRenderHelper.getFluidBuilder(buffer), ms, light, 0xFFFFFFFF,
                 Minecraft.getInstance()
 			    .getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
                 .apply(Destroy.asResource("block/yeast_overlay"))
@@ -108,8 +108,7 @@ public class AgeingBarrelRenderer extends SmartBlockEntityRenderer<AgeingBarrelB
         float units = tank.getTotalUnits(partialTicks);
         float maxY = minY + (Mth.clamp(units / barrel.getTank().getCapacity(), 0, 1) * 8 / 12f);
         if (units < 1 || tank.getRenderedFluid().isEmpty()) return minY;
-        ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(tank.getRenderedFluid(), 2 / 16f, minY, 2 / 16f, 14 / 16f, maxY, 14 / 16f,
-            buffer, ms, light, false, true);
+        ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(tank.getRenderedFluid(), 2 / 16f, minY, 2 / 16f, 14 / 16f, maxY, 14 / 16f, buffer, ms, light, false, true);
         return maxY;
     };
 

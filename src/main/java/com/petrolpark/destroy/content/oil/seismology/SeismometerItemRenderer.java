@@ -1,15 +1,16 @@
 package com.petrolpark.destroy.content.oil.seismology;
 
-import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.DestroyItems;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModel;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRenderer;
 import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
+
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import dev.engine_room.flywheel.lib.transform.PoseTransformStack;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.animation.AnimationTickHolder;
-
 import net.createmod.catnip.animation.LerpedFloat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -50,7 +51,7 @@ public class SeismometerItemRenderer extends CustomRenderedItemModelRenderer {
     protected void render(ItemStack stack, CustomRenderedItemModel model, PartialItemModelRenderer renderer, ItemDisplayContext transformType, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         float partialTicks = AnimationTickHolder.getPartialTicks();
         int ticksThroughAnimation = AnimationTickHolder.getTicks(true) % 32;
-        TransformStack msr = TransformStack.of(ms);
+        PoseTransformStack msr = TransformStack.of(ms);
 
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;

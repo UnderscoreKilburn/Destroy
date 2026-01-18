@@ -212,7 +212,7 @@ public class DestroyReactions {
     CELLULOSE_NITRATION = builder()
         .id("cellulose_nitration")
         .addReactant(DestroyMolecules.NITRONIUM)
-        .addSimpleItemReactant(DestroyItems.PAPER_PULP, 2f)
+        .addSimpleItemReactant(AllItems.PULP, 2f)
         .addProduct(DestroyMolecules.PROTON)
         .addProduct(DestroyMolecules.WATER) //TODO in future add oxalic acid side product
         .withResult(2f, PrecipitateReactionResult.of(DestroyItems.NITROCELLULOSE::asStack))

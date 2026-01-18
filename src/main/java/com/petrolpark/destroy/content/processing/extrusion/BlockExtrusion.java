@@ -2,9 +2,8 @@ package com.petrolpark.destroy.content.processing.extrusion;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.simibubi.create.AllMovementBehaviours;
-
 import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
+
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;

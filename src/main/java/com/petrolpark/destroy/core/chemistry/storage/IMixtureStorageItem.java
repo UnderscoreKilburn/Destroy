@@ -9,16 +9,14 @@ import javax.annotation.Nullable;
 import com.petrolpark.destroy.chemistry.legacy.ClientMixture;
 import com.petrolpark.destroy.chemistry.legacy.ReadOnlyMixture;
 import com.petrolpark.destroy.chemistry.minecraft.MixtureFluid;
-import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
 import com.petrolpark.destroy.core.chemistry.vat.VatControllerBlockEntity;
 import com.petrolpark.destroy.core.chemistry.vat.VatControllerBlockEntity.VatTankWrapper;
 import com.petrolpark.destroy.core.fluid.GeniusFluidTankBehaviour.GeniusFluidTank;
 import com.simibubi.create.content.fluids.tank.CreativeFluidTankBlockEntity.CreativeSmartFluidTank;
 import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.data.Iterate;
-import net.createmod.catnip.lang.Lang;
 
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

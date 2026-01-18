@@ -48,10 +48,9 @@ public class BubbleCapRenderer extends SmartBlockEntityRenderer<BubbleCapBlockEn
                 centerLevel = Math.max(0, totalLevel - (3 / 13f)) * (13 / 10f);
             };
 
-            FluidStack fs = visualTank.getRenderedFluid();
-            if (!bottom && bottomLevel > 0f) ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(fs, 4 / 16f, 0 / 16f, 4 / 16f, 12 / 16f, 0 / 16f + (bottomLevel * 3 / 16f), 12 / 16f, buffer, ms, light, true, true);
-            if (centerLevel > 0f) ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(fs, 3 / 16f, 3 / 16f, 3 / 16f, 13 / 16f, 3 / 16f + (centerLevel * 10 / 16f), 13 / 16f, buffer, ms, light, true, true);
-            if (!top && tolevel > 0f) ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(fs, 4 / 16f, 13 / 16f, 4 / 16f, 12 / 16f, 13 / 16f + (tolevel * 3 / 16f), 12 / 16f, buffer, ms, light, false, true);
+            if (!bottom && bottomLevel > 0f) ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(visualTank.getRenderedFluid(), 4 / 16f, 0 / 16f, 4 / 16f, 12 / 16f, 0 / 16f + (bottomLevel * 3 / 16f), 12 / 16f, buffer, ms, light, true, true);
+            if (centerLevel > 0f) ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(visualTank.getRenderedFluid(), 3 / 16f, 3 / 16f, 3 / 16f, 13 / 16f, 3 / 16f + (centerLevel * 10 / 16f), 13 / 16f, buffer, ms, light, true, true);
+            if (!top && tolevel > 0f) ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(visualTank.getRenderedFluid(), 4 / 16f, 13 / 16f, 4 / 16f, 12 / 16f, 13 / 16f + (tolevel * 3 / 16f), 12 / 16f, buffer, ms, light, false, true);
         };
     };
     

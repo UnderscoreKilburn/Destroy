@@ -17,7 +17,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistry;
 
-
 public class GasParticleData implements ParticleOptions, ICustomParticleDataWithSprite<GasParticleData> {
 
     private ParticleType<GasParticleData> type; // What type of particle this is (Distillation, etc.)
@@ -114,6 +113,7 @@ public class GasParticleData implements ParticleOptions, ICustomParticleDataWith
     };
 
     @Override
+    @SuppressWarnings("rawtypes")
     public String writeToString() {
         RegisteredObjectsHelper<IForgeRegistry> o = new ForgeRegisteredObjectsHelper();
         return o.getKeyOrThrow(type) + " " + o.getKeyOrThrow(fluid.getFluid());

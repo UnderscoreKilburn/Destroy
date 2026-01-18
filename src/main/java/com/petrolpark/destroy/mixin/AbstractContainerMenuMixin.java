@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
+import com.petrolpark.destroy.MoveToPetrolparkLibrary;
 import com.petrolpark.destroy.core.extendedinventory.ExtendedInventory.DelayedSlotPopulation;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
@@ -16,6 +17,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
+@MoveToPetrolparkLibrary
 @Mixin(AbstractContainerMenu.class)
 public abstract class AbstractContainerMenuMixin implements DelayedSlotPopulation {
 
@@ -61,7 +63,4 @@ public abstract class AbstractContainerMenuMixin implements DelayedSlotPopulatio
         carried = pCarried;
         stateId = pStateId;
     };
-
-
-
 };

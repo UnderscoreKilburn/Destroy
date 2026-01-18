@@ -1,5 +1,7 @@
 package com.petrolpark.destroy.core.chemistry.vat;
 
+import static com.petrolpark.compat.create.CreateClient.OUTLINER;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -10,7 +12,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.petrolpark.destroy.core.chemistry.vat.material.VatMaterial;
-import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.contraptions.StructureTransform;
 
 import net.createmod.catnip.data.Pair;
@@ -30,8 +31,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import static com.petrolpark.compat.create.CreateClient.OUTLINER;
 
 /**
  * A physical Vat and the Blocks that make it up. Handling of the contents of the Vat and the actual chemistry

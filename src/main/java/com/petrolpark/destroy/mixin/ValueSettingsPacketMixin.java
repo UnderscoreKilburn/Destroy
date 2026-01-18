@@ -1,10 +1,7 @@
 package com.petrolpark.destroy.mixin;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.phys.BlockHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -13,12 +10,14 @@ import com.petrolpark.destroy.mixin.accessor.ValueSettingsPacketAccessor;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBehaviour;
-import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsPacket;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBehaviour.ValueSettings;
+import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsPacket;
 
 import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
 
 @Mixin(value = ValueSettingsPacket.class, remap = false)
 public class ValueSettingsPacketMixin {

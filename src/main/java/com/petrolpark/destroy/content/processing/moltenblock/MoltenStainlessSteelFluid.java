@@ -2,7 +2,6 @@ package com.petrolpark.destroy.content.processing.moltenblock;
 
 import com.petrolpark.destroy.DestroyBlocks;
 import com.petrolpark.destroy.DestroyItems;
-import com.petrolpark.destroy.chemistry.minecraft.MixtureFluid;
 import com.petrolpark.fluid.ICustomBlockStateFluid;
 import com.simibubi.create.content.fluids.VirtualFluid;
 

@@ -30,9 +30,9 @@ import com.petrolpark.destroy.core.item.tooltip.TempramentalItemDescription;
 import com.simibubi.create.content.equipment.goggles.GogglesItem;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
-import net.createmod.catnip.lang.FontHelper.Palette;
 import com.simibubi.create.foundation.item.TooltipModifier;
 
+import net.createmod.catnip.lang.FontHelper.Palette;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -44,6 +44,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.RegisterEvent;
 
 @Mod(Destroy.MOD_ID)
 public class Destroy {
@@ -62,7 +63,7 @@ public class Destroy {
     public static final CircuitPatternHandler CIRCUIT_PATTERN_HANDLER = new CircuitPatternHandler();
 
     public static ResourceLocation asResource(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     };
 
     // Really early stuff

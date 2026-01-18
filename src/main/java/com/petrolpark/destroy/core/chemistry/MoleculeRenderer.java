@@ -1,14 +1,38 @@
 package com.petrolpark.destroy.core.chemistry;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
+import org.joml.Math;
+import org.joml.Quaternionf;
+
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.petrolpark.destroy.chemistry.legacy.LegacyAtom;
+import com.petrolpark.destroy.chemistry.legacy.LegacyBond.BondType;
+import com.petrolpark.destroy.chemistry.legacy.LegacyMolecularStructure.Topology.SideChainInformation;
+import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;
+import com.petrolpark.destroy.chemistry.serializer.Branch;
+import com.petrolpark.destroy.chemistry.serializer.Edge;
+import com.petrolpark.destroy.chemistry.serializer.Node;
+import com.petrolpark.util.MathsHelper;
+
+import dev.engine_room.flywheel.lib.transform.TransformStack;
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.createmod.catnip.data.Pair;
+import net.createmod.catnip.gui.ILightingSettings;
 import net.createmod.catnip.gui.UIRenderHelper;
+import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.ponder.render.VirtualRenderHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -20,31 +44,11 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.RenderTypeGroup;
 import net.minecraftforge.client.model.IModelBuilder;
 import net.minecraftforge.client.model.pipeline.QuadBakingVertexConsumer;
 import net.minecraftforge.client.textures.UnitTextureAtlasSprite;
-import dev.engine_room.flywheel.lib.transform.TransformStack;
-import net.createmod.catnip.animation.AnimationTickHolder;
-import net.createmod.catnip.data.Pair;
-import net.createmod.catnip.gui.ILightingSettings;
-import net.createmod.catnip.gui.element.GuiGameElement;
-import org.joml.Math;
-import org.joml.Quaternionf;
-
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.petrolpark.destroy.chemistry.legacy.LegacyAtom;
-import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;
-import com.petrolpark.destroy.chemistry.legacy.LegacyBond.BondType;
-import com.petrolpark.destroy.chemistry.legacy.LegacyMolecularStructure.Topology.SideChainInformation;
-import com.petrolpark.destroy.chemistry.serializer.Branch;
-import com.petrolpark.destroy.chemistry.serializer.Edge;
-import com.petrolpark.destroy.chemistry.serializer.Node;
-import com.petrolpark.util.MathsHelper;
-
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.world.phys.Vec3;
 
 public class MoleculeRenderer {
 
@@ -132,7 +136,7 @@ public class MoleculeRenderer {
         };
 
         // Bake all rendered objects into a single model
-        IModelBuilder builder = IModelBuilder.of(false, true, true, ItemTransforms.NO_TRANSFORMS, ItemOverrides.EMPTY,
+        IModelBuilder<?> builder = IModelBuilder.of(false, true, true, ItemTransforms.NO_TRANSFORMS, ItemOverrides.EMPTY,
             UnitTextureAtlasSprite.INSTANCE, RenderTypeGroup.EMPTY);
         QuadBakingVertexConsumer buffer = new QuadBakingVertexConsumer(builder::addUnculledFace);
         buffer.setTintIndex(-1);

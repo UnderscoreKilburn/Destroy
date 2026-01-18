@@ -11,7 +11,6 @@ import com.petrolpark.destroy.core.chemistry.storage.ISpecialMixtureContainerBlo
 import com.petrolpark.destroy.core.chemistry.vat.VatSideBlockEntity.DisplayType;
 import com.petrolpark.destroy.core.chemistry.vat.observation.RedstoneMonitorVatSideScreen;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.api.schematic.requirement.SpecialBlockEntityItemRequirement;
 import com.simibubi.create.api.schematic.requirement.SpecialBlockItemRequirement;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import com.simibubi.create.content.decoration.copycat.CopycatBlockEntity;

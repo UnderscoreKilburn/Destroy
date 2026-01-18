@@ -16,9 +16,9 @@ import net.minecraft.world.level.ItemLike;
 public class DestroyPonderTags {
 
     public static final ResourceLocation
-    CHEMISTRY = Destroy.asResource("chemistry"),
-    DESTROY = Destroy.asResource("destroy"),
-    VAT_SIDE_BLOCKS = Destroy.asResource("vat_side_blocks");
+        CHEMISTRY = Destroy.asResource("chemistry"),
+        DESTROY = Destroy.asResource("destroy"),
+        VAT_SIDE_BLOCKS = Destroy.asResource("vat_side_blocks");
 
     private static PonderTagRegistrationHelper<RegistryEntry<?>> HELPER = null;
     private static PonderTagRegistrationHelper<ItemLike> ITEM_HELPER = null;
@@ -28,19 +28,19 @@ public class DestroyPonderTags {
         ITEM_HELPER = helper.withKeyFunction(CatnipServices.REGISTRIES::getKeyOrThrow);
 
         helper.registerTag(CHEMISTRY)
-                .addToIndex()
-                .item(DestroyItems.TEST_TUBE, true, false)
-                .register();
+            .addToIndex()
+            .item(DestroyItems.TEST_TUBE, true, false)
+            .register();
 
         helper.registerTag(DESTROY)
-                .addToIndex()
-                .item(DestroyItems.LOGO)
-                .register();
+            .addToIndex()
+            .item(DestroyItems.LOGO)
+            .register();
 
         helper.registerTag(VAT_SIDE_BLOCKS)
-                .addToIndex()
-                .item(DestroyBlocks.VAT_CONTROLLER, true, false)
-                .register();
+            .addToIndex()
+            .item(DestroyBlocks.VAT_CONTROLLER, true, false)
+            .register();
 
         HELPER.addToTag(CHEMISTRY)
             .add(AllBlocks.BASIN)
@@ -130,5 +130,4 @@ public class DestroyPonderTags {
         MultiTagBuilder.Tag<ItemLike> vatSideBlocksTagBuilder = ITEM_HELPER.addToTag(VAT_SIDE_BLOCKS);
         VatMaterial.BLOCK_MATERIALS.keySet().forEach(blockIngredient -> blockIngredient.getDisplayedItemStacks().forEach(stack -> vatSideBlocksTagBuilder.add(stack.getItem())));
     }
-    
 }

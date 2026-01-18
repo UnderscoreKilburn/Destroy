@@ -1,5 +1,7 @@
 package com.petrolpark.destroy.compat.jei.animation;
 
+import static com.mojang.math.Constants.PI;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -8,18 +10,15 @@ import com.petrolpark.destroy.content.processing.glassblowing.BlowpipeBlock;
 import com.petrolpark.destroy.content.processing.glassblowing.BlowpipeBlockEntityRenderer;
 import com.petrolpark.destroy.content.processing.glassblowing.GlassblowingRecipe;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
+
 import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.animation.AnimationTickHolder;
-
 import net.createmod.catnip.gui.UIRenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.util.Brightness;
 import net.minecraftforge.fluids.FluidStack;
-
-import static com.mojang.math.Constants.PI;
 
 public class AnimatedBlowpipe extends AnimatedKinetics {
 

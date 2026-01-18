@@ -4,10 +4,10 @@ package com.petrolpark.destroy.config;
 
 import net.createmod.catnip.config.ConfigBase;
 
-public class DestroyKinetics extends ConfigBase {
+public class DestroyKineticsConfigs extends ConfigBase {
     @Override
     public String getName() {
         return "kinetics";
     }
-    public final DestroyStress stressValues = nested(1, DestroyStress::new, "Fine tune the kinetic stats of individual components");
+    public final DestroyStressConfigs stressValues = nested(1, DestroyStressConfigs::new, "Fine tune the kinetic stats of individual components");
 }

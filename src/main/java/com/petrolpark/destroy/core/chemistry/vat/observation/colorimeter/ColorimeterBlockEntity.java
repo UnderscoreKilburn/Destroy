@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.DestroyAdvancementTrigger;
 import com.petrolpark.destroy.DestroyBlockEntityTypes;
 import com.petrolpark.destroy.DestroyFluids;
@@ -18,7 +17,6 @@ import com.petrolpark.destroy.core.chemistry.vat.material.VatMaterial;
 import com.petrolpark.destroy.core.chemistry.vat.observation.RedstoneQuantityMonitorBehaviour;
 import com.petrolpark.destroy.core.data.advancement.DestroyAdvancementBehaviour;
 import com.simibubi.create.api.behaviour.display.DisplaySource;
-import com.simibubi.create.api.event.BlockEntityBehaviourEvent;
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
 import com.simibubi.create.content.redstone.displayLink.target.DisplayTargetStats;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
@@ -32,7 +30,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 
 public class ColorimeterBlockEntity extends SmartBlockEntity {

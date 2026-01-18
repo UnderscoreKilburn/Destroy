@@ -2,6 +2,7 @@ package com.petrolpark.destroy.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.petrolpark.destroy.MoveToPetrolparkLibrary;
 import com.petrolpark.destroy.core.block.IPickUpPutDownBlock;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerGameMode.class)
+@MoveToPetrolparkLibrary
 public class ServerPlayerGameModeMixin {
     private static ThreadLocal<Boolean> currentItemStackIgnoresCreative = new ThreadLocal<>();
 

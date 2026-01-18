@@ -11,11 +11,10 @@ import com.petrolpark.destroy.client.DestroyLang;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.recipe.RecipeFinder;
 import com.simibubi.create.foundation.utility.CreateLang;
+
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.gui.AbstractSimiScreen;
 import net.createmod.catnip.gui.widget.AbstractSimiWidget;
-import net.createmod.catnip.lang.Lang;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;

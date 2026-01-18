@@ -7,8 +7,6 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
-import com.petrolpark.destroy.Destroy;
-import com.petrolpark.destroy.core.chemistry.vat.observation.colorimeter.ColorimeterBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;

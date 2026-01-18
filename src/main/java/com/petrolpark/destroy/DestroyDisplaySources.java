@@ -1,20 +1,13 @@
 package com.petrolpark.destroy;
 
+import static com.petrolpark.destroy.Destroy.REGISTRATE;
+
 import com.petrolpark.destroy.content.processing.centrifuge.CentrifugeBlockEntity;
 import com.petrolpark.destroy.content.processing.distillation.BubbleCapBlockEntity;
-import com.petrolpark.destroy.core.chemistry.MixtureContentsDisplaySource;
 import com.petrolpark.destroy.core.chemistry.vat.VatControllerBlockEntity;
 import com.petrolpark.destroy.core.chemistry.vat.observation.colorimeter.ColorimeterBlockEntity;
 import com.petrolpark.destroy.core.pollution.pollutometer.PollutometerDisplaySource;
-import com.simibubi.create.api.behaviour.display.DisplaySource;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import net.minecraft.Util;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-
-import static com.petrolpark.destroy.Destroy.REGISTRATE;
 
 public class DestroyDisplaySources {
     public static final RegistryEntry<VatControllerBlockEntity.VatDisplaySource> VAT_CONTROLLER_ALL = REGISTRATE.displaySource("vat_controller_all_contents", VatControllerBlockEntity.VatDisplaySource::createAllSource)

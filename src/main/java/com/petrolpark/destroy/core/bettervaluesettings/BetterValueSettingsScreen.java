@@ -5,15 +5,14 @@ import java.util.function.Consumer;
 import com.petrolpark.destroy.mixin.accessor.ValueSettingsScreenAccessor;
 import com.simibubi.create.AllKeys;
 import com.simibubi.create.AllPackets;
+import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBehaviour.ValueSettings;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBoard;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsPacket;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsScreen;
-import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBehaviour.ValueSettings;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.phys.BlockHitResult;
 
 /**
  * An improved {@link com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsScreen screen for setting values} in Value Boxes.

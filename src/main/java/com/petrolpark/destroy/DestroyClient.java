@@ -1,10 +1,13 @@
 package com.petrolpark.destroy;
 
-import com.petrolpark.destroy.client.*;
+import com.petrolpark.destroy.client.DestroyItemDisplayContexts;
+import com.petrolpark.destroy.client.DestroyPartials;
+import com.petrolpark.destroy.client.DestroyParticleTypes;
+import com.petrolpark.destroy.client.DestroyPonderPlugin;
+import com.petrolpark.destroy.client.DestroySpriteSource;
+import com.petrolpark.destroy.client.FogHandler;
 import com.petrolpark.destroy.core.extendedinventory.ExtendedInventoryClientHandler;
 
-import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsClient;
-import com.simibubi.create.foundation.ponder.CreatePonderPlugin;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;

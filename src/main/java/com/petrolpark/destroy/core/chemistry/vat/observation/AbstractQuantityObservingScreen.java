@@ -3,7 +3,6 @@ package com.petrolpark.destroy.core.chemistry.vat.observation;
 import java.util.List;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.petrolpark.destroy.DestroyMessages;
 import com.petrolpark.destroy.client.DestroyGuiTextures;
 import com.petrolpark.destroy.client.DestroyLang;
 import com.simibubi.create.foundation.gui.AllGuiTextures;

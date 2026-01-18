@@ -12,11 +12,9 @@ import com.petrolpark.destroy.config.DestroyAllConfigs;
 import com.petrolpark.destroy.core.chemistry.vat.material.VatMaterial;
 import com.petrolpark.destroy.core.recipe.ingredient.fluid.MixtureFluidIngredient;
 import com.petrolpark.destroy.core.recipe.ingredient.fluid.MixtureFluidIngredientSubType;
-import com.simibubi.create.Create;
 import com.simibubi.create.foundation.item.TooltipHelper;
-
 import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.lang.FontHelper;
+
 import net.createmod.catnip.lang.FontHelper.Palette;
 import net.createmod.catnip.lang.Lang;
 import net.createmod.catnip.lang.LangBuilder;

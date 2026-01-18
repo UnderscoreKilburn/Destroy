@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.DestroyBlockEntityTypes;
 import com.petrolpark.destroy.DestroyFluids;
 import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;
@@ -14,15 +13,12 @@ import com.petrolpark.destroy.core.chemistry.storage.IMixtureStorageItem;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.content.redstone.thresholdSwitch.ThresholdSwitchBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
 
 import net.createmod.catnip.gui.ScreenOpener;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;

@@ -2,14 +2,9 @@ package com.petrolpark.destroy.content.processing.distillation;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
-import com.petrolpark.destroy.core.chemistry.vat.VatControllerBlockEntity;
-import com.petrolpark.destroy.core.chemistry.vat.VatSideBlockEntity;
-import net.createmod.catnip.math.VecHelper;
-import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,8 +12,8 @@ import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.DestroyAdvancementTrigger;
 import com.petrolpark.destroy.DestroySoundEvents;
 import com.petrolpark.destroy.client.DestroyLang;
-import com.petrolpark.destroy.client.DestroyParticleTypes;
 import com.petrolpark.destroy.client.DestroyLang.TemperatureUnit;
+import com.petrolpark.destroy.client.DestroyParticleTypes;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
 import com.petrolpark.destroy.core.block.entity.IDirectionalOutputFluidBlockEntity;
 import com.petrolpark.destroy.core.block.entity.IHaveLabGoggleInformation;
@@ -36,12 +31,14 @@ import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTank
 import com.simibubi.create.foundation.fluid.CombinedTankWrapper;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 
+import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;

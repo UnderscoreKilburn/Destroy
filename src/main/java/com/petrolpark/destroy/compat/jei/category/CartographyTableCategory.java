@@ -8,7 +8,6 @@ import com.petrolpark.destroy.DestroyItems;
 import com.petrolpark.destroy.client.DestroyLang;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.lang.Lang;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;

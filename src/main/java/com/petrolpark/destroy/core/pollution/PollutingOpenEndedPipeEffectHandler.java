@@ -7,12 +7,10 @@ import com.petrolpark.destroy.DestroyMessages;
 import com.petrolpark.destroy.core.fluid.gasparticle.EvaporatingFluidS2CPacket;
 import com.petrolpark.destroy.core.pollution.Pollution.PollutionType;
 import com.simibubi.create.api.effect.OpenPipeEffectHandler;
-import com.simibubi.create.content.fluids.OpenEndedPipe;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidStack;
 
 public class PollutingOpenEndedPipeEffectHandler implements OpenPipeEffectHandler {

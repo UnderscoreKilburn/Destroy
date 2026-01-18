@@ -25,20 +25,17 @@ import com.simibubi.create.AllItems;
 import com.simibubi.create.content.kinetics.mixer.MechanicalMixerBlockEntity;
 import com.simibubi.create.content.redstone.nixieTube.NixieTubeBlockEntity;
 import com.simibubi.create.content.redstone.thresholdSwitch.ThresholdSwitchBlock;
-
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
+
 import net.createmod.catnip.math.Pointing;
 import net.createmod.catnip.math.VecHelper;
 import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.element.EntityElement;
 import net.createmod.ponder.api.element.WorldSectionElement;
-import net.createmod.ponder.api.scene.PonderStoryBoard;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
-import net.createmod.ponder.foundation.PonderStoryBoardEntry;
-import net.createmod.ponder.foundation.element.InputWindowElement;
 import net.createmod.ponder.foundation.instruction.FadeOutOfSceneInstruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -362,7 +359,7 @@ public class ChemistryPonderScenes {
             .text("This text is defined in a language file.")
             .pointAt(util.vector().blockSurface(util.grid().at(2, 4, 2), Direction.WEST));
         scene.idle(20);
-        ElementLink<EntityElement> iodine = scene.world().createItemEntity(util.vector().centerOf(2, 6, 2), Vec3.ZERO, DestroyItems.PAPER_PULP.asStack());
+        ElementLink<EntityElement> iodine = scene.world().createItemEntity(util.vector().centerOf(2, 6, 2), Vec3.ZERO, AllItems.PULP.asStack());
         scene.idle(20);
         scene.world().modifyEntity(iodine, Entity::kill);
         scene.idle(30);

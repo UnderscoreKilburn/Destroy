@@ -15,7 +15,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class GeniusFluidTankBehaviour extends SmartFluidTankBehaviour {

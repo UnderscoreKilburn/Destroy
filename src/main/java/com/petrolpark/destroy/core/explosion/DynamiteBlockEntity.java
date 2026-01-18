@@ -1,5 +1,7 @@
 package com.petrolpark.destroy.core.explosion;
 
+import static com.petrolpark.compat.create.CreateClient.OUTLINER;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,12 +9,11 @@ import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
 import com.petrolpark.destroy.core.bettervaluesettings.SidedScrollValueBehaviour;
 import com.petrolpark.destroy.core.block.entity.ISpecialWhenHoveredBlockEntity;
-import com.simibubi.create.CreateClient;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
-import net.createmod.catnip.data.Pair;
 
+import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -27,8 +28,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import static com.petrolpark.compat.create.CreateClient.OUTLINER;
 
 public class DynamiteBlockEntity extends SmartBlockEntity implements ISpecialWhenHoveredBlockEntity {
 

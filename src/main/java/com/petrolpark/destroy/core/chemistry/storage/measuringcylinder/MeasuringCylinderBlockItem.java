@@ -3,11 +3,6 @@ package com.petrolpark.destroy.core.chemistry.storage.measuringcylinder;
 import java.util.Collections;
 import java.util.function.Consumer;
 
-import com.petrolpark.destroy.core.bettervaluesettings.BetterValueSettingsBehaviour;
-import com.petrolpark.destroy.core.bettervaluesettings.SidedScrollValueBehaviour;
-import com.simibubi.create.foundation.blockEntity.behaviour.*;
-import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.gui.ScreenOpener;
 import org.joml.Vector3f;
 
 import com.petrolpark.destroy.client.DestroyLang;
@@ -18,10 +13,13 @@ import com.petrolpark.destroy.core.chemistry.storage.PlaceableMixtureTankItem;
 import com.petrolpark.destroy.core.chemistry.storage.SimpleMixtureTankItemRenderer;
 import com.petrolpark.destroy.core.chemistry.storage.SimpleMixtureTankRenderer.ISimpleMixtureTankRenderInformation;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBehaviour.ValueSettings;
+import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBoard;
+import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsFormatter;
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
-import net.createmod.catnip.data.Couple;
-import net.createmod.catnip.lang.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.createmod.catnip.data.Couple;
+import net.createmod.catnip.gui.ScreenOpener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;

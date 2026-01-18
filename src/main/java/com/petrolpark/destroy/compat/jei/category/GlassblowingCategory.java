@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
 import com.petrolpark.destroy.compat.jei.animation.AnimatedBlowpipe;
 import com.petrolpark.destroy.content.processing.glassblowing.GlassblowingRecipe;
-import com.petrolpark.destroy.mixin.compat.jei.CreateRecipeCategoryAccessor;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
 import mezz.jei.api.forge.ForgeTypes;
@@ -14,7 +13,6 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.gui.GuiGraphics;
-
 
 public class GlassblowingCategory extends PetrolparkRecipeCategory<GlassblowingRecipe> {
 
@@ -27,7 +25,8 @@ public class GlassblowingCategory extends PetrolparkRecipeCategory<GlassblowingR
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, GlassblowingRecipe recipe, IFocusGroup focuses) {
-        addFluidSlot(builder, 2, 32, recipe.getFluidIngredients().get(0));
+        addFluidSlot(builder, 2, 32, recipe.getFluidIngredients().get(0))
+            .setSlotName("input");
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 107, 32)
             .setBackground(getRenderedSlot(), -1, -1)

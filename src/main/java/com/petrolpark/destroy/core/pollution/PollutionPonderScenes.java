@@ -17,8 +17,8 @@ import com.petrolpark.destroy.core.fluid.gasparticle.GasParticleData;
 import com.petrolpark.destroy.core.pollution.Pollution.PollutionType;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.kinetics.mixer.MechanicalMixerBlockEntity;
-
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
+
 import net.createmod.catnip.math.Pointing;
 import net.createmod.catnip.theme.Color;
 import net.createmod.ponder.api.PonderPalette;
@@ -27,7 +27,6 @@ import net.createmod.ponder.api.element.EntityElement;
 import net.createmod.ponder.api.element.WorldSectionElement;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
-import net.createmod.ponder.foundation.element.InputWindowElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;

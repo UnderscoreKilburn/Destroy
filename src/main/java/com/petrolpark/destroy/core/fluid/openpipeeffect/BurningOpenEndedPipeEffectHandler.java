@@ -1,8 +1,7 @@
 package com.petrolpark.destroy.core.fluid.openpipeeffect;
 
-import com.simibubi.create.content.fluids.OpenEndedPipe;
-
 import com.simibubi.create.impl.effect.LavaEffectHandler;
+
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;

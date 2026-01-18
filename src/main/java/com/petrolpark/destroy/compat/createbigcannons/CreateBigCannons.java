@@ -5,7 +5,6 @@ import com.petrolpark.destroy.compat.createbigcannons.block.entity.CreateBigCann
 import com.petrolpark.destroy.compat.createbigcannons.entity.CreateBigCannonsEntityTypes;
 import com.petrolpark.destroy.compat.createbigcannons.event.CreateBigCannonsClientModEvents;
 import com.petrolpark.destroy.compat.createbigcannons.ponder.CreateBigCannonsPonderPlugin;
-import com.petrolpark.destroy.compat.createbigcannons.ponder.CreateBigCannonsPonderScenes;
 
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraftforge.api.distmarker.Dist;

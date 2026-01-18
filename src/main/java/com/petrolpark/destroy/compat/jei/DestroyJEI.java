@@ -74,7 +74,6 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.forge.ForgeTypes;
-import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.helpers.IPlatformFluidHelper;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
@@ -86,9 +85,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
-import net.minecraft.client.Minecraft;
 import net.createmod.catnip.data.Pair;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -451,6 +448,8 @@ public class DestroyJEI implements IModPlugin {
         return repairables.stream().map(pair -> makeRepairRecipe(registration, new ItemStack(pair.getFirst()), pair.getSecond())).toList();
     };
 
+    static int anvilRecipeId = 0;
+
     public static IJeiAnvilRecipe makeRepairRecipe(IRecipeRegistration registration, ItemStack input, Ingredient repairItem) {
         ItemStack halfDurability = input.copy();
         halfDurability.setDamageValue(halfDurability.getMaxDamage() / 2);
@@ -460,7 +459,8 @@ public class DestroyJEI implements IModPlugin {
         return registration.getVanillaRecipeFactory().createAnvilRecipe(
             Collections.singletonList(halfDurability),
             Arrays.asList(repairItem.getItems()),
-            Collections.singletonList(threeQuarterDurability)
+            Collections.singletonList(threeQuarterDurability),
+            Destroy.asResource(input.getDescriptionId()+"_repair_"+anvilRecipeId++)
         );
     };
 };

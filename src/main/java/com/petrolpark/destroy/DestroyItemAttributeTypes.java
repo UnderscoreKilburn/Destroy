@@ -3,6 +3,7 @@ package com.petrolpark.destroy;
 import com.petrolpark.destroy.content.processing.trypolithography.CircuitPatternItemAttribute;
 import com.simibubi.create.api.registry.CreateBuiltInRegistries;
 import com.simibubi.create.content.logistics.item.filter.attribute.ItemAttributeType;
+
 import net.minecraft.core.Registry;
 
 public abstract class DestroyItemAttributeTypes {

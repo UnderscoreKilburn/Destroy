@@ -1,13 +1,12 @@
 package com.petrolpark.destroy.content.oil.pumpjack;
 
+import static com.petrolpark.compat.create.CreateClient.OUTLINER;
+
 import java.util.Set;
 
-import com.petrolpark.destroy.client.DestroyLang;
-import com.simibubi.create.CreateClient;
 import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.data.Pair;
-import net.createmod.catnip.lang.Lang;
 
+import net.createmod.catnip.data.Pair;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,8 +18,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
-
-import static com.petrolpark.compat.create.CreateClient.OUTLINER;
 
 public class PumpjackBlockItem extends BlockItem {
 

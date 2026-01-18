@@ -2,20 +2,20 @@ package com.petrolpark.destroy.core.chemistry.vat;
 
 import java.util.Optional;
 
+import net.createmod.catnip.platform.ForgeCatnipServices;
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.petrolpark.destroy.DestroyBlockEntityTypes;
-import com.petrolpark.destroy.DestroyFluids;
-import com.petrolpark.destroy.chemistry.legacy.ReadOnlyMixture;
 import com.petrolpark.destroy.chemistry.minecraft.MixtureFluid;
 import com.petrolpark.destroy.client.DestroyPartials;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
 import com.simibubi.create.foundation.item.SmartInventory;
-import com.simibubi.create.foundation.render.RenderTypes;
+
 import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.animation.AnimationTickHolder;
-
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.math.VecHelper;
 import net.createmod.catnip.platform.ForgeCatnipServices;
@@ -33,7 +33,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 
 public class VatRenderer extends SafeBlockEntityRenderer<VatControllerBlockEntity> {
 

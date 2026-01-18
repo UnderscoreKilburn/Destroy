@@ -1,21 +1,26 @@
 package com.petrolpark.destroy.compat.jei.category;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import com.ibm.icu.text.DecimalFormat;
-import com.petrolpark.destroy.chemistry.legacy.*;
-import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
-import mezz.jei.api.gui.drawable.IDrawable;
-import net.minecraft.client.gui.Font;
-import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Vector2i;
 
+import com.ibm.icu.text.DecimalFormat;
 import com.petrolpark.client.rendering.PetrolparkGuiTexture;
 import com.petrolpark.compat.jei.JEITextureDrawable;
 import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.DestroyItems;
+import com.petrolpark.destroy.chemistry.legacy.IItemReactant;
+import com.petrolpark.destroy.chemistry.legacy.LegacyAtom;
+import com.petrolpark.destroy.chemistry.legacy.LegacyElement;
+import com.petrolpark.destroy.chemistry.legacy.LegacyReaction;
+import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;
 import com.petrolpark.destroy.chemistry.legacy.reactionresult.PrecipitateReactionResult;
 import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.client.stackedtextbox.AbstractStackedTextBox;
@@ -26,18 +31,22 @@ import com.petrolpark.destroy.config.DestroyAllConfigs;
 import com.petrolpark.destroy.core.chemistry.recipe.ReactionRecipe;
 import com.petrolpark.destroy.core.chemistry.recipe.ReactionRecipe.GenericReactionRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-import net.createmod.catnip.lang.FontHelper.Palette;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.createmod.catnip.lang.FontHelper.Palette;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 
 public class ReactionCategory<T extends ReactionRecipe> extends HoverableTextCategory<T> {
 

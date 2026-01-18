@@ -1,26 +1,21 @@
 package com.petrolpark.destroy.compat.jei.category;
 
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
 import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.core.chemistry.recipe.MixtureConversionRecipe;
-import com.petrolpark.destroy.mixin.compat.jei.CreateRecipeCategoryAccessor;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.item.TooltipHelper;
-import net.createmod.catnip.lang.FontHelper.Palette;
 
-import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
+import net.createmod.catnip.lang.FontHelper.Palette;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.fluids.FluidStack;
-
 
 public class MixtureConversionCategory extends PetrolparkRecipeCategory<MixtureConversionRecipe> {
 
@@ -34,7 +29,6 @@ public class MixtureConversionCategory extends PetrolparkRecipeCategory<MixtureC
         addFluidSlot(builder, 107, 2, recipe.getFluidResults().get(0));
     };
     
-    @SuppressWarnings("removal")
     @Override
     public List<Component> getTooltipStrings(MixtureConversionRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         if (mouseX > 20 && mouseX < 105) {

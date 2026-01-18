@@ -3,13 +3,13 @@ package com.petrolpark.destroy.mixin;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.petrolpark.destroy.DestroyFluids;
 import com.petrolpark.destroy.mixin.accessor.FluidNetworkAccessor;
 import com.petrolpark.destroy.mixin.accessor.PipeConnectionAccessor;
@@ -54,24 +54,24 @@ public class PipeConnectionMixin {
      * these change a lot. We don't want to try restarting the flow every tick.
      */
     @WrapOperation(
-        method= "manageFlows(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraftforge/fluids/FluidStack;Ljava/util/function/Predicate;)Z",
+        method="Lcom/simibubi/create/content/fluids/PipeConnection;manageFlows(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraftforge/fluids/FluidStack;Ljava/util/function/Predicate;)Z",
         at=@At(
-            value="INVOKE",
-            target="Lnet/minecraftforge/fluids/FluidStack;isFluidEqual(Lnet/minecraftforge/fluids/FluidStack;)Z"
+                value="INVOKE",
+                target="Lnet/minecraftforge/fluids/FluidStack;isFluidEqual(Lnet/minecraftforge/fluids/FluidStack;)Z"
         ),
         remap=false
     )
     private boolean considerMixturesEqual(FluidStack fluid, FluidStack other, Operation<Boolean> original) {
-        if(original.call(fluid, other))
+        if (original.call(fluid, other))
             return true;
-        else if(DestroyFluids.isMixture(fluid) && DestroyFluids.isMixture(other)) {
+        else if (DestroyFluids.isMixture(fluid) && DestroyFluids.isMixture(other)) {
             ((PipeConnectionAccessor)this).getFlow().get().fluid = fluid;
             if(retainedNetwork.get().isPresent())
                 ((FluidNetworkAccessor)retainedNetwork.get().get()).setFluid(fluid);
             shouldUpdateData.set(true);
             return true;
-        }
+        };
 
         return false;
-    }
+    };
 };

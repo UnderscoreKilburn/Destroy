@@ -6,9 +6,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import com.petrolpark.destroy.content.tool.swissarmyknife.SwissArmyKnifeItem.Tool;
-
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModel;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRenderer;
 import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
@@ -18,7 +16,6 @@ import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;

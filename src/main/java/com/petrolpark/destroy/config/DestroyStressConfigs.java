@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
-public class DestroyStress extends ConfigBase {
+public class DestroyStressConfigs extends ConfigBase {
 
 
     // bump this version to reset configured values.

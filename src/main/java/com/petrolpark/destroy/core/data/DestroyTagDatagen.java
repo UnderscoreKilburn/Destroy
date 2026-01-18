@@ -61,9 +61,6 @@ public class DestroyTagDatagen {
             .addTag(DestroyTags.Items.SECONDARY_EXPLOSIVES.tag);
         prov.tag(DestroyTags.Items.TEST_TUBE_RACK_STORABLE.tag)
             .addTag(DestroyTags.Items.SYRINGES.tag);
-        prov.tag(DestroyTags.Items.PAPER_PULPABLE.tag)
-            .add(Items.PAPER, Items.SUGAR)
-            .addTag(ItemTags.LOGS);
 
         // Minecraft Tags
         prov.tag(ItemTags.TRIM_MATERIALS)

@@ -29,7 +29,7 @@ public class MixedExplosiveEntityRenderer extends PrimedBombEntityRenderer<Mixed
             .color(entity.color);
 
         SuperByteBuffer label = CachedBuffers.partial(DestroyPartials.CUSTOM_EXPLOSIVE_MIX_OVERLAY, state)
-            .center()
+            .disableDiffuse()
             .light(light);
 
         if (fuse / 5 % 2 == 0) {

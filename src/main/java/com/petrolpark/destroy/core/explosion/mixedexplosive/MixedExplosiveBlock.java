@@ -33,6 +33,9 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkHooks;
 
 public class MixedExplosiveBlock extends PrimeableBombBlock<MixedExplosiveEntity> implements IBE<MixedExplosiveBlockEntity> {
@@ -107,11 +110,15 @@ public class MixedExplosiveBlock extends PrimeableBombBlock<MixedExplosiveEntity
             return be.tryDye(stack, pHit, level, pos, player);
         });
         if (result != InteractionResult.PASS) return result;
-        if (!lighter && !level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
-            withBlockEntityDo(level, pos, be -> NetworkHooks.openScreen(serverPlayer, be, be::writeToBuffer));
-            return InteractionResult.sidedSuccess(level.isClientSide());
-        };
-        return InteractionResult.PASS;
+
+        if (lighter || player instanceof FakePlayer)
+            return InteractionResult.PASS;
+        if (level.isClientSide)
+            return InteractionResult.SUCCESS;
+
+        withBlockEntityDo(level, pos,
+            be -> NetworkHooks.openScreen((ServerPlayer) player, be, be::writeToBuffer));
+        return InteractionResult.SUCCESS;
     };
 
     @Override

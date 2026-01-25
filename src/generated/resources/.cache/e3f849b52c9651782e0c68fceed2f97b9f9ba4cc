@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-17T05:58:17.0600481	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2026-01-22T01:29:27.829438	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 9583bbca7c5e03f2ebe6d1611730c81873bed9d4 assets/destroy/blockstates/aging_barrel.json
 391a63a1be808a7eaeb2ac4bf47aac0c1d2a1e05 assets/destroy/blockstates/anfo_block.json
 a0487e31c10af4a6745a8cad3e9d0747d098b315 assets/destroy/blockstates/arc_furnace_lid.json
@@ -331,7 +331,6 @@ f6886dc3f816ddec08084d05432f2ae30bacf034 assets/destroy/models/item/palladium_in
 1bc0a83ef341e10898c26cab5528bd7ed85f83c5 assets/destroy/models/item/palladium_periodic_table_block.json
 4263e94b3a0adef0a47b16528726bcd91ca088c0 assets/destroy/models/item/palladium_powder.json
 1b21ac56bb28d144f7641ae1a1118f028fd7172c assets/destroy/models/item/paper_mask.json
-4c9e64c3faf62a229e1b326bf1af34a0978bcaa3 assets/destroy/models/item/paper_pulp.json
 981b5cfd5d835221753cecc1b145277a7635a2d2 assets/destroy/models/item/perfume_bottle.json
 a70b332b89ef5732d7da7741dcd6d0f8d32f385c assets/destroy/models/item/picric_acid_block.json
 ef7ee57ff6fb67d3bd74bdf800950cc4f0f545a2 assets/destroy/models/item/picric_acid_tablet.json
@@ -548,7 +547,6 @@ f25a74c5fd41afb9e6f7e9e032082cfeb07e0de2 data/destroy/tags/items/fluxes.json
 32685523c7e0434a0c21cca10bd1c95dec589049 data/destroy/tags/items/hefty_beetroots.json
 56409fa370c4b95549bb51b2e0de981d2266dca7 data/destroy/tags/items/liable_to_change.json
 4d124cb879d04fe2d337b90faa4be44d89e5e020 data/destroy/tags/items/obliteration_explosives.json
-25ad929379ee603c5fcd72269b61fc6c30a7c0f0 data/destroy/tags/items/paper_pulpable.json
 f2825b79c699c32838e728387032d8a92d75bd31 data/destroy/tags/items/plastics.json
 8eb49ad63c252c757788a684022b8b03cd6dcc0e data/destroy/tags/items/plastics/inert.json
 96f224455e8c229cc2e93d4db46e4a0e0c6148af data/destroy/tags/items/plastics/porous.json

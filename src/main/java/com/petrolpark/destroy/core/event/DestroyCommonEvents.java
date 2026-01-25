@@ -18,6 +18,7 @@ import com.petrolpark.destroy.DestroyTags.MobEffects;
 import com.petrolpark.destroy.DestroyTrades;
 import com.petrolpark.destroy.DestroyVillagers;
 import com.petrolpark.destroy.client.DestroyLang;
+import com.petrolpark.destroy.client.DestroyPonderScenes;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
 import com.petrolpark.destroy.content.oil.ChunkCrudeOil;
 import com.petrolpark.destroy.content.oil.CrudeOilCommand;
@@ -99,12 +100,12 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RecipesUpdatedEvent;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
@@ -120,6 +121,8 @@ import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber(modid = Destroy.MOD_ID, bus = EventBusSubscriber.Bus.FORGE)
@@ -435,10 +438,10 @@ public class DestroyCommonEvents {
 
         // Instantly picking up blocks
         if (state.getBlock() instanceof IPickUpPutDownBlock) {
-            if (!(player instanceof FakePlayer)) {
+            if (!(player instanceof FakePlayer) && !world.isClientSide()) {
                 ItemStack cloneItemStack = state.getCloneItemStack(new BlockHitResult(Vec3.ZERO, event.getFace(), event.getPos(), false), world, pos, player);
                 world.destroyBlock(pos, false);
-                if (world.getBlockState(pos) != state && !world.isClientSide()) player.getInventory().placeItemBackInInventory(cloneItemStack);
+                if (world.getBlockState(pos) != state) player.getInventory().placeItemBackInInventory(cloneItemStack);
                 event.setCancellationResult(InteractionResult.SUCCESS);
                 event.setCanceled(true);
                 return;
@@ -500,8 +503,13 @@ public class DestroyCommonEvents {
         };
 
         // Prevent default fluid transfer interaction with Create's fluid containers
-        if (stack.getItem() instanceof IMixtureStorageItem)
-            event.setUseBlock(Event.Result.DENY);
+        if (stack.getItem() instanceof IMixtureStorageItem mixtureItem) {
+            IFluidHandler otherTank = mixtureItem.getTank(level, pos, level.getBlockState(pos), event.getFace(), player, event.getHand(), stack, false);
+            LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+
+            if(otherTank != null && cap.isPresent())
+                event.setUseBlock(Event.Result.DENY);
+        };
     };
 
     /**
@@ -595,7 +603,6 @@ public class DestroyCommonEvents {
 
     @SubscribeEvent
     public static final void onAddReloadListeners(AddReloadListenerEvent event) {
-        event.addListener(new PeriodicTableBlock.Listener(event.getConditionContext()));
         event.addListener(Destroy.CIRCUIT_PATTERN_HANDLER.RELOAD_LISTENER);
         event.addListener(new ExplosiveProperties.Listener(event.getConditionContext()));
         VatMaterialResourceListener vatMaterialListener = new VatMaterialResourceListener(event.getConditionContext());
@@ -614,4 +621,11 @@ public class DestroyCommonEvents {
 		Destroy.CIRCUIT_PUNCHER_HANDLER.onUnloadWorld(event.getLevel());
         Destroy.CIRCUIT_PATTERN_HANDLER.onLevelUnloaded(event.getLevel());
 	};
+
+    @SubscribeEvent
+    public static final void onRecipesUpdated(RecipesUpdatedEvent event) {
+        // not sure if this is the best place for this but this runs clientside after all datapacks
+        // have been received from the server so this seems good enough
+        DestroyPonderScenes.refreshPeriodicTableBlockScenes();
+    };
 };

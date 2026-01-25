@@ -187,9 +187,9 @@ public class DestroyPonderScenes {
 
     @SuppressWarnings("deprecation")
     public static void refreshPeriodicTableBlockScenes() {
-        PeriodicTableBlock.ELEMENTS.forEach(entry -> {
-            entry.blocks().forEach(block -> {
-                ResourceLocation rl = BuiltInRegistries.ITEM.getKey(block.asItem());
+        PeriodicTableBlock.getAllEntries().forEach(entry -> {
+            entry.get().blocks().forEach(block -> {
+                ResourceLocation rl = BuiltInRegistries.ITEM.getKey(block.get().asItem());
                 if(PonderIndex.getSceneAccess().doScenesExistForId(rl)) {
                     ((PonderSceneRegistryAccessor) PonderIndex.getSceneAccess()).getScenes().get(rl).removeIf(storyBoard -> storyBoard.getSchematicLocation().equals(periodicTableSchematicLocation));
                 }

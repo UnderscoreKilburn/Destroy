@@ -1,29 +1,24 @@
 package com.petrolpark.destroy.content.product.periodictable;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.DestroyAdvancementTrigger;
-import com.petrolpark.destroy.DestroyMessages;
-import com.petrolpark.destroy.util.DestroyReloadListener;
+import com.petrolpark.destroy.DestroyRegistries;
 
+import com.simibubi.create.foundation.utility.GlobalRegistryAccess;
 import net.createmod.catnip.data.Iterate;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
+import net.minecraft.core.*;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -31,16 +26,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.conditions.ICondition.IContext;
 import net.minecraftforge.event.level.BlockEvent.EntityPlaceEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber(modid = Destroy.MOD_ID)
 public class PeriodicTableBlock extends HorizontalDirectionalBlock {
-
-    public static Set<PeriodicTableEntry> ELEMENTS = new HashSet<>();
 
     public PeriodicTableBlock(Properties properties) {
         super(properties);
@@ -67,71 +58,38 @@ public class PeriodicTableBlock extends HorizontalDirectionalBlock {
         return new BlockPos(tableFacing.getAxis() == Axis.X ? 0 : horizontalOffset, thisPos[1] - thatPos[1], tableFacing.getAxis() == Axis.Z ? 0 : -horizontalOffset);
     };
 
+    public static Optional<Holder.Reference<PeriodicTableEntry>> getEntryForBlock(Block block) {
+        return GlobalRegistryAccess.get().lookupOrThrow(DestroyRegistries.PERIODIC_TABLE_BLOCKS)
+            .listElements()
+            .filter(ref -> ref.value().blocks.contains(block.builtInRegistryHolder()))
+            .findFirst();
+    };
+
+    public static Stream<Holder.Reference<PeriodicTableEntry>> getAllEntries() {
+        return GlobalRegistryAccess.get().lookupOrThrow(DestroyRegistries.PERIODIC_TABLE_BLOCKS)
+            .listElements();
+    };
+
     public static boolean isPeriodicTableBlock(BlockState state) {
         return isPeriodicTableBlock(state.getBlock());
     };
 
     public static boolean isPeriodicTableBlock(Block block) {
-        return ELEMENTS.stream().anyMatch(entry -> entry.blocks.contains(block));
+        return getEntryForBlock(block).isPresent();
     };
 
     public static int[] getXY(Block block) {
-        Optional<PeriodicTableEntry> entry = ELEMENTS.stream().filter(e -> e.blocks.contains(block)).findFirst();
-        if (entry.isPresent()) return new int[]{entry.get().x, entry.get().y};
+        Optional<Holder.Reference<PeriodicTableEntry>> entry = getEntryForBlock(block);
+        if (entry.isPresent()) return new int[]{entry.get().value().x, entry.get().value().y};
         return new int[2];
     };
 
-    public static record PeriodicTableEntry(List<Block> blocks, int x, int y) {};
-
-    public static class Listener extends DestroyReloadListener {
-
-        public final IContext context;
-
-        public Listener(IContext context) {
-            super();
-            this.context = context;
-        };
-
-        @Override
-        public String getPath() {
-            return "destroy_compat/periodic_table_blocks";
-        };
-
-        @Override
-        public void beforeReload() {
-            ELEMENTS.clear();
-        };
-
-        @Override
-        @SuppressWarnings("deprecation")
-        public void forEachNameSpaceJsonFile(JsonObject jsonObject) {
-            jsonObject.entrySet().forEach(entry -> {
-                if (!CraftingHelper.processConditions(entry.getValue().getAsJsonObject(), "conditions", this.context)) return;
-
-                Optional<? extends Holder<Block>> blockOptional = BuiltInRegistries.BLOCK.asLookup().get(ResourceKey.create(Registries.BLOCK, new ResourceLocation(entry.getKey())));
-                if (blockOptional.isEmpty()) throw new IllegalStateException("Invalid block ID: "+entry.getKey());
-                JsonObject pos = entry.getValue().getAsJsonObject();
-                int x = pos.get("x").getAsInt();
-                int y = pos.get("y").getAsInt();
-                boolean found = false;
-                Block block = blockOptional.get().value();
-
-                for (PeriodicTableEntry element : ELEMENTS) {
-                    if (element.x == x && element.y == y) {
-                        element.blocks.add(block);
-                        found = true;
-                        break;
-                    };
-                };
-
-                if (!found) ELEMENTS.add(new PeriodicTableEntry(new ArrayList<>(List.of(block)), x, y));
-            });
-        };
-
-        @Override
-        public void afterReload() {
-            try {DestroyMessages.sendToAllClients(new RefreshPeriodicTablePonderSceneS2CPacket());} catch (Throwable e) {};
-        };
+    public record PeriodicTableEntry(HolderSet<Block> blocks, int x, int y) {
+        public static final Codec<PeriodicTableEntry> CODEC = RecordCodecBuilder.create(i -> i.group(
+            RegistryCodecs.homogeneousList(Registries.BLOCK).fieldOf("blocks").forGetter(PeriodicTableEntry::blocks),
+            Codec.INT.fieldOf("x").forGetter(PeriodicTableEntry::x),
+            Codec.INT.fieldOf("y").forGetter(PeriodicTableEntry::y)
+        ).apply(i, PeriodicTableEntry::new));
     };
 
     /**
@@ -147,13 +105,11 @@ public class PeriodicTableBlock extends HorizontalDirectionalBlock {
             if (PeriodicTableBlock.isPeriodicTableBlock(state)) {
                 int[] thisPos = PeriodicTableBlock.getXY(state.getBlock());
                 for (Direction direction : Iterate.horizontalDirections) {
-                    boolean allPresent = true;
-                    checkEachBlock: for (PeriodicTableEntry entry : PeriodicTableBlock.ELEMENTS) {
-                        if (!entry.blocks().contains(level.getBlockState(event.getPos().offset(PeriodicTableBlock.relative(thisPos, new int[]{entry.x(), entry.y()}, direction))).getBlock())) {
-                            allPresent = false;
-                            break checkEachBlock;
-                        };
-                    };
+                    boolean allPresent = getAllEntries().allMatch(r -> {
+                        Optional<Holder.Reference<PeriodicTableEntry>> entry = getEntryForBlock(level.getBlockState(event.getPos().offset(PeriodicTableBlock.relative(thisPos, new int[]{r.get().x(), r.get().y()}, direction))).getBlock());
+                        return entry.isPresent() && entry.get().get().x == r.get().x && entry.get().get().y == r.get().y;
+                    });
+
                     if (allPresent) {
                         DestroyAdvancementTrigger.PERIODIC_TABLE.award(level, serverPlayer);
                         return;

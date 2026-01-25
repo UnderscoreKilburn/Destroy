@@ -1,5 +1,6 @@
 package com.petrolpark.destroy.core.chemistry;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -994,9 +995,9 @@ public class ChemistryPonderScenes {
             scene.world().setBlock(util.grid().at(18, 10, 3).below(defaultPositions[i + 1]).west(defaultPositions[i]), Blocks.GRAY_CONCRETE.defaultBlockState(), false);
         };
 
-        for (PeriodicTableEntry element : PeriodicTableBlock.ELEMENTS) {
+        for (PeriodicTableEntry element : PeriodicTableBlock.getAllEntries().map(e -> e.get()).toList()) {
             if (element.blocks().size() != 0) {
-                scene.world().setBlock(util.grid().at(18, 10, 3).below(element.y()).west(element.x()), element.blocks().get(0).defaultBlockState(), false);
+                scene.world().setBlock(util.grid().at(18, 10, 3).below(element.y()).west(element.x()), element.blocks().get(0).get().defaultBlockState(), false);
                 if (element.blocks().size() > 1) {
                     entriesToCycle.add(element);
                     maxCycles = Math.max(maxCycles, element.blocks().size());
@@ -1020,7 +1021,7 @@ public class ChemistryPonderScenes {
         if (maxCycles > 1) {
             for (int i = 0; i < maxCycles; i++) {
                 for (PeriodicTableEntry entry : entriesToCycle) {
-                    scene.world().setBlock(util.grid().at(18, 11, 2).below(entry.y()).west(entry.y()), entry.blocks().get(i % entry.blocks().size()).defaultBlockState(), false);
+                    scene.world().setBlock(util.grid().at(18, 11, 2).below(entry.y()).west(entry.y()), entry.blocks().get(i % entry.blocks().size()).get().defaultBlockState(), false);
                 };
                 scene.idle(10);
             };

@@ -1,7 +1,12 @@
 package com.petrolpark.destroy;
 
+import com.petrolpark.destroy.core.data.DestroyGeneratedEntriesProvider;
 import com.petrolpark.destroy.core.data.DestroyRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.loading.DatagenModLoader;
 import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
@@ -45,6 +50,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegisterEvent;
+
+import java.util.concurrent.CompletableFuture;
 
 @Mod(Destroy.MOD_ID)
 public class Destroy {
@@ -165,5 +172,14 @@ public class Destroy {
     // Datagen
     public static void gatherData(GatherDataEvent event) {
         DestroyTagDatagen.addGenerators();
+
+        DataGenerator generator = event.getGenerator();
+        PackOutput output = generator.getPackOutput();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+
+        DestroyGeneratedEntriesProvider generatedEntriesProvider = new DestroyGeneratedEntriesProvider(output, lookupProvider);
+        lookupProvider = generatedEntriesProvider.getRegistryProvider();
+        generator.addProvider(event.includeServer(), generatedEntriesProvider);
     };
 };

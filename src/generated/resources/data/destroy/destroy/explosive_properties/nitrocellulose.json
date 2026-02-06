@@ -1,0 +1,10 @@
+{
+  "items": "destroy:nitrocellulose",
+  "properties": {
+    "brisance": 4.0,
+    "energy": 3.2,
+    "oxygen_balance": -3.0,
+    "sensitivity": -0.9,
+    "temperature": 3.4
+  }
+}

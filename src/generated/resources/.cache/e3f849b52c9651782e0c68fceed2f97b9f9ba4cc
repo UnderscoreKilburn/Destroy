@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-22T01:29:27.829438	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2026-02-06T13:33:45.8688556	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 9583bbca7c5e03f2ebe6d1611730c81873bed9d4 assets/destroy/blockstates/aging_barrel.json
 391a63a1be808a7eaeb2ac4bf47aac0c1d2a1e05 assets/destroy/blockstates/anfo_block.json
 a0487e31c10af4a6745a8cad3e9d0747d098b315 assets/destroy/blockstates/arc_furnace_lid.json
@@ -27,6 +27,8 @@ c6b6424e3372d057a88907a53d35f31829ad5198 assets/destroy/blockstates/copper_perio
 add7f5d141ef070514c02d41842518e771fbd01a assets/destroy/blockstates/cordite_block.json
 701b5eb175af172d185098e2370e6bfd14a764c0 assets/destroy/blockstates/creative_pump.json
 2351ca1a85d44ab68b5ba237983164dd9e25cf43 assets/destroy/blockstates/custom_explosive_mix.json
+a053cd560bafd297996a46097a532c151fd7325b assets/destroy/blockstates/custom_explosive_mix_charge.json
+7f0da416d62d77df9645f4f044af3c1398869c15 assets/destroy/blockstates/custom_explosive_mix_shell.json
 8d6a02702c5b16fdb8dd199dd8b2f6c3986ce746 assets/destroy/blockstates/deepslate_fluorite_ore.json
 9bbe9355500e4478be1b093680108bc3f9c3d61e assets/destroy/blockstates/deepslate_nickel_ore.json
 94f495ff9965bfffb86a7b85832951171daf9123 assets/destroy/blockstates/diamond_infused_beetroot.json
@@ -236,6 +238,8 @@ e27b0b03f5ec68251388f7624a0f018383e460a1 assets/destroy/models/item/creative_pum
 716a13ff7d8a0348a96dfcb330fd0aa7a8a7c6c5 assets/destroy/models/item/crushed_raw_palladium.json
 661c464e430317f7c094a8fc1e6e09c6703ad710 assets/destroy/models/item/crushed_raw_rhodium.json
 fc64f40bf6404eba568157c4b3e2a372a9a5f7b5 assets/destroy/models/item/custom_explosive_mix.json
+de9c3808e372831f23f956555ddcdff9fde14e25 assets/destroy/models/item/custom_explosive_mix_charge.json
+b4b7dd14f21ee21252b583f94f5674a85614a791 assets/destroy/models/item/custom_explosive_mix_shell.json
 ba23e86f57d4ee3dbfc6ba1fa13d0ae5e84897eb assets/destroy/models/item/deepslate_fluorite_ore.json
 61d176f50137ec977aa8516a13b06bb954ccd380 assets/destroy/models/item/deepslate_nickel_ore.json
 790c29eb89dcb5cfde419addf3eda2d968358fd3 assets/destroy/models/item/diamond_infused_beetroot.json

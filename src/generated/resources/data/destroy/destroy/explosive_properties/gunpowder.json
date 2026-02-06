@@ -1,0 +1,10 @@
+{
+  "items": "minecraft:gunpowder",
+  "properties": {
+    "brisance": -0.7,
+    "energy": 0.5,
+    "oxygen_balance": 0.8,
+    "sensitivity": 0.5,
+    "temperature": -1.0
+  }
+}

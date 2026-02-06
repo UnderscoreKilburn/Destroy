@@ -1,0 +1,10 @@
+{
+  "items": "destroy:nickel_hydrazine_nitrate",
+  "properties": {
+    "brisance": 0.2,
+    "energy": -0.1,
+    "oxygen_balance": 2.5,
+    "sensitivity": 1.6,
+    "temperature": -0.7
+  }
+}

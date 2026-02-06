@@ -84,6 +84,7 @@ minecraft {
         data {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
+            property 'createbigcannons.datagen.platform', 'forge' // CBC needs this to be set or else datagen won't run
             //property 'forge.logging.console.level', 'debug'
             args '--mod', 'destroy', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources'), '--existing-mod', 'create'
             mods {
@@ -226,8 +227,8 @@ dependencies {
     compileOnly fg.deobf("curse.maven:create-industry-693815:5558101")
 
     // CBC
-    compileOnly fg.deobf("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}")
-    compileOnly fg.deobf("com.rbasamoyai:createbigcannons:${cbc_version}")
+    implementation fg.deobf("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}")
+    implementation fg.deobf("com.rbasamoyai:createbigcannons:${cbc_version}")
 
     // Embeddium
     compileOnly fg.deobf("maven.modrinth:embeddium:${embeddium_version}+mc${minecraft_version}")

@@ -1,0 +1,10 @@
+{
+  "items": "destroy:fulminated_mercury",
+  "properties": {
+    "brisance": -1.5,
+    "energy": -0.8,
+    "oxygen_balance": -0.3,
+    "sensitivity": 2.3,
+    "temperature": -3.0
+  }
+}

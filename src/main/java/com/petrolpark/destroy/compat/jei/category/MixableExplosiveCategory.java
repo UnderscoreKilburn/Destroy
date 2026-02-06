@@ -7,11 +7,13 @@ import java.util.Map.Entry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
 import com.petrolpark.destroy.Destroy;
+import com.petrolpark.destroy.DestroyRegistries;
 import com.petrolpark.destroy.client.DestroyGuiTextures;
 import com.petrolpark.destroy.compat.jei.DestroyJEI;
 import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosiveProperties;
 import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosivePropertiesTooltip;
 
+import com.simibubi.create.foundation.utility.GlobalRegistryAccess;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IJeiHelpers;
@@ -69,7 +71,8 @@ public class MixableExplosiveCategory extends PetrolparkRecipeCategory<MixableEx
     };
 
     public static List<MixableExplosiveRecipe> getAllRecipes() {
-        return ExplosiveProperties.ITEM_EXPLOSIVE_PROPERTIES.entrySet().stream().map(MixableExplosiveRecipe::new).toList();
+        return GlobalRegistryAccess.get().lookupOrThrow(DestroyRegistries.EXPLOSIVE_PROPERTIES).listElements()
+            .flatMap(r -> r.get().items().stream().map(item -> new MixableExplosiveRecipe(item.get(), r.get().properties()))).toList();
     };
     
     public static class MixableExplosiveRecipe extends ShapelessRecipe {
@@ -78,10 +81,6 @@ public class MixableExplosiveCategory extends PetrolparkRecipeCategory<MixableEx
 
         public final Item item;
         public final ExplosiveProperties properties;
-
-        public MixableExplosiveRecipe(Entry<Item, ExplosiveProperties> e) {
-            this(e.getKey(), e.getValue());
-        };
 
         public MixableExplosiveRecipe(Item item, ExplosiveProperties properties) {
             super(Destroy.asResource("explosive_properties_"+id++), "", CraftingBookCategory.MISC, ItemStack.EMPTY, NonNullList.create());

@@ -1,0 +1,10 @@
+{
+  "items": "destroy:touch_powder",
+  "properties": {
+    "brisance": -0.9,
+    "energy": -3.6,
+    "oxygen_balance": -1.0,
+    "sensitivity": 10.0,
+    "temperature": -2.0
+  }
+}

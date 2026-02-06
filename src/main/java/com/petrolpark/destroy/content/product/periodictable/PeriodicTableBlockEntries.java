@@ -1,5 +1,6 @@
 package com.petrolpark.destroy.content.product.periodictable;
 
+import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.DestroyBlocks;
 import com.petrolpark.destroy.DestroyRegistries;
 import net.minecraft.core.HolderSet;
@@ -29,7 +30,7 @@ public class PeriodicTableBlockEntries {
     };
 
     private static void register(BootstapContext<PeriodicTableBlock.PeriodicTableEntry> ctx, Block block, int x, int y) {
-        ctx.register(ResourceKey.create(DestroyRegistries.PERIODIC_TABLE_BLOCKS, block.builtInRegistryHolder().key().location()),
+        ctx.register(ResourceKey.create(DestroyRegistries.PERIODIC_TABLE_BLOCKS, Destroy.asResource(block.builtInRegistryHolder().key().location().getPath())),
             new PeriodicTableBlock.PeriodicTableEntry(HolderSet.direct(block.builtInRegistryHolder()), x, y));
     };
 };

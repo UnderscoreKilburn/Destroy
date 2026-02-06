@@ -22,14 +22,14 @@ public class MixedExplosiveInventory extends ItemStackHandler {
     };
 
     public static boolean canBeAdded(ItemStack stack) {
-        return ExplosiveProperties.ITEM_EXPLOSIVE_PROPERTIES.get(stack.getItem()) != null; // Must have explosive properties
+        return ExplosiveProperties.getEntryForItem(stack.getItem()).isPresent(); // Must have explosive properties
     };
 
     public ExplosiveProperties getExplosiveProperties() {
         ExplosiveProperties properties = new ExplosiveProperties();
         for (int slot = 0; slot < getSlots(); slot++) {
             ItemStack stack = getStackInSlot(slot);
-            ExplosiveProperties itemProperties = ExplosiveProperties.ITEM_EXPLOSIVE_PROPERTIES.getOrDefault(stack.getItem(), new ExplosiveProperties());
+            ExplosiveProperties itemProperties = ExplosiveProperties.getEntryForItem(stack.getItem()).orElseGet(ExplosiveProperties::new);
             for (ExplosiveProperty property : ExplosiveProperty.values()) properties.merge(property, itemProperties.get(property), (e1, e2) -> {
                 e1.value += e2.value;
                 return e1;

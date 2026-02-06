@@ -1,0 +1,10 @@
+{
+  "items": "destroy:anfo",
+  "properties": {
+    "brisance": -1.2,
+    "energy": 1.7,
+    "oxygen_balance": 3.3,
+    "sensitivity": -0.8,
+    "temperature": 1.0
+  }
+}

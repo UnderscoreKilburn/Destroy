@@ -1,40 +1,66 @@
 package com.petrolpark.destroy.core.explosion.mixedexplosive;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.petrolpark.destroy.Destroy;
+import com.petrolpark.destroy.DestroyItems;
+import com.petrolpark.destroy.DestroyRegistries;
 import com.petrolpark.destroy.client.DestroyLang;
-import com.petrolpark.destroy.util.DestroyReloadListener;
+import com.simibubi.create.foundation.utility.GlobalRegistryAccess;
 import net.createmod.catnip.lang.Lang;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.conditions.ICondition.IContext;
+import net.minecraft.world.item.Items;
 
 public class ExplosiveProperties extends EnumMap<ExplosiveProperties.ExplosiveProperty, ExplosiveProperties.ExplosivePropertiesEntry> {
 
-    public static final Map<Item, ExplosiveProperties> ITEM_EXPLOSIVE_PROPERTIES = new HashMap<>();
+    public static final Codec<ExplosiveProperties> CODEC = Codec.compoundList(Codec.STRING, Codec.FLOAT).comapFlatMap(
+        kv_list -> {
+            ExplosiveProperties properties = new ExplosiveProperties();
+            for(Pair<String, Float> kv : kv_list) {
+                ExplosiveProperty property = ExplosiveProperty.valueOf(kv.getFirst().toUpperCase(Locale.ROOT));
+                if(property != null) {
+                    properties.put(property, new ExplosivePropertiesEntry(kv.getSecond(), property.getDefaultDescription()));
+                };
+            };
+            return DataResult.success(properties);
+        },
+        properties -> Arrays.stream(ExplosiveProperty.values()).map(property -> Pair.of(property.name().toLowerCase(Locale.ROOT), Float.valueOf(properties.get(property).value))).toList()
+    );
+
+    public record RegistryEntry(HolderSet<Item> items, ExplosiveProperties properties) {
+        public static final Codec<RegistryEntry> CODEC = RecordCodecBuilder.create(i -> i.group(
+            RegistryCodecs.homogeneousList(Registries.ITEM).optionalFieldOf("items", HolderSet.direct()).forGetter(RegistryEntry::items),
+            ExplosiveProperties.CODEC.fieldOf("properties").forGetter(RegistryEntry::properties)
+        ).apply(i, RegistryEntry::new));
+    };
+
+    public static final Map<Item, Optional<ExplosiveProperties>> ITEM_EXPLOSIVE_PROPERTIES = new HashMap<>();
     public static final Map<ResourceLocation, ExplosivePropertyCondition> EXPLOSIVE_PROPERTY_CONDITIONS = new HashMap<>();
+
+    public static Optional<ExplosiveProperties> getEntryForItem(Item item) {
+        return ITEM_EXPLOSIVE_PROPERTIES.computeIfAbsent(item, i ->
+            GlobalRegistryAccess.get().lookupOrThrow(DestroyRegistries.EXPLOSIVE_PROPERTIES)
+                .listElements()
+                .filter(ref -> ref.value().items.contains(item.builtInRegistryHolder()))
+                .findFirst().map(r -> r.get().properties)
+        );
+    };
 
     public static final ExplosivePropertyCondition
 
@@ -90,16 +116,6 @@ public class ExplosiveProperties extends EnumMap<ExplosiveProperties.ExplosivePr
     public static ExplosiveProperties read(CompoundTag tag) {
         ExplosiveProperties properties = new ExplosiveProperties();
         properties.forEach((p, e) -> e.value = tag.getFloat(p.name()));
-        return properties;
-    };
-
-    public static ExplosiveProperties fromJson(JsonObject json) {
-        ExplosiveProperties properties = new ExplosiveProperties();
-        for (ExplosiveProperty property : ExplosiveProperty.values()) {
-            if (json.has(Lang.asId(property.name()))) {
-                try { properties.put(property, new ExplosivePropertiesEntry(json.get(Lang.asId(property.name())).getAsFloat(), property.getDefaultDescription())); } catch (Throwable e) {};
-            };
-        };
         return properties;
     };
 
@@ -163,7 +179,7 @@ public class ExplosiveProperties extends EnumMap<ExplosiveProperties.ExplosivePr
         return condition;
     };
 
-    public static enum ExplosiveProperty implements ExplosivePropertiesTooltip.Selectable {
+    public enum ExplosiveProperty implements ExplosivePropertiesTooltip.Selectable {
 
         ENERGY,
         OXYGEN_BALANCE,
@@ -196,38 +212,34 @@ public class ExplosiveProperties extends EnumMap<ExplosiveProperties.ExplosivePr
         };
     };
 
-    public static class Listener extends DestroyReloadListener {
-
-        public final IContext context;
-
-        public Listener(IContext context) {
-            super();
-            this.context = context;
+    public static class GeneratedEntries {
+        public static void bootstrap(BootstapContext<RegistryEntry> ctx) {
+            register(ctx, Items.GUNPOWDER, 0.5f, 0.8f, -1f, -0.7f, 0.5f);
+            register(ctx, Items.FIREWORK_STAR, -0.5f, 0.3f, 0f, 0f, 0f);
+            register(ctx, DestroyItems.ACETONE_PEROXIDE.get(), -0.5f, -2f, -0.5f, 0.6f, 4.4f);
+            register(ctx, DestroyItems.FULMINATED_MERCURY.get(), -0.8f, -0.3f, -3f, -1.5f, 2.3f);
+            register(ctx, DestroyItems.NICKEL_HYDRAZINE_NITRATE.get(), -0.1f, 2.5f, -0.7f, 0.2f, 1.6f);
+            register(ctx, DestroyItems.TOUCH_POWDER.get(), -3.6f, -1f, -2f, -0.9f, 10f);
+            register(ctx, DestroyItems.ANFO.get(), 1.7f, 3.3f, 1f, -1.2f, -0.8f);
+            register(ctx, DestroyItems.CONFETTI.get(), -0.1f, 0f, 0f, 0f, 0f);
+            register(ctx, DestroyItems.CORDITE.get(), 4.3f, -1f, 5f, -3.3f, -0.4f);
+            register(ctx, DestroyItems.DYNAMITE.get(), 3f, 2.1f, 1.5f, -1.8f, -1.1f);
+            register(ctx, DestroyItems.NITROCELLULOSE.get(), 3.2f, -3f, 3.4f, 4f, -0.9f);
+            register(ctx, DestroyItems.PICRIC_ACID_TABLET.get(), 3.9f, -2.7f, 2.9f, 1.9f, -2.6f);
+            register(ctx, DestroyItems.TNT_TABLET.get(), 4.7f, -3.1f, 4.2f, 2.5f, -3f);
+            register(ctx, DestroyItems.WHITE_CONFETTI.get(), -0.1f, 0f, 0f, 0f, 0f);
         };
 
-        @Override
-        public String getPath() {
-            return "destroy_compat/explosive_items";
+        private static void register(BootstapContext<RegistryEntry> ctx, Item item, float energy, float oxygenBalance, float temperature, float brisance, float sensitivity) {
+            ExplosiveProperties properties = new ExplosiveProperties();
+            properties.put(ExplosiveProperty.ENERGY, new ExplosivePropertiesEntry(energy, ExplosiveProperty.ENERGY.getDefaultDescription()));
+            properties.put(ExplosiveProperty.OXYGEN_BALANCE, new ExplosivePropertiesEntry(oxygenBalance, ExplosiveProperty.OXYGEN_BALANCE.getDefaultDescription()));
+            properties.put(ExplosiveProperty.TEMPERATURE, new ExplosivePropertiesEntry(temperature, ExplosiveProperty.TEMPERATURE.getDefaultDescription()));
+            properties.put(ExplosiveProperty.BRISANCE, new ExplosivePropertiesEntry(brisance, ExplosiveProperty.BRISANCE.getDefaultDescription()));
+            properties.put(ExplosiveProperty.SENSITIVITY, new ExplosivePropertiesEntry(sensitivity, ExplosiveProperty.SENSITIVITY.getDefaultDescription()));
+
+            ctx.register(ResourceKey.create(DestroyRegistries.EXPLOSIVE_PROPERTIES, Destroy.asResource(item.builtInRegistryHolder().key().location().getPath())),
+                new RegistryEntry(HolderSet.direct(item.builtInRegistryHolder()), properties));
         };
-
-        @Override
-        public void beforeReload() {
-            ITEM_EXPLOSIVE_PROPERTIES.clear();
-            super.beforeReload();
-        };
-
-        @Override
-        @SuppressWarnings("deprecation")
-        public void forEachNameSpaceJsonFile(JsonObject jsonObject) {
-            for (Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-                JsonObject object = entry.getValue().getAsJsonObject();
-                if (!CraftingHelper.processConditions(object, "conditions", this.context)) return;
-
-                Optional<? extends Holder<Item>> itemOptional = BuiltInRegistries.ITEM.asLookup().get(ResourceKey.create(Registries.ITEM, new ResourceLocation(entry.getKey())));
-                if (itemOptional.isEmpty()) throw new IllegalStateException("Invalid item ID: "+entry.getKey());
-                ITEM_EXPLOSIVE_PROPERTIES.put(itemOptional.get().value(), fromJson(object));
-            };
-        };
-
     };
 };

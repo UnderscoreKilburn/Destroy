@@ -63,7 +63,7 @@ public class DestroyClientEvents {
         if (event.getItemStack().getItem() instanceof IMixedExplosiveItem mixItem) {
             properties = mixItem.getExplosiveInventory(event.getItemStack()).getExplosiveProperties().withConditions(mixItem.getApplicableExplosionConditions());
         } else if (mc.screen instanceof MixedExplosiveScreen) {
-            properties = ExplosiveProperties.ITEM_EXPLOSIVE_PROPERTIES.get(event.getItemStack().getItem());
+            properties = ExplosiveProperties.getEntryForItem(event.getItemStack().getItem()).orElse(null);
         };
         if (properties != null) event.getTooltipElements().add(Either.right(new ExplosivePropertiesTooltip(properties)));
     };

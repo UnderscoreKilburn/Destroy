@@ -1,0 +1,10 @@
+{
+  "items": "destroy:cordite_rods",
+  "properties": {
+    "brisance": -3.3,
+    "energy": 4.3,
+    "oxygen_balance": -1.0,
+    "sensitivity": -0.4,
+    "temperature": 5.0
+  }
+}

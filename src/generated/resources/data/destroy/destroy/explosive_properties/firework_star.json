@@ -1,0 +1,10 @@
+{
+  "items": "minecraft:firework_star",
+  "properties": {
+    "brisance": 0.0,
+    "energy": -0.5,
+    "oxygen_balance": 0.3,
+    "sensitivity": 0.0,
+    "temperature": 0.0
+  }
+}

@@ -29,8 +29,6 @@ import com.petrolpark.destroy.content.product.CreatineItem;
 import com.petrolpark.destroy.content.product.babyblue.BabyBlueAddictionCommand;
 import com.petrolpark.destroy.content.product.babyblue.PlayerBabyBlueAddictionCapability;
 import com.petrolpark.destroy.content.product.fireretardant.FireproofingHelper;
-import com.petrolpark.destroy.content.product.periodictable.PeriodicTableBlock;
-import com.petrolpark.destroy.content.product.periodictable.RefreshPeriodicTablePonderSceneS2CPacket;
 import com.petrolpark.destroy.content.redstone.programmer.RedstoneProgrammerBlockItem;
 import com.petrolpark.destroy.content.sandcastle.BuildSandCastleGoal;
 import com.petrolpark.destroy.core.DestroyVillageAddition;
@@ -189,9 +187,6 @@ public class DestroyCommonEvents {
         level.getCapability(Pollution.CAPABILITY).ifPresent(levelPollution -> {
             DestroyMessages.sendToClient(new LevelPollutionS2CPacket(levelPollution), serverPlayer);
         });
-
-        // Update the Ponders for periodic table blocks
-        DestroyMessages.sendToClient(new RefreshPeriodicTablePonderSceneS2CPacket(), serverPlayer);
 
         // Update the circuit pattern crafting recipes
         DestroyMessages.sendToClient(new CircuitPatternsS2CPacket(Destroy.CIRCUIT_PATTERN_HANDLER.getAllPatterns()), serverPlayer);
@@ -604,7 +599,6 @@ public class DestroyCommonEvents {
     @SubscribeEvent
     public static final void onAddReloadListeners(AddReloadListenerEvent event) {
         event.addListener(Destroy.CIRCUIT_PATTERN_HANDLER.RELOAD_LISTENER);
-        event.addListener(new ExplosiveProperties.Listener(event.getConditionContext()));
         VatMaterialResourceListener vatMaterialListener = new VatMaterialResourceListener(event.getConditionContext());
         event.addListener(vatMaterialListener);
     };
@@ -626,6 +620,7 @@ public class DestroyCommonEvents {
     public static final void onRecipesUpdated(RecipesUpdatedEvent event) {
         // not sure if this is the best place for this but this runs clientside after all datapacks
         // have been received from the server so this seems good enough
+        Destroy.LOGGER.info("recipes updated");
         DestroyPonderScenes.refreshPeriodicTableBlockScenes();
     };
 };

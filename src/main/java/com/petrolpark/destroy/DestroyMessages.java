@@ -10,7 +10,6 @@ import com.petrolpark.destroy.content.processing.trypolithography.CircuitPattern
 import com.petrolpark.destroy.content.processing.trypolithography.keypunch.ChangeKeypunchPositionC2SPacket;
 import com.petrolpark.destroy.content.processing.trypolithography.keypunch.NameKeypunchC2SPacket;
 import com.petrolpark.destroy.content.processing.trypolithography.keypunch.RequestKeypunchNameS2CPacket;
-import com.petrolpark.destroy.content.product.periodictable.RefreshPeriodicTablePonderSceneS2CPacket;
 import com.petrolpark.destroy.content.redstone.programmer.RedstoneProgramSyncC2SPacket;
 import com.petrolpark.destroy.content.redstone.programmer.RedstoneProgramSyncReplyS2CPacket;
 import com.petrolpark.destroy.content.redstone.programmer.RedstoneProgrammerPowerChangedS2CPacket;
@@ -66,7 +65,6 @@ public class DestroyMessages {
         addS2CPacket(net, EvaporatingFluidS2CPacket.class, EvaporatingFluidS2CPacket::new);
         addS2CPacket(net, SeismometerSpikeS2CPacket.class, SeismometerSpikeS2CPacket::new);
         addS2CPacket(net, ChemicalPoisonS2CPacket.class, ChemicalPoisonS2CPacket::new);
-        addS2CPacket(net, RefreshPeriodicTablePonderSceneS2CPacket.class, RefreshPeriodicTablePonderSceneS2CPacket::new);
         addS2CPacket(net, CircuitPatternsS2CPacket.class, CircuitPatternsS2CPacket::read);
         addS2CPacket(net, RequestKeypunchNameS2CPacket.class, RequestKeypunchNameS2CPacket::new);
         addS2CPacket(net, RedstoneProgramSyncReplyS2CPacket.class, RedstoneProgramSyncReplyS2CPacket::new);

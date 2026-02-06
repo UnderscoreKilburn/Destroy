@@ -1,0 +1,10 @@
+{
+  "items": "destroy:white_confetti",
+  "properties": {
+    "brisance": 0.0,
+    "energy": -0.1,
+    "oxygen_balance": 0.0,
+    "sensitivity": 0.0,
+    "temperature": 0.0
+  }
+}

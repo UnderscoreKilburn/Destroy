@@ -1,0 +1,10 @@
+{
+  "items": "destroy:picric_acid_tablet",
+  "properties": {
+    "brisance": 1.9,
+    "energy": 3.9,
+    "oxygen_balance": -2.7,
+    "sensitivity": -2.6,
+    "temperature": 2.9
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "axis=x,damp=false": {
+      "model": "destroy:block/custom_explosive_mix_charge",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,damp=true": {
+      "model": "destroy:block/custom_explosive_mix_charge",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,damp=false": {
+      "model": "destroy:block/custom_explosive_mix_charge"
+    },
+    "axis=y,damp=true": {
+      "model": "destroy:block/custom_explosive_mix_charge"
+    },
+    "axis=z,damp=false": {
+      "model": "destroy:block/custom_explosive_mix_charge",
+      "x": 90,
+      "y": 180
+    },
+    "axis=z,damp=true": {
+      "model": "destroy:block/custom_explosive_mix_charge",
+      "x": 90,
+      "y": 180
+    }
+  }
+}

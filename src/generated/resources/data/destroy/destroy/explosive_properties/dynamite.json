@@ -1,0 +1,10 @@
+{
+  "items": "destroy:dynamite",
+  "properties": {
+    "brisance": -1.8,
+    "energy": 3.0,
+    "oxygen_balance": 2.1,
+    "sensitivity": -1.1,
+    "temperature": 1.5
+  }
+}

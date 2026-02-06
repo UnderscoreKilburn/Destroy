@@ -1,0 +1,10 @@
+{
+  "items": "destroy:tnt_tablet",
+  "properties": {
+    "brisance": 2.5,
+    "energy": 4.7,
+    "oxygen_balance": -3.1,
+    "sensitivity": -3.0,
+    "temperature": 4.2
+  }
+}

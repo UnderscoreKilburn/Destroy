@@ -1,0 +1,10 @@
+{
+  "items": "destroy:acetone_peroxide",
+  "properties": {
+    "brisance": 0.6,
+    "energy": -0.5,
+    "oxygen_balance": -2.0,
+    "sensitivity": 4.4,
+    "temperature": -0.5
+  }
+}

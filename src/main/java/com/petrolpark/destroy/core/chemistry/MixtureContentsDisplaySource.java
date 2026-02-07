@@ -87,7 +87,7 @@ public abstract class MixtureContentsDisplaySource extends DisplaySource {
 
     private void addTemperatureUnitSelection(ModularGuiLineBuilder builder) {
         builder.addSelectionScrollInput(0, 137, (si, l) -> {
-            si.forOptions(List.of(DestroyLang.translate("display_source.mixture.temperature_unit.kelvin").component(), DestroyLang.translate("display_source.mixture.temperature_unit.celcius").component(), DestroyLang.translate("display_source.mixture.temperature_unit.farenheit").component()))
+            si.forOptions(List.of(DestroyLang.translate("display_source.mixture.temperature_unit.kelvin").component(), DestroyLang.translate("display_source.mixture.temperature_unit.celsius").component(), DestroyLang.translate("display_source.mixture.temperature_unit.fahrenheit").component()))
             .titled(DestroyLang.translate("display_source.mixture.temperature_unit").component());   
         }, "TemperatureUnit");
     };

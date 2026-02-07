@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import javax.annotation.Nullable;
 
@@ -248,7 +249,7 @@ public class VatSideBlockEntity extends CopycatBlockEntity implements IHaveLabGo
                 return vc == null ? 0.f : f.apply(vc);
             });
         }
-        redstoneMonitor.withLabel(getDisplayType().quantityLabel);
+        redstoneMonitor.withLabel(getDisplayType().quantityLabel).withUIConversion(getDisplayType().fromUI, getDisplayType().toUI);;
     };
 
     @Override
@@ -382,25 +383,36 @@ public class VatSideBlockEntity extends CopycatBlockEntity implements IHaveLabGo
     public static final Optional<Function<VatControllerBlockEntity, Float>> pressureObserved = Optional.of(VatControllerBlockEntity::getPressure);
     public static final Optional<Function<VatControllerBlockEntity, Float>> temperatureObserved = Optional.of(VatControllerBlockEntity::getTemperature);
     public static final Function<Float, Component> noQuantityLabel = f -> Component.empty();
-    public static final Function<Float, Component> temperatureQuantityLabel = f -> DestroyLang.translate("tooltip.vat.temperature", TemperatureUnit.KELVINS.of(f, df)).component();
-    public static final Function<Float, Component> pressureQuantityLabel = f -> DestroyLang.translate("tooltip.vat.pressure.absolute", df.format(f)).component();
+    public static final Function<Float, Component> temperatureQuantityLabel = f ->
+        DestroyLang.translate("tooltip.vat.temperature", DestroyAllConfigs.CLIENT.chemistry.temperatureUnit.get().of(f, df)).component();
+    public static final Function<Float, Component> pressureQuantityLabel = f ->
+        DestroyLang.translate("tooltip.vat.pressure.current", df.format(f / 1000f)).component();
+
+    public static final UnaryOperator<Float> temperatureToUI = f -> DestroyAllConfigs.CLIENT.chemistry.temperatureUnit.get().convertFrom(f, TemperatureUnit.KELVINS);
+    public static final UnaryOperator<Float> temperatureFromUI = f -> TemperatureUnit.KELVINS.convertFrom(f, DestroyAllConfigs.CLIENT.chemistry.temperatureUnit.get());
+    public static final UnaryOperator<Float> pressureToUI = f -> f / 1000f;
+    public static final UnaryOperator<Float> pressureFromUI = f -> f * 1000f;
 
     public static enum DisplayType {
 
-        NORMAL(true, true, false, false, false, Optional.empty(), noQuantityLabel),
-        BAROMETER(false, true, false, true, false, pressureObserved, pressureQuantityLabel),
-        BAROMETER_BLOCKED(false, true, false, true, false, pressureObserved, pressureQuantityLabel),
-        THERMOMETER(false, true, false, false, true, temperatureObserved, temperatureQuantityLabel),
-        THERMOMETER_BLOCKED(false, true, false, false, true, temperatureObserved, temperatureQuantityLabel),
-        PIPE(true, true, false, false, false, Optional.empty(), noQuantityLabel),
-        CLOSED_VENT(true, false, true, false, false, Optional.empty(), noQuantityLabel),
-        OPEN_VENT(true, false, true, false, false, Optional.empty(), noQuantityLabel);
+        NORMAL(true, true, false, false, false),
+        BAROMETER(false, true, false, true, false, pressureObserved, pressureQuantityLabel, pressureFromUI, pressureToUI),
+        BAROMETER_BLOCKED(false, true, false, true, false, pressureObserved, pressureQuantityLabel, pressureFromUI, pressureToUI),
+        THERMOMETER(false, true, false, false, true, temperatureObserved, temperatureQuantityLabel, temperatureFromUI, temperatureToUI),
+        THERMOMETER_BLOCKED(false, true, false, false, true, temperatureObserved, temperatureQuantityLabel, temperatureFromUI, temperatureToUI),
+        PIPE(true, true, false, false, false),
+        CLOSED_VENT(true, false, true, false, false),
+        OPEN_VENT(true, false, true, false, false);
 
         public final boolean validForTop, validForSide, isVent, showsPressure, showsTemperature;
         public final Optional<Function<VatControllerBlockEntity, Float>> quantityObserved;
         public final Function<Float, Component> quantityLabel;
+        public final UnaryOperator<Float> fromUI;
+        public final UnaryOperator<Float> toUI;
 
-        private DisplayType(boolean validForTop, boolean validForSide, boolean isVent, boolean showsPressure, boolean showsTemperature, Optional<Function<VatControllerBlockEntity, Float>> quantityObserved, Function<Float, Component> quantityLabel) {
+        DisplayType(boolean validForTop, boolean validForSide, boolean isVent, boolean showsPressure, boolean showsTemperature,
+                            Optional<Function<VatControllerBlockEntity, Float>> quantityObserved, Function<Float, Component> quantityLabel,
+                            UnaryOperator<Float> fromUI, UnaryOperator<Float> toUI) {
             this.validForTop = validForTop;
             this.validForSide = validForSide;
             this.isVent = isVent;
@@ -408,6 +420,12 @@ public class VatSideBlockEntity extends CopycatBlockEntity implements IHaveLabGo
             this.showsTemperature = showsTemperature;
             this.quantityObserved = quantityObserved;
             this.quantityLabel = quantityLabel;
+            this.fromUI = fromUI;
+            this.toUI = toUI;
+        };
+
+        DisplayType(boolean validForTop, boolean validForSide, boolean isVent, boolean showsPressure, boolean showsTemperature) {
+            this(validForTop, validForSide, isVent, showsPressure, showsTemperature, Optional.empty(), noQuantityLabel, UnaryOperator.identity(), UnaryOperator.identity());
         };
 
         public boolean validForBottom() {
@@ -447,7 +465,7 @@ public class VatSideBlockEntity extends CopycatBlockEntity implements IHaveLabGo
             if (vc == null) return () -> 0f;
             return () -> f.apply(vc);
         });
-        redstoneMonitor.withLabel(displayType.quantityLabel);
+        redstoneMonitor.withLabel(displayType.quantityLabel).withUIConversion(displayType.fromUI, displayType.toUI);
         if (oldDisplayType.quantityObserved != this.displayType.quantityObserved) {
             if (this.displayType.showsPressure) {
                 redstoneMonitor.lowerThreshold = 0f;

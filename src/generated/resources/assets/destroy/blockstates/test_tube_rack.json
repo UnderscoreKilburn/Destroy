@@ -1,11 +1,12 @@
 {
   "variants": {
     "x=false": {
-      "model": "destroy:block/test_tube_rack"
+      "model": "destroy:block/test_tube_rack",
+      "y": 90
     },
     "x=true": {
       "model": "destroy:block/test_tube_rack",
-      "y": 90
+      "y": 180
     }
   }
 }

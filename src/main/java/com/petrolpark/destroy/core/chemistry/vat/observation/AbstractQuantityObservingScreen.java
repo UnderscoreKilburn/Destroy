@@ -60,7 +60,7 @@ public abstract class AbstractQuantityObservingScreen extends AbstractSimiScreen
 		lowerBound.mouseClicked(0, 0, 0);
 		lowerBound.active = false;
         lowerBound.setTooltip(Tooltip.create(DestroyLang.translate("tooltip.vat.menu.quantity_observed.minimum").component()));
-        lowerBound.setValue(""+quantityBehaviour.lowerThreshold);
+        lowerBound.setValue(""+quantityBehaviour.convertToUI.apply(quantityBehaviour.lowerThreshold));
 
         upperBound = new EditBox(minecraft.font, guiLeft + 171, guiTop + getEditBoxY(), 70, 10, Component.literal(""+quantityBehaviour.lowerThreshold));
         upperBound.setBordered(false);
@@ -69,7 +69,7 @@ public abstract class AbstractQuantityObservingScreen extends AbstractSimiScreen
 		upperBound.mouseClicked(0, 0, 0);
 		upperBound.active = false;
         upperBound.setTooltip(Tooltip.create(DestroyLang.translate("tooltip.vat.menu.quantity_observed.maximum").component()));
-        upperBound.setValue(""+quantityBehaviour.upperThreshold);
+        upperBound.setValue(""+quantityBehaviour.convertToUI.apply(quantityBehaviour.upperThreshold));
 
         addRenderableWidgets(lowerBound, upperBound);
     };
@@ -94,7 +94,10 @@ public abstract class AbstractQuantityObservingScreen extends AbstractSimiScreen
         tick();
 
         try {
-            updateThresholds(Float.valueOf(lowerBound.getValue()), Float.valueOf(upperBound.getValue()));
+            updateThresholds(
+                quantityBehaviour.convertFromUI.apply(Float.valueOf(lowerBound.getValue())),
+                quantityBehaviour.convertFromUI.apply(Float.valueOf(upperBound.getValue()))
+            );
         } catch (NumberFormatException e) {}
 
         super.onClose();

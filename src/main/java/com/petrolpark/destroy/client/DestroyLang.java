@@ -309,11 +309,11 @@ public class DestroyLang {
         return ""+n;
     };
 
-    public static enum TemperatureUnit {
+    public enum TemperatureUnit {
 
-        KELVINS(t -> t, "K"),
-        DEGREES_CELCIUS(t -> t - 273f, "\u00B0C"),
-        DEGREES_FARENHEIT(t -> (t - 273f) * 9/5 + 32, "\u00B0F");
+        KELVINS(t -> t, t -> t, "K"),
+        DEGREES_CELSIUS(t -> t - 273f, t -> t + 273f, "\u00B0C"),
+        DEGREES_FAHRENHEIT(t -> (t - 273f) * 9/5 + 32, t -> (t - 32) * 5/9 + 273f, "\u00B0F");
 
         private static final DecimalFormat df = new DecimalFormat();
         static {
@@ -322,10 +322,12 @@ public class DestroyLang {
         };
 
         private UnaryOperator<Float> conversionFromKelvins;
+        private UnaryOperator<Float> conversionToKelvins;
         private String symbol;
 
-        TemperatureUnit(UnaryOperator<Float> conversionFromKelvins, String symbol) {
+        TemperatureUnit(UnaryOperator<Float> conversionFromKelvins, UnaryOperator<Float> conversionToKelvins, String symbol) {
             this.conversionFromKelvins = conversionFromKelvins;
+            this.conversionToKelvins = conversionToKelvins;
             this.symbol = symbol;
         };
 
@@ -335,6 +337,10 @@ public class DestroyLang {
 
         public String of(float temperature, DecimalFormat df) {
             return df.format(conversionFromKelvins.apply(temperature)) + symbol;
+        };
+
+        public float convertFrom(float temperature, TemperatureUnit from) {
+            return conversionFromKelvins.apply(from.conversionToKelvins.apply(temperature));
         };
     };
 

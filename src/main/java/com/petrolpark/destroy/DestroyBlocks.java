@@ -301,7 +301,7 @@ public class DestroyBlocks {
         ).transform(DestroyStressConfigs.setImpact(0.5d))
         .transform(TagGen.axeOrPickaxe())
         //.blockstate(BlockStateGen.horizontalAxisBlockProvider(true)) // augh
-        .blockstate(DestroyBlockStateGen.bullshitHorizontalAxisBlock(MechanicalSieveBlock.X, true))
+        .blockstate(DestroyBlockStateGen.bullshitHorizontalAxisBlock(MechanicalSieveBlock.X, true, 0))
         .item()
         .transform(customItemModel())
         .register();
@@ -395,7 +395,7 @@ public class DestroyBlocks {
         .initialProperties(() -> Blocks.OAK_PLANKS)
         .properties(p -> p
         ).tag(BlockTags.MINEABLE_WITH_AXE)
-        .blockstate(DestroyBlockStateGen.bullshitHorizontalAxisBlock(TestTubeRackBlock.X, false))
+        .blockstate(DestroyBlockStateGen.bullshitHorizontalAxisBlock(TestTubeRackBlock.X, false, 90))
         .item()
         .build()
         .register();

@@ -5,8 +5,8 @@ import com.petrolpark.destroy.client.DestroyLang.TemperatureUnit;
 public class DestroyClientChemistryConfigs extends DestroyConfigBase {
 
     public final ConfigBool iupacNames = b(false, "iupacNames", Comments.iupacNames, Comments.reloadRequired);
-    public final ConfigEnum<TemperatureUnit> temperatureUnit = e(TemperatureUnit.DEGREES_CELCIUS, "temperatureUnit", Comments.temperatureUnit, Comments.reloadRequired);
-    public final ConfigBool fancyJEIRendering = b(false, "fancyJEIRendering", Comments.fancyJEIRendering);
+    public final ConfigEnum<TemperatureUnit> temperatureUnit = e(TemperatureUnit.DEGREES_CELSIUS, "temperatureUnit", Comments.temperatureUnit, Comments.reloadRequired);
+    public final ConfigBool fancyJEIRendering = b(true, "fancyJEIRendering", Comments.fancyJEIRendering);
     public final ConfigBool nerdMode = b(false, "nerdMode", Comments.nerdMode);
 
     @Override

@@ -619,7 +619,7 @@ public class LegacySpecies implements INameableProduct {
         /**
          * Set the {@link LegacySpecies#boilingPoint boiling point} in degrees Celsius.
          * If not supplied, the boiling point will be very loosely {@link MoleculeBuilder#calculateBoilingPoint estimated}, but setting one is recommended.
-         * @param boilingPoint In degrees Celcius
+         * @param boilingPoint In degrees Celsius
          * @return This Molecule Builder
          */
         public MoleculeBuilder boilingPoint(float boilingPoint) {

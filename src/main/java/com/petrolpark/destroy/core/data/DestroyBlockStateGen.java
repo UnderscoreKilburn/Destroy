@@ -91,11 +91,11 @@ public class DestroyBlockStateGen {
     }
 
     // thanks petrol
-    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockstateProvider> bullshitHorizontalAxisBlock(BooleanProperty xProperty, boolean customItem) {
+    public static <B extends Block> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockstateProvider> bullshitHorizontalAxisBlock(BooleanProperty xProperty, boolean customItem, int addAngle) {
         return (c, p) -> p.getVariantBuilder(c.get()).forAllStates(state ->
                 ConfiguredModel.builder()
                     .modelFile(customItem ? AssetLookup.partialBaseModel(c, p) : AssetLookup.standardModel(c, p))
-                    .rotationY(state.getValue(xProperty) ? 90 : 0)
+                    .rotationY(addAngle + (state.getValue(xProperty) ? 90 : 0))
                     .build()
         );
     }

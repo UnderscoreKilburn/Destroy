@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.IntConsumer;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import javax.annotation.Nonnull;
 
@@ -22,6 +23,9 @@ public class RedstoneQuantityMonitorBehaviour extends BlockEntityBehaviour {
     @Nonnull
     public Optional<Supplier<Float>> quantityObserved;
     protected Function<Float, Component> label = f -> Component.empty();
+
+    protected UnaryOperator<Float> convertFromUI = UnaryOperator.identity();
+    protected UnaryOperator<Float> convertToUI = UnaryOperator.identity();
 
     public float lowerThreshold;
     public float upperThreshold;
@@ -42,6 +46,12 @@ public class RedstoneQuantityMonitorBehaviour extends BlockEntityBehaviour {
 
     public RedstoneQuantityMonitorBehaviour withLabel(Function<Float, Component> label) {
         this.label = label;
+        return this;
+    };
+
+    public RedstoneQuantityMonitorBehaviour withUIConversion(UnaryOperator<Float> from, UnaryOperator<Float> to) {
+        this.convertFromUI = from;
+        this.convertToUI = to;
         return this;
     };
 

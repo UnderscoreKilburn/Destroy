@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.DestroyClient;
 import com.petrolpark.destroy.client.DestroyLang;
+import com.petrolpark.destroy.client.DestroyPonderScenes;
 import com.petrolpark.destroy.content.oil.seismology.SeismometerItemRenderer;
 import com.petrolpark.destroy.content.tool.swissarmyknife.SwissArmyKnifeItem;
 import com.petrolpark.destroy.core.block.entity.BlockEntityBehaviourRenderer;
@@ -12,6 +13,7 @@ import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosivePropertiesT
 import com.petrolpark.destroy.core.explosion.mixedexplosive.IMixedExplosiveItem;
 import com.petrolpark.destroy.core.explosion.mixedexplosive.MixedExplosiveScreen;
 
+import com.simibubi.create.foundation.utility.GlobalRegistryAccess;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.Item;
@@ -19,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -67,5 +69,11 @@ public class DestroyClientEvents {
             properties = ExplosiveProperties.getEntryForItem(event.getItemStack().getItem()).orElse(null);
         };
         if (properties != null) event.getTooltipElements().add(Either.right(new ExplosivePropertiesTooltip(properties)));
+    };
+
+    @SubscribeEvent
+    public static final void onRecipesUpdated(RecipesUpdatedEvent event) {
+        if(GlobalRegistryAccess.get() != null)
+            DestroyPonderScenes.refreshPeriodicTableBlockScenes();
     };
 };

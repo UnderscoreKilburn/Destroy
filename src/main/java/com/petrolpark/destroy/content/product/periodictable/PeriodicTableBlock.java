@@ -1,8 +1,6 @@
 package com.petrolpark.destroy.content.product.periodictable;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
@@ -119,5 +117,4 @@ public class PeriodicTableBlock extends HorizontalDirectionalBlock {
         };
 
     };
-    
 };

@@ -18,7 +18,6 @@ import com.petrolpark.destroy.DestroyTags.MobEffects;
 import com.petrolpark.destroy.DestroyTrades;
 import com.petrolpark.destroy.DestroyVillagers;
 import com.petrolpark.destroy.client.DestroyLang;
-import com.petrolpark.destroy.client.DestroyPonderScenes;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
 import com.petrolpark.destroy.content.oil.ChunkCrudeOil;
 import com.petrolpark.destroy.content.oil.CrudeOilCommand;
@@ -42,7 +41,6 @@ import com.petrolpark.destroy.core.chemistry.vat.material.SyncVatMaterialsS2CPac
 import com.petrolpark.destroy.core.chemistry.vat.material.VatMaterial;
 import com.petrolpark.destroy.core.chemistry.vat.material.VatMaterialResourceListener;
 import com.petrolpark.destroy.core.debug.AttachedCheckCommand;
-import com.petrolpark.destroy.core.explosion.mixedexplosive.ExplosiveProperties;
 import com.petrolpark.destroy.core.extendedinventory.ExtendedInventory;
 import com.petrolpark.destroy.core.player.PlayerCrouchingCapability;
 import com.petrolpark.destroy.core.player.PlayerPreviousPositionsCapability;
@@ -98,7 +96,6 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.FakePlayer;
@@ -187,16 +184,6 @@ public class DestroyCommonEvents {
         level.getCapability(Pollution.CAPABILITY).ifPresent(levelPollution -> {
             DestroyMessages.sendToClient(new LevelPollutionS2CPacket(levelPollution), serverPlayer);
         });
-
-        // Update the circuit pattern crafting recipes
-        DestroyMessages.sendToClient(new CircuitPatternsS2CPacket(Destroy.CIRCUIT_PATTERN_HANDLER.getAllPatterns()), serverPlayer);
-
-        // Update the known Vat Materials
-        Map<BlockIngredient<?>, VatMaterial> datapackMaterials = new HashMap<>(VatMaterial.BLOCK_MATERIALS.size());
-        VatMaterial.BLOCK_MATERIALS.entrySet().stream()
-            .filter(entry -> !entry.getValue().builtIn())
-            .forEach(entry -> datapackMaterials.put(entry.getKey(), entry.getValue()));
-        DestroyMessages.sendToClient(new SyncVatMaterialsS2CPacket(datapackMaterials), serverPlayer);
     };
 
     @SubscribeEvent
@@ -604,6 +591,21 @@ public class DestroyCommonEvents {
     };
 
     @SubscribeEvent
+    public static final void onDatapackSync(OnDatapackSyncEvent event) {
+        for (ServerPlayer player : event.getPlayers()) {
+            // Update the circuit pattern crafting recipes
+            DestroyMessages.sendToClient(new CircuitPatternsS2CPacket(Destroy.CIRCUIT_PATTERN_HANDLER.getAllPatterns()), player);
+
+            // Update the known Vat Materials
+            Map<BlockIngredient<?>, VatMaterial> datapackMaterials = new HashMap<>(VatMaterial.BLOCK_MATERIALS.size());
+            VatMaterial.BLOCK_MATERIALS.entrySet().stream()
+                .filter(entry -> !entry.getValue().builtIn())
+                .forEach(entry -> datapackMaterials.put(entry.getKey(), entry.getValue()));
+            DestroyMessages.sendToClient(new SyncVatMaterialsS2CPacket(datapackMaterials), player);
+        };
+    };
+
+    @SubscribeEvent
 	public static final void onLoadWorld(LevelEvent.Load event) {
         LevelAccessor level = event.getLevel();
 		Destroy.CIRCUIT_PUNCHER_HANDLER.onLoadWorld(level);
@@ -615,12 +617,4 @@ public class DestroyCommonEvents {
 		Destroy.CIRCUIT_PUNCHER_HANDLER.onUnloadWorld(event.getLevel());
         Destroy.CIRCUIT_PATTERN_HANDLER.onLevelUnloaded(event.getLevel());
 	};
-
-    @SubscribeEvent
-    public static final void onRecipesUpdated(RecipesUpdatedEvent event) {
-        // not sure if this is the best place for this but this runs clientside after all datapacks
-        // have been received from the server so this seems good enough
-        Destroy.LOGGER.info("recipes updated");
-        DestroyPonderScenes.refreshPeriodicTableBlockScenes();
-    };
 };

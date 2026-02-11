@@ -86,6 +86,5 @@ public class DestroyClientModEvents {
         EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
         BlowpipeItemRenderLayer.registerOnAll(dispatcher);
     };
-
 };
 

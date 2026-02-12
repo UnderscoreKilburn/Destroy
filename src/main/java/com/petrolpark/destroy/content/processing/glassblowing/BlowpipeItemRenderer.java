@@ -71,9 +71,9 @@ public class BlowpipeItemRenderer extends CustomRenderedItemModelRenderer {
             };
         } else if (!tank.isEmpty()) {
             ms.pushPose();
-            ms.translate(0f, 0f, -8 / 16f);
+            ms.translate(0f, 8 / 16f, 0f);
             TransformStack.of(ms)
-                .rotateYDegrees(180);
+                .rotateXDegrees(-90);
             BlowpipeBlockEntityRenderer.render(recipe, tank.getFluid(), progressProportion, ms, buffer, light, overlay);
             ms.popPose();
         };

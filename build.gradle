@@ -83,6 +83,7 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
+            arg '-mixin.config=destroy.mixins.json'
             property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
             property 'createbigcannons.datagen.platform', 'forge' // CBC needs this to be set or else datagen won't run
             //property 'forge.logging.console.level', 'debug'

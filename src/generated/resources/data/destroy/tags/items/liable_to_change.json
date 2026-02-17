@@ -1,14 +1,14 @@
 {
   "values": [
+    "destroy:magic_oxidant",
+    "destroy:magic_reductant",
+    "destroy:discharged_voltaic_pile",
+    "destroy:voltaic_pile",
     "destroy:aging_barrel",
     "destroy:dynamo",
     "destroy:anfo_block",
     "destroy:cordite",
     "destroy:nitrocellulose_block",
-    "destroy:picric_acid_block",
-    "destroy:magic_oxidant",
-    "destroy:magic_reductant",
-    "destroy:discharged_voltaic_pile",
-    "destroy:voltaic_pile"
+    "destroy:picric_acid_block"
   ]
 }

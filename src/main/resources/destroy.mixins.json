@@ -17,6 +17,7 @@
     "FluidIngredientMixin",
     "FluidNetworkMixin",
     "FluidPropagatorMixin",
+    "FluidHelperMixin",
     "FluidTankBlockEntityMixin",
     "FluidTankMountedStorageHandlerMixin",
     "FluidTransportBehaviourMixin",

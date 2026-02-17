@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-16T07:16:21.2389078	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2026-02-17T07:18:51.5370006	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 9583bbca7c5e03f2ebe6d1611730c81873bed9d4 assets/destroy/blockstates/aging_barrel.json
 391a63a1be808a7eaeb2ac4bf47aac0c1d2a1e05 assets/destroy/blockstates/anfo_block.json
 a0487e31c10af4a6745a8cad3e9d0747d098b315 assets/destroy/blockstates/arc_furnace_lid.json
@@ -549,7 +549,7 @@ e3969084099404bc495c06a19f5496b80e2f7d20 data/destroy/tags/items/eyes.json
 55a69a181906232e670cbf685c0e178c6bbd333e data/destroy/tags/items/fertilizers.json
 f25a74c5fd41afb9e6f7e9e032082cfeb07e0de2 data/destroy/tags/items/fluxes.json
 32685523c7e0434a0c21cca10bd1c95dec589049 data/destroy/tags/items/hefty_beetroots.json
-56409fa370c4b95549bb51b2e0de981d2266dca7 data/destroy/tags/items/liable_to_change.json
+1b7de3c6a31975b0e6acec380700aa168bc39542 data/destroy/tags/items/liable_to_change.json
 4d124cb879d04fe2d337b90faa4be44d89e5e020 data/destroy/tags/items/obliteration_explosives.json
 f2825b79c699c32838e728387032d8a92d75bd31 data/destroy/tags/items/plastics.json
 8eb49ad63c252c757788a684022b8b03cd6dcc0e data/destroy/tags/items/plastics/inert.json

@@ -1,16 +1,19 @@
 package com.petrolpark.destroy.content.processing.treetap;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.petrolpark.destroy.DestroyAdvancementTrigger;
+import com.petrolpark.destroy.DestroyRecipeTypes;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
 import com.petrolpark.destroy.core.data.advancement.DestroyAdvancementBehaviour;
 import com.petrolpark.destroy.core.fluid.GeniusFluidTankBehaviour;
 import com.simibubi.create.content.kinetics.base.BlockBreakingKineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.recipe.RecipeFinder;
 import com.simibubi.create.foundation.utility.BlockHelper;
 
 import net.minecraft.core.BlockPos;
@@ -26,12 +29,14 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class TreeTapBlockEntity extends BlockBreakingKineticBlockEntity {
 
+    private static final Object tappingRecipeKey = new Object();
+
     protected LazyOptional<IFluidHandler> fluidCapability;
 	public GeniusFluidTankBehaviour tank;
 
     protected DestroyAdvancementBehaviour advancementBehaviour;
 
-    protected BlockTapping currentTapping;
+    protected TappingRecipe currentTapping;
 
     public TreeTapBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
@@ -45,20 +50,23 @@ public class TreeTapBlockEntity extends BlockBreakingKineticBlockEntity {
     @Override
     public boolean canBreak(BlockState stateToBreak, float blockHardness) {
         if (!super.canBreak(stateToBreak, blockHardness)) return false;
-        if (currentTapping == null || !currentTapping.tappable.test(stateToBreak)) {
+        if (currentTapping == null || !currentTapping.blockIngredient.test(stateToBreak)) {
             currentTapping = null;
-            for (BlockTapping tapping : BlockTapping.ALL_TAPPINGS) {
-                if (tapping.tappable.test(stateToBreak)) currentTapping = tapping;
-                break;
-            };
+
+            Optional<TappingRecipe> tapping = RecipeFinder.get(tappingRecipeKey, getLevel(), r -> r.getType() == DestroyRecipeTypes.TAPPING.getType()).stream()
+                .map(r -> (TappingRecipe)r)
+                .filter(r -> r.blockIngredient.test(stateToBreak))
+                .findFirst();
+            if(tapping.isPresent())
+                currentTapping = tapping.get();
         };
-        return currentTapping != null && tank.getPrimaryHandler().fill(currentTapping.result, FluidAction.SIMULATE) > 0;
+        return currentTapping != null && tank.getPrimaryHandler().fill(currentTapping.getFluidResults().get(0), FluidAction.SIMULATE) > 0;
     };
 
     @Override
     public void onBlockBroken(BlockState stateToBreak) {
         BlockHelper.destroyBlock(level, breakingPos, 1f, stack -> {}); // Don't drop items
-        tank.getPrimaryHandler().fill(currentTapping.result, FluidAction.EXECUTE);
+        tank.getPrimaryHandler().fill(currentTapping.getFluidResults().get(0), FluidAction.EXECUTE);
         advancementBehaviour.awardDestroyAdvancement(DestroyAdvancementTrigger.TAP_TREE);
     };
 

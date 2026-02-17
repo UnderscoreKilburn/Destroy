@@ -214,7 +214,7 @@ public class DestroyJEI implements IModPlugin {
             .build("electrolysis", (info, helpers) -> new ElectrolysisCategory(info)),
 
         tapping = builder(TappingRecipe.class)
-            .addRecipes(() -> TappingCategory.RECIPES)
+            .addTypedRecipes(DestroyRecipeTypes.TAPPING)
             .acceptsMixtures()
             .catalyst(DestroyBlocks.TREE_TAP::get)
             .itemIcon(DestroyBlocks.TREE_TAP.get())

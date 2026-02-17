@@ -1,7 +1,6 @@
-package com.petrolpark.destroy.core.data.recipe;
+package com.petrolpark.destroy.core.chemistry.vat.material;
 
 import com.petrolpark.destroy.DestroyBlocks;
-import com.petrolpark.destroy.core.chemistry.vat.material.VatMaterial;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.api.data.recipe.BaseRecipeProvider;

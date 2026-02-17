@@ -1,11 +1,7 @@
 package com.petrolpark.destroy.compat.jei.category;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.petrolpark.compat.jei.category.PetrolparkRecipeCategory;
 import com.petrolpark.destroy.compat.jei.animation.AnimatedTreeTap;
-import com.petrolpark.destroy.content.processing.treetap.BlockTapping;
 import com.petrolpark.destroy.content.processing.treetap.TappingRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
@@ -15,14 +11,9 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class TappingCategory extends PetrolparkRecipeCategory<TappingRecipe> {
-
-    public static final List<TappingRecipe> RECIPES = new ArrayList<>(BlockTapping.ALL_TAPPINGS.size());
-
-    static {
-        for (BlockTapping tapping : BlockTapping.ALL_TAPPINGS) RECIPES.add(TappingRecipe.create(tapping));
-    };
 
     private final AnimatedTreeTap tap = new AnimatedTreeTap();
 
@@ -34,7 +25,7 @@ public class TappingCategory extends PetrolparkRecipeCategory<TappingRecipe> {
     public void setRecipe(IRecipeLayoutBuilder builder, TappingRecipe recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 27, 51)
             .setBackground(getRenderedSlot(), -1, -1)
-            .addIngredients(recipe.getIngredients().get(0));
+            .addItemStacks(recipe.getBlock().getDisplayedItemStacks());
 
         addFluidSlot(builder, 131, 50, recipe.getFluidResults().get(0));
     };

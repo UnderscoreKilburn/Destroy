@@ -2,7 +2,8 @@ package com.petrolpark.destroy;
 
 import com.petrolpark.destroy.core.data.DestroyGeneratedEntriesProvider;
 import com.petrolpark.destroy.core.data.DestroyRegistrate;
-import com.petrolpark.destroy.core.data.recipe.DestroyVatMaterialGen;
+import com.petrolpark.destroy.core.chemistry.vat.material.DestroyVatMaterialGen;
+import com.petrolpark.destroy.core.data.recipe.DestroyRecipeProvider;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -94,6 +95,14 @@ public class Destroy {
 
         // Mod objects
         if (!datagen.get()) DestroySoundEvents.prepare(); // Sound datagen is broken and I can't be bothered to fix it
+
+        // Chemistry
+        DestroyGroupFinder.register();
+        DestroyTopologies.register();
+        DestroyMolecules.register();
+        DestroyReactions.register();
+        DestroyGenericReactions.register();
+
         DestroyCreativeModeTabs.register(modEventBus);
         DestroyTags.register();
         DestroyBlockEntityTypes.register();
@@ -149,13 +158,6 @@ public class Destroy {
         DestroyAdvancementTrigger.register();
         DestroyBlockExtrusions.register();
 
-        // Chemistry
-        DestroyGroupFinder.register();
-        DestroyTopologies.register();
-        DestroyMolecules.register();
-        DestroyReactions.register();
-        DestroyGenericReactions.register();
-
         // Config
         GogglesItem.addIsWearingPredicate(player -> player.isCreative() && DestroyAllConfigs.SERVER.automaticGoggles.get());
     };
@@ -181,5 +183,9 @@ public class Destroy {
 
         generator.addProvider(event.includeServer(), generatedEntriesProvider);
         generator.addProvider(event.includeServer(), new DestroyVatMaterialGen(output, MOD_ID));
+
+		if (event.includeServer()) {
+			DestroyRecipeProvider.registerAllProcessing(generator, output);
+		}
     };
 };

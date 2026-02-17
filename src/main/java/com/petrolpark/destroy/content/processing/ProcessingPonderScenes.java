@@ -22,7 +22,7 @@ import com.petrolpark.destroy.content.processing.centrifuge.CentrifugeBlockEntit
 import com.petrolpark.destroy.content.processing.distillation.BubbleCapBlock;
 import com.petrolpark.destroy.content.processing.distillation.BubbleCapBlockEntity;
 import com.petrolpark.destroy.content.processing.glassblowing.BlowpipeBlockEntity;
-import com.petrolpark.destroy.content.processing.treetap.BlockTapping;
+import com.petrolpark.destroy.content.processing.treetap.TappingRecipe;
 import com.petrolpark.destroy.content.processing.treetap.TreeTapBlockEntity;
 import com.petrolpark.destroy.core.fluid.gasparticle.GasParticleData;
 import com.simibubi.create.AllItems;
@@ -968,7 +968,7 @@ public class ProcessingPonderScenes {
         };
         scene.world().destroyBlock(log);
         scene.world().modifyBlockEntity(tap, TreeTapBlockEntity.class, be -> {
-            be.tank.getPrimaryHandler().setFluid(BlockTapping.latex);
+            be.tank.getPrimaryHandler().setFluid(TappingRecipe.LATEX_FLUID);
         });
         scene.idle(20);
 

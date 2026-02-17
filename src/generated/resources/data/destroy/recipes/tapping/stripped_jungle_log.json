@@ -1,0 +1,30 @@
+{
+  "type": "destroy:tapping",
+  "blocks": [
+    {
+      "block": "minecraft:stripped_jungle_log"
+    },
+    {
+      "block": "minecraft:stripped_jungle_wood"
+    }
+  ],
+  "ingredients": [],
+  "results": [
+    {
+      "amount": 10,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 9.995596,
+              "Molecule": "destroy:isoprene"
+            }
+          ],
+          "Temperature": 298.0,
+          "TranslationKey": "fluid.destroy.latex"
+        }
+      }
+    }
+  ]
+}

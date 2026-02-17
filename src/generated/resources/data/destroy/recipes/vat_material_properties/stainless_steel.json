@@ -1,0 +1,9 @@
+{
+  "type": "destroy:vat_material_properties",
+  "blocks": {
+    "tag": "forge:storage_blocks/stainless_steel"
+  },
+  "max_pressure": 1000000.0,
+  "thermal_conductivity": 35.0,
+  "transparent": false
+}

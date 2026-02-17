@@ -77,7 +77,7 @@ public class DestroyPonderTags {
         ;
 
         MultiTagBuilder.Tag<ItemLike> vatSideBlocksTagBuilder = ITEM_HELPER.addToTag(VAT_SIDE_BLOCKS);
-        VatMaterial.BLOCK_MATERIALS.forEach((blockIngredient, material) -> blockIngredient.getDisplayedItemStacks().forEach(stack -> vatSideBlocksTagBuilder.add(stack.getItem())));
+        VatMaterial.getAllMaterials().forEach(material -> material.getBlock().getDisplayedItemStacks().forEach(stack -> vatSideBlocksTagBuilder.add(stack.getItem())));
 
         HELPER.addToTag(AllCreatePonderTags.FLUIDS)
             .add(DestroyBlocks.BUBBLE_CAP)
@@ -128,6 +128,6 @@ public class DestroyPonderTags {
 
     public static final void refreshVatMaterialsTag() {
         MultiTagBuilder.Tag<ItemLike> vatSideBlocksTagBuilder = ITEM_HELPER.addToTag(VAT_SIDE_BLOCKS);
-        VatMaterial.BLOCK_MATERIALS.keySet().forEach(blockIngredient -> blockIngredient.getDisplayedItemStacks().forEach(stack -> vatSideBlocksTagBuilder.add(stack.getItem())));
+        VatMaterial.getAllMaterials().forEach(material -> material.getBlock().getDisplayedItemStacks().forEach(stack -> vatSideBlocksTagBuilder.add(stack.getItem())));
     }
 }

@@ -1,0 +1,9 @@
+{
+  "type": "destroy:vat_material_properties",
+  "blocks": {
+    "block": "destroy:insulated_stainless_steel_block"
+  },
+  "max_pressure": 800000.0,
+  "thermal_conductivity": 20.0,
+  "transparent": false
+}

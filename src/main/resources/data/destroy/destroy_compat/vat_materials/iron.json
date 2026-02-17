@@ -1,8 +1,0 @@
-{
-    "max_pressure_difference": 250000,
-    "conductivity": 50,
-    "transparent": false,
-    "blocks": [
-        "#forge:storage_blocks/iron"
-    ]
-}

@@ -7,6 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 public class Util {
     
     public static final ResourceLocation toRl(NamespacedId speciesId) {
-        return new ResourceLocation(speciesId.toString());
+        return ResourceLocation.parse(speciesId.toString());
     };
 };

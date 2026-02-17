@@ -3,6 +3,7 @@ package com.petrolpark.destroy;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import com.petrolpark.destroy.core.chemistry.vat.material.VatMaterial;
 import org.jetbrains.annotations.Nullable;
 
 import com.petrolpark.destroy.content.processing.ageing.AgeingRecipe;
@@ -71,7 +72,10 @@ public enum DestroyRecipeTypes implements IRecipeTypeInfo {
     CIRCUIT_BOARD_MANUAL_CRAFTING(ManualCircuitBoardRecipe.Serializer::new, () -> RecipeType.CRAFTING),
     DURATION_4_FIREWORK_ROCKET_CRAFTING(() -> ExtendedDurationFireworkRocketRecipe.DURATION_4_FIREWORK_ROCKET, () -> RecipeType.CRAFTING),
     DURATION_5_FIREWORK_ROCKET_CRAFTING(() -> ExtendedDurationFireworkRocketRecipe.DURATION_5_FIREWORK_ROCKET, () -> RecipeType.CRAFTING),
-    FILL_CUSTOM_EXPLOSIVE_MIX_ITEM(() -> FillMixedExplosiveItemRecipe.SERIALIZER, () -> RecipeType.CRAFTING);
+    FILL_CUSTOM_EXPLOSIVE_MIX_ITEM(() -> FillMixedExplosiveItemRecipe.SERIALIZER, () -> RecipeType.CRAFTING),
+
+    // Recipes that aren't actually recipes
+    VAT_MATERIAL_PROPERTIES(VatMaterial.Serializer::new);
     
     // This is alllllll copied from Create source code
     private final ResourceLocation id;

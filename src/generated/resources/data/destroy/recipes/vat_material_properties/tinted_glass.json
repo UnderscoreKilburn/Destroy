@@ -1,0 +1,9 @@
+{
+  "type": "destroy:vat_material_properties",
+  "blocks": {
+    "block": "minecraft:tinted_glass"
+  },
+  "max_pressure": 100000.0,
+  "thermal_conductivity": 18.0,
+  "transparent": false
+}

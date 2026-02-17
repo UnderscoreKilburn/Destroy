@@ -1,8 +1,0 @@
-{
-    "max_pressure_difference": 300000,
-    "conductivity": 15,
-    "transparent": true,
-    "blocks": [
-        "destroy:borosilicate_glass"
-    ]
-}

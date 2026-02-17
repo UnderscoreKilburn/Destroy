@@ -12,8 +12,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DestroyRegistries {
-    
-    //public static final ResourceKey<Registry<VatMaterial>> VAT_MATERIAL = key("vat_material");
+
     public static final ResourceKey<Registry<ExplosiveProperties.RegistryEntry>> EXPLOSIVE_PROPERTIES = key("explosive_properties");
     public static final ResourceKey<Registry<PeriodicTableBlock.PeriodicTableEntry>> PERIODIC_TABLE_BLOCKS = key("periodic_table_blocks");
 

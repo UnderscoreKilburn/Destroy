@@ -1,8 +1,6 @@
 package com.petrolpark.destroy.core.event;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -37,9 +35,7 @@ import com.petrolpark.destroy.core.chemistry.novelcompounds.PlayerNovelCompounds
 import com.petrolpark.destroy.core.chemistry.storage.IMixtureStorageItem;
 import com.petrolpark.destroy.core.chemistry.storage.measuringcylinder.MeasuringCylinderBlock;
 import com.petrolpark.destroy.core.chemistry.storage.measuringcylinder.MeasuringCylinderBlockItem;
-import com.petrolpark.destroy.core.chemistry.vat.material.SyncVatMaterialsS2CPacket;
 import com.petrolpark.destroy.core.chemistry.vat.material.VatMaterial;
-import com.petrolpark.destroy.core.chemistry.vat.material.VatMaterialResourceListener;
 import com.petrolpark.destroy.core.debug.AttachedCheckCommand;
 import com.petrolpark.destroy.core.extendedinventory.ExtendedInventory;
 import com.petrolpark.destroy.core.player.PlayerCrouchingCapability;
@@ -50,7 +46,7 @@ import com.petrolpark.destroy.core.pollution.Pollution.PollutionType;
 import com.petrolpark.destroy.core.pollution.PollutionCommand;
 import com.petrolpark.destroy.core.pollution.PollutionHelper;
 import com.petrolpark.destroy.core.pollution.SyncChunkPollutionS2CPacket;
-import com.petrolpark.recipe.ingredient.BlockIngredient;
+import com.petrolpark.destroy.util.GlobalRecipeAccess;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.equipment.potatoCannon.PotatoProjectileEntity;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockItem;
@@ -87,6 +83,7 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -100,6 +97,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.RecipeMatcher;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
@@ -586,8 +584,6 @@ public class DestroyCommonEvents {
     @SubscribeEvent
     public static final void onAddReloadListeners(AddReloadListenerEvent event) {
         event.addListener(Destroy.CIRCUIT_PATTERN_HANDLER.RELOAD_LISTENER);
-        VatMaterialResourceListener vatMaterialListener = new VatMaterialResourceListener(event.getConditionContext());
-        event.addListener(vatMaterialListener);
     };
 
     @SubscribeEvent
@@ -595,14 +591,12 @@ public class DestroyCommonEvents {
         for (ServerPlayer player : event.getPlayers()) {
             // Update the circuit pattern crafting recipes
             DestroyMessages.sendToClient(new CircuitPatternsS2CPacket(Destroy.CIRCUIT_PATTERN_HANDLER.getAllPatterns()), player);
-
-            // Update the known Vat Materials
-            Map<BlockIngredient<?>, VatMaterial> datapackMaterials = new HashMap<>(VatMaterial.BLOCK_MATERIALS.size());
-            VatMaterial.BLOCK_MATERIALS.entrySet().stream()
-                .filter(entry -> !entry.getValue().builtIn())
-                .forEach(entry -> datapackMaterials.put(entry.getKey(), entry.getValue()));
-            DestroyMessages.sendToClient(new SyncVatMaterialsS2CPacket(datapackMaterials), player);
         };
+    };
+
+    @SubscribeEvent
+    public static final void onTagsUpdated(TagsUpdatedEvent event) {
+        VatMaterial.invalidateCache();
     };
 
     @SubscribeEvent

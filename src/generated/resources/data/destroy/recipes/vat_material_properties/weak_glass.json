@@ -1,0 +1,65 @@
+{
+  "type": "destroy:vat_material_properties",
+  "blocks": [
+    {
+      "block": "minecraft:glass"
+    },
+    {
+      "block": "create:framed_glass"
+    },
+    {
+      "block": "create:vertical_framed_glass"
+    },
+    {
+      "block": "create:horizontal_framed_glass"
+    },
+    {
+      "block": "create:tiled_glass"
+    },
+    {
+      "tag": "forge:glass/black"
+    },
+    {
+      "tag": "forge:glass/blue"
+    },
+    {
+      "tag": "forge:glass/brown"
+    },
+    {
+      "tag": "forge:glass/cyan"
+    },
+    {
+      "tag": "forge:glass/gray"
+    },
+    {
+      "tag": "forge:glass/green"
+    },
+    {
+      "tag": "forge:glass/light_blue"
+    },
+    {
+      "tag": "forge:glass/light_gray"
+    },
+    {
+      "tag": "forge:glass/lime"
+    },
+    {
+      "tag": "forge:glass/magenta"
+    },
+    {
+      "tag": "forge:glass/orange"
+    },
+    {
+      "tag": "forge:glass/pink"
+    },
+    {
+      "tag": "forge:glass/purple"
+    },
+    {
+      "tag": "forge:glass/red"
+    }
+  ],
+  "max_pressure": 100000.0,
+  "thermal_conductivity": 30.0,
+  "transparent": true
+}

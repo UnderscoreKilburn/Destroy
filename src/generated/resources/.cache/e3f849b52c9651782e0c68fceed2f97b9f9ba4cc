@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-06T15:18:25.5176366	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2026-02-16T07:16:21.2389078	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 9583bbca7c5e03f2ebe6d1611730c81873bed9d4 assets/destroy/blockstates/aging_barrel.json
 391a63a1be808a7eaeb2ac4bf47aac0c1d2a1e05 assets/destroy/blockstates/anfo_block.json
 a0487e31c10af4a6745a8cad3e9d0747d098b315 assets/destroy/blockstates/arc_furnace_lid.json
@@ -7,7 +7,7 @@ e83811dec57802029d983eded79583c99770161f assets/destroy/blockstates/blacklight.j
 f486366e21d8d28ff20b31a25d659ef72932adaa assets/destroy/blockstates/blowpipe.json
 bfc26a9d8129741f08cae1cb35507608266b4b97 assets/destroy/blockstates/borosilicate_glass.json
 608f3009f01472727e95d0c0526bae0396787995 assets/destroy/blockstates/borosilicate_glass_fiber.json
-e495609b6ce89b5ca7a558670abfb0accc42ad0a assets/destroy/blockstates/bubble_cap.json
+c5a245321751e4d0aa6ddd25a336ab8c40a11397 assets/destroy/blockstates/bubble_cap.json
 b7ed346b1118cf43f96e0ecd59d53a1212ca1684 assets/destroy/blockstates/carbon_fiber_block.json
 d774696571102a7da7a92c5df9b90d8018160ab1 assets/destroy/blockstates/carbon_periodic_table_block.json
 39ec6302f1ad2cb4c9a505264a40eaa0f6860079 assets/destroy/blockstates/catalytic_converter.json

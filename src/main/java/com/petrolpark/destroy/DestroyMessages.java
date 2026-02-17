@@ -17,7 +17,6 @@ import com.petrolpark.destroy.content.tool.swissarmyknife.SwissArmyKnifeToolC2SP
 import com.petrolpark.destroy.core.chemistry.hazard.ChemicalPoisonS2CPacket;
 import com.petrolpark.destroy.core.chemistry.hazard.mobeffect.CryingS2CPacket;
 import com.petrolpark.destroy.core.chemistry.storage.measuringcylinder.TransferFluidC2SPacket;
-import com.petrolpark.destroy.core.chemistry.vat.material.SyncVatMaterialsS2CPacket;
 import com.petrolpark.destroy.core.chemistry.vat.observation.RedstoneQuantityMonitorThresholdChangeC2SPacket;
 import com.petrolpark.destroy.core.chemistry.vat.observation.colorimeter.ConfigureColorimeterC2SPacket;
 import com.petrolpark.destroy.core.explosion.SmartExplosionS2CPacket;
@@ -68,7 +67,6 @@ public class DestroyMessages {
         addS2CPacket(net, CircuitPatternsS2CPacket.class, CircuitPatternsS2CPacket::read);
         addS2CPacket(net, RequestKeypunchNameS2CPacket.class, RequestKeypunchNameS2CPacket::new);
         addS2CPacket(net, RedstoneProgramSyncReplyS2CPacket.class, RedstoneProgramSyncReplyS2CPacket::new);
-        addS2CPacket(net, SyncVatMaterialsS2CPacket.class, SyncVatMaterialsS2CPacket::new);
         addS2CPacket(net, RedstoneProgrammerPowerChangedS2CPacket.class, RedstoneProgrammerPowerChangedS2CPacket::new);
         addS2CPacket(net, SyncChunkPollutionS2CPacket.class, SyncChunkPollutionS2CPacket::new);
         addS2CPacket(net, ExtraInventorySizeChangeS2CPacket.class, ExtraInventorySizeChangeS2CPacket::new);

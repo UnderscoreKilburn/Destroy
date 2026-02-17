@@ -115,7 +115,7 @@ public class ColorimeterBlockEntity extends SmartBlockEntity {
         if (!hasLevel()) return Optional.empty();
         BlockPos vatPos = getBlockPos().relative(getBlockState().getValue(ColorimeterBlock.FACING));
         return getLevel().getBlockEntity(vatPos, DestroyBlockEntityTypes.VAT_SIDE.get()).map(vbe -> {
-            if (!VatMaterial.getMaterial(vbe.getMaterial()).map(VatMaterial::transparent).orElse(false)) return null;
+            if (!VatMaterial.getMaterial(vbe.getMaterial()).map(VatMaterial::isTransparent).orElse(false)) return null;
             return vbe.getController();
         });
     };

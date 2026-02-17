@@ -1,8 +1,0 @@
-{
-    "max_pressure_difference": 1200000,
-    "conductivity": 70,
-    "transparent": false,
-    "blocks": [
-        "minecraft:netherite_block"
-    ]
-}

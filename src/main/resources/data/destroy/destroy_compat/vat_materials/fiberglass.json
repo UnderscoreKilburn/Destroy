@@ -1,8 +1,0 @@
-{
-    "max_pressure_difference": 350000,
-    "conductivity": 17,
-    "transparent": false,
-    "blocks": [
-        "destroy:fiberglass_block"
-    ]
-}

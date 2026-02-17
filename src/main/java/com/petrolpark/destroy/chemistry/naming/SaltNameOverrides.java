@@ -80,7 +80,7 @@ public class SaltNameOverrides {
         Minecraft minecraft = Minecraft.getInstance();
         ALL_OVERRIDES.clear();
         for (String namespace : resourceManager.getNamespaces()) {
-            ResourceLocation location = new ResourceLocation(namespace, "lang/destroy_compat/salt_name_overrides/"+minecraft.getLanguageManager().getSelected()+".json");
+            ResourceLocation location = ResourceLocation.fromNamespaceAndPath(namespace, "lang/destroy_compat/salt_name_overrides/"+minecraft.getLanguageManager().getSelected()+".json");
             Optional<Resource> resource = resourceManager.getResource(location);
             if (resource.isPresent()) {
                 try (InputStream inputStream = resource.get().open()) {

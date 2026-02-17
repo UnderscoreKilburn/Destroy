@@ -1,0 +1,9 @@
+{
+  "type": "destroy:vat_material_properties",
+  "blocks": {
+    "block": "destroy:vat_controller"
+  },
+  "max_pressure": 3.4028235E38,
+  "thermal_conductivity": 0.0,
+  "transparent": false
+}

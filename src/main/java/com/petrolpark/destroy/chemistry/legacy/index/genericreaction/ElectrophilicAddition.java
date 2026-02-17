@@ -18,7 +18,7 @@ public abstract class ElectrophilicAddition extends SingleGroupGenericReaction<S
     public final boolean isForAlkynes; // Whether this is a Reaction involving alkynes - if not, it involves alkenes
 
     public ElectrophilicAddition(String namespace, String name, boolean alkyne) {
-        super(new ResourceLocation(namespace, (alkyne ? "alkyne_" : "alkene_") + name), alkyne ? DestroyGroupTypes.ALKYNE : DestroyGroupTypes.ALKENE);
+        super(ResourceLocation.fromNamespaceAndPath(namespace, (alkyne ? "alkyne_" : "alkene_") + name), alkyne ? DestroyGroupTypes.ALKYNE : DestroyGroupTypes.ALKENE);
         isForAlkynes = alkyne;
     };
 

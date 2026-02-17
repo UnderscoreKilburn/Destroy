@@ -22,7 +22,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -30,12 +32,14 @@ public class BubbleCapBlock extends Block implements IBE<BubbleCapBlockEntity>, 
 
     public static final BooleanProperty TOP = BooleanProperty.create("top"); // Whether this Bubble Cap is at the top of a Distillation Tower
     public static final BooleanProperty BOTTOM = BooleanProperty.create("bottom"); // Whether this Bubble Cap is at the bottom of a Distillation Tower
+    public static final DirectionProperty FACING = BlockStateProperties.FACING_HOPPER;
 
     public BubbleCapBlock(Properties pProperties) {
         super(pProperties);
         registerDefaultState(defaultBlockState()
             .setValue(TOP, true)
             .setValue(BOTTOM, true)
+            .setValue(FACING, Direction.DOWN)
         );
     };
 
@@ -48,7 +52,7 @@ public class BubbleCapBlock extends Block implements IBE<BubbleCapBlockEntity>, 
 
     @Override
     protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-        builder.add(TOP, BOTTOM);
+        builder.add(TOP, BOTTOM, FACING);
         super.createBlockStateDefinition(builder);
     };
 

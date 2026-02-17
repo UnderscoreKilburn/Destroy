@@ -40,10 +40,6 @@ public class Vat {
 
     public static final int MB_PER_BLOCK = 1000;
 
-    static {
-        VatMaterial.registerDestroyVatMaterials();
-    };
-
     // Global positions of the corners of this Vat. In NBT they are stored relative to the Controller position.
     private BlockPos lowerCorner;
     private BlockPos upperCorner;
@@ -51,7 +47,7 @@ public class Vat {
     private ImmutableList<BlockPos> sides; // NOT synced server/client
 
     /**
-     * The {@link VatMaterial#maxPressure maximum pressure} of the weakest Block making up this Vat.
+     * The {@link VatMaterial#getMaxPressure maximum pressure} of the weakest Block making up this Vat.
      */
     private float maximumPressure;
     /**
@@ -75,7 +71,7 @@ public class Vat {
         Vat vat = new Vat(NbtUtils.readBlockPos(tag.getCompound("LowerCorner")).offset(controllerPos), NbtUtils.readBlockPos(tag.getCompound("UpperCorner")).offset(controllerPos));
         vat.conductance = tag.getFloat("Conductance");
         vat.weakestBlockState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), tag.getCompound("WeakestBlock"));
-        vat.maximumPressure = VatMaterial.getMaterial(vat.weakestBlockState).map(VatMaterial::maxPressure).orElseGet(() -> 0f);
+        vat.maximumPressure = VatMaterial.getMaterial(vat.weakestBlockState).map(VatMaterial::getMaxPressure).orElseGet(() -> 0f);
         return Optional.of(vat);
     };
 
@@ -209,11 +205,11 @@ public class Vat {
                     break;
                 };
                 VatMaterial material = VatMaterial.getMaterial(state).get();
-                if (material.maxPressure() < maximumPressure) {
-                    maximumPressure = material.maxPressure();
+                if (material.getMaxPressure() < maximumPressure) {
+                    maximumPressure = material.getMaxPressure();
                     weakestBlockState = state;
                 };
-                conductance += material.thermalConductivity(); // As area and width = 1, conductivity = conductance
+                conductance += material.getThermalConductivity(); // As area and width = 1, conductivity = conductance
                 sides.add(new BlockPos(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
             };
         };
@@ -318,7 +314,7 @@ public class Vat {
     };
 
     /**
-     * The {@link VatMaterial#maxPressure maximum pressure} of the weakest Block making up this Vat.
+     * The {@link VatMaterial#getMaxPressure maximum pressure} of the weakest Block making up this Vat.
      */
     public float getMaxPressure() {
         return maximumPressure;

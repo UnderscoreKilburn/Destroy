@@ -1,8 +1,0 @@
-{
-    "max_pressure_difference": 100000,
-    "conductivity": 18,
-    "transparent": false,
-    "blocks": [
-        "minecraft:tinted_glass"
-    ]
-}

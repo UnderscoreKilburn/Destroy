@@ -1,0 +1,9 @@
+{
+  "type": "destroy:vat_material_properties",
+  "blocks": {
+    "block": "create:copper_casing"
+  },
+  "max_pressure": 500000.0,
+  "thermal_conductivity": 400.0,
+  "transparent": false
+}

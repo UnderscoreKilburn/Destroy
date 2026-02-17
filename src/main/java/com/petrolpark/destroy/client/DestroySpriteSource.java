@@ -74,19 +74,19 @@ public class DestroySpriteSource implements SpriteSource {
         // ARMOR TRIMS
 
         Supplier<int[]> paletteKeySupplier = Suppliers.memoize(() -> {
-            return PalettedPermutations.loadPaletteEntryFromImage(resourceManager, new ResourceLocation("minecraft", "trims/color_palettes/trim_palette"));
+            return PalettedPermutations.loadPaletteEntryFromImage(resourceManager, ResourceLocation.fromNamespaceAndPath("minecraft", "trims/color_palettes/trim_palette"));
         });
 
         // Find all trim Materials which we want to indiscriminately generate textures for
         Map<String, Supplier<IntUnaryOperator>> trimMaterials = new HashMap<>();
         for (String namespace : resourceManager.getNamespaces()) {
-            ResourceLocation location = new ResourceLocation(namespace, "textures/trims/universal_trim_materials.json");
+            ResourceLocation location = ResourceLocation.fromNamespaceAndPath(namespace, "textures/trims/universal_trim_materials.json");
             Optional<Resource> resource = resourceManager.getResource(location);
             if (resource.isEmpty()) continue;
             try (InputStream inputStream = resource.get().open()) {
                 JsonObject jsonObject = GSON.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), JsonObject.class);
                 jsonObject.get("values").getAsJsonObject().entrySet().forEach(entry -> {
-                    ResourceLocation textureId = new ResourceLocation(entry.getValue().getAsString());
+                    ResourceLocation textureId = ResourceLocation.parse(entry.getValue().getAsString());
                     trimMaterials.put(entry.getKey(), Suppliers.memoize(() -> PalettedPermutations.createPaletteMapping(paletteKeySupplier.get(), PalettedPermutations.loadPaletteEntryFromImage(resourceManager, textureId))));
                 });
             } catch (IOException e) {
@@ -129,7 +129,7 @@ public class DestroySpriteSource implements SpriteSource {
             int tileHeight = 2;
 
             // Gather the information on how to split up the texture
-            ResourceLocation metaFile = new ResourceLocation(file.getNamespace(), file.getPath() + ".mcmeta");
+            ResourceLocation metaFile = ResourceLocation.fromNamespaceAndPath(file.getNamespace(), file.getPath() + ".mcmeta");
             Optional<Resource> metaFileOpened = resourceManager.getResource(metaFile);
             if (metaFileOpened.isPresent()) {
                 try (Reader reader = resourceManager.getResource(metaFile).get().openAsReader()) {
@@ -155,7 +155,7 @@ public class DestroySpriteSource implements SpriteSource {
                         int xPos = xStart + x * tileWidth;
                         int yPos = yStart + y * tileHeight;
                         image.copyRect(partialImage, xPos, yPos, xPos, yPos, tileWidth, tileHeight, false, false);
-                        ResourceLocation sectionId = new ResourceLocation(id.getNamespace(), id.getPath() + "/" + ((y * 4) + x));
+                        ResourceLocation sectionId = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), id.getPath() + "/" + ((y * 4) + x));
                         output.add(sectionId, () -> new SpriteContents(sectionId, new FrameSize(image.getWidth(), image.getHeight()), partialImage, AnimationMetadataSection.EMPTY, ForgeTextureMetadata.EMPTY));
                     };
                 };

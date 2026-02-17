@@ -1,8 +1,0 @@
-{
-    "max_pressure_difference": 500000,
-    "conductivity": 400,
-    "transparent": false,
-    "blocks": [
-        "create:copper_casing"
-    ]
-}

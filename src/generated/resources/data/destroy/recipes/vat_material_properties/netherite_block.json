@@ -1,0 +1,9 @@
+{
+  "type": "destroy:vat_material_properties",
+  "blocks": {
+    "block": "minecraft:netherite_block"
+  },
+  "max_pressure": 2000000.0,
+  "thermal_conductivity": 70.0,
+  "transparent": false
+}

@@ -359,7 +359,7 @@ public class VatSideBlockEntity extends CopycatBlockEntity implements IHaveLabGo
         };
 
         float newUVPower = 0f;
-        if (VatMaterial.getMaterial(getMaterial()).map(VatMaterial::transparent).orElse(false)) {
+        if (VatMaterial.getMaterial(getMaterial()).map(VatMaterial::isTransparent).orElse(false)) {
             newUVPower = IUVLampBlock.getUVPower(getLevel(), heaterOrLampPos, direction.getOpposite());
             if (newUVPower == 0f) {
                 if (direction == Direction.UP) newUVPower = getSkyUV(); // It thinks getLevel() might be null

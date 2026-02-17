@@ -1,8 +1,0 @@
-{
-    "max_pressure_difference": 800000,
-    "conductivity": 20,
-    "transparent": false,
-    "blocks": [
-        "destroy:insulated_stainless_steel_block"
-    ]
-}

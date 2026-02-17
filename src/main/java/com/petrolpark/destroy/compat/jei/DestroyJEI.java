@@ -40,7 +40,6 @@ import com.petrolpark.destroy.compat.jei.category.ReactionCategory;
 import com.petrolpark.destroy.compat.jei.category.SievingCategory;
 import com.petrolpark.destroy.compat.jei.category.TappingCategory;
 import com.petrolpark.destroy.compat.jei.category.VatMaterialCategory;
-import com.petrolpark.destroy.compat.jei.category.VatMaterialCategory.VatMaterialRecipe;
 import com.petrolpark.destroy.compat.jei.recipemanager.ChemicalSpeciesRecipeManagerPlugin;
 import com.petrolpark.destroy.compat.jei.recipemanager.FireproofingRecipeManagerPlugin;
 import com.petrolpark.destroy.compat.jei.recipemanager.ItemReverseReactionRecipeManagerPlugin;
@@ -63,6 +62,7 @@ import com.petrolpark.destroy.content.redstone.programmer.RedstoneProgrammerScre
 import com.petrolpark.destroy.core.chemistry.recipe.MixtureConversionRecipe;
 import com.petrolpark.destroy.core.chemistry.recipe.ReactionRecipe;
 import com.petrolpark.destroy.core.chemistry.recipe.ReactionRecipe.GenericReactionRecipe;
+import com.petrolpark.destroy.core.chemistry.vat.material.VatMaterial;
 import com.petrolpark.destroy.core.explosion.ExtendedDurationFireworkRocketRecipe;
 import com.petrolpark.destroy.core.explosion.ObliterationRecipe;
 import com.petrolpark.destroy.core.explosion.mixedexplosive.MixedExplosiveBlockItem;
@@ -235,8 +235,8 @@ public class DestroyJEI implements IModPlugin {
             .emptyBackground(125, 20)
             .build("cartography_table", CartographyTableCategory::new),
 
-        vat_material = builder(VatMaterialRecipe.class)
-            .addRecipes(VatMaterialCategory::getAllRecipes)
+        vat_material = builder(VatMaterial.class)
+            .addTypedRecipes(DestroyRecipeTypes.VAT_MATERIAL_PROPERTIES)
             .catalyst(DestroyBlocks.VAT_CONTROLLER::get)
             .itemIcon(DestroyBlocks.VAT_CONTROLLER.get())
             .emptyBackground(180, 83)

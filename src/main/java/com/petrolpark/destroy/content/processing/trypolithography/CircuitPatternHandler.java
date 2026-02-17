@@ -92,7 +92,7 @@ public class CircuitPatternHandler extends SavedData {
 
     public CircuitPatternHandler read(CompoundTag tag) {
         GENERATED_PATTERNS.clear();
-        tag.getAllKeys().forEach(key -> {GENERATED_PATTERNS.put(new ResourceLocation(key), (int)Short.MAX_VALUE + (int)tag.getShort(key));});
+        tag.getAllKeys().forEach(key -> {GENERATED_PATTERNS.put(ResourceLocation.parse(key), (int)Short.MAX_VALUE + (int)tag.getShort(key));});
         return this;
     };
 

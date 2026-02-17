@@ -32,8 +32,8 @@ public class CartographyTableCategory extends PetrolparkRecipeCategory<Cartograp
     private final Minecraft mc;
 
     private static final ResourceLocation seismographRecipeId = Destroy.asResource("seismograph");
-    private static final ResourceLocation scalingRecipeId = new ResourceLocation("scaling");
-    private static final ResourceLocation lockingRecipeId = new ResourceLocation("locking");
+    private static final ResourceLocation scalingRecipeId = ResourceLocation.parse("scaling");
+    private static final ResourceLocation lockingRecipeId = ResourceLocation.parse("locking");
 
     public static final List<CartographyTableRecipe> getAllRecipes() {
         ItemStack map = new ItemStack(Items.FILLED_MAP);
@@ -42,7 +42,7 @@ public class CartographyTableCategory extends PetrolparkRecipeCategory<Cartograp
         scaledMap.getOrCreateTag().putInt("map", 53);
         return List.of(
             new CartographyTableRecipe(seismographRecipeId, DestroyItems.SEISMOGRAPH.asStack(), map, DestroyItems.SEISMOMETER),
-            new CartographyTableRecipe(new ResourceLocation("duplicating"), map.copyWithCount(2), map, Items.MAP),
+            new CartographyTableRecipe(ResourceLocation.parse("duplicating"), map.copyWithCount(2), map, Items.MAP),
             new CartographyTableRecipe(scalingRecipeId, scaledMap, map, Items.PAPER),
             new CartographyTableRecipe(lockingRecipeId, map, map, Items.GLASS_PANE)
         );

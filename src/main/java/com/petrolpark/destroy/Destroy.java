@@ -2,6 +2,7 @@ package com.petrolpark.destroy;
 
 import com.petrolpark.destroy.core.data.DestroyGeneratedEntriesProvider;
 import com.petrolpark.destroy.core.data.DestroyRegistrate;
+import com.petrolpark.destroy.core.data.recipe.DestroyVatMaterialGen;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -28,7 +29,6 @@ import com.petrolpark.destroy.config.DestroyAllConfigs;
 import com.petrolpark.destroy.content.processing.trypolithography.CircuitPatternHandler;
 import com.petrolpark.destroy.content.processing.trypolithography.CircuitPuncherHandler;
 import com.petrolpark.destroy.core.chemistry.hazard.ContaminatedItemTooltipModifier;
-import com.petrolpark.destroy.core.chemistry.vat.material.VatMaterial;
 import com.petrolpark.destroy.core.data.DestroyTagDatagen;
 import com.petrolpark.destroy.core.item.tooltip.IDynamicItemDescription;
 import com.petrolpark.destroy.core.item.tooltip.TempramentalItemDescription;
@@ -49,7 +49,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegisterEvent;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -146,7 +145,6 @@ public class Destroy {
             DestroyCompostables.register();
         });
         DestroyStats.register();
-        VatMaterial.registerDestroyVatMaterials();
         DestroyOpenEndedPipeEffectHandlers.register();
         DestroyAdvancementTrigger.register();
         DestroyBlockExtrusions.register();
@@ -180,6 +178,8 @@ public class Destroy {
 
         DestroyGeneratedEntriesProvider generatedEntriesProvider = new DestroyGeneratedEntriesProvider(output, lookupProvider);
         lookupProvider = generatedEntriesProvider.getRegistryProvider();
+
         generator.addProvider(event.includeServer(), generatedEntriesProvider);
+        generator.addProvider(event.includeServer(), new DestroyVatMaterialGen(output, MOD_ID));
     };
 };

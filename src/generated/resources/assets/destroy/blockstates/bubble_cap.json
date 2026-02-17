@@ -1,16 +1,76 @@
 {
   "variants": {
-    "bottom=false,top=false": {
+    "bottom=false,facing=down,top=false": {
       "model": "destroy:block/bubble_cap/neither"
     },
-    "bottom=false,top=true": {
+    "bottom=false,facing=down,top=true": {
       "model": "destroy:block/bubble_cap/top"
     },
-    "bottom=true,top=false": {
+    "bottom=false,facing=east,top=false": {
+      "model": "destroy:block/bubble_cap/neither_directional",
+      "y": 270
+    },
+    "bottom=false,facing=east,top=true": {
+      "model": "destroy:block/bubble_cap/top_directional",
+      "y": 270
+    },
+    "bottom=false,facing=north,top=false": {
+      "model": "destroy:block/bubble_cap/neither_directional",
+      "y": 180
+    },
+    "bottom=false,facing=north,top=true": {
+      "model": "destroy:block/bubble_cap/top_directional",
+      "y": 180
+    },
+    "bottom=false,facing=south,top=false": {
+      "model": "destroy:block/bubble_cap/neither_directional"
+    },
+    "bottom=false,facing=south,top=true": {
+      "model": "destroy:block/bubble_cap/top_directional"
+    },
+    "bottom=false,facing=west,top=false": {
+      "model": "destroy:block/bubble_cap/neither_directional",
+      "y": 90
+    },
+    "bottom=false,facing=west,top=true": {
+      "model": "destroy:block/bubble_cap/top_directional",
+      "y": 90
+    },
+    "bottom=true,facing=down,top=false": {
       "model": "destroy:block/bubble_cap/bottom"
     },
-    "bottom=true,top=true": {
+    "bottom=true,facing=down,top=true": {
       "model": "destroy:block/bubble_cap/both"
+    },
+    "bottom=true,facing=east,top=false": {
+      "model": "destroy:block/bubble_cap/bottom_directional",
+      "y": 270
+    },
+    "bottom=true,facing=east,top=true": {
+      "model": "destroy:block/bubble_cap/both_directional",
+      "y": 270
+    },
+    "bottom=true,facing=north,top=false": {
+      "model": "destroy:block/bubble_cap/bottom_directional",
+      "y": 180
+    },
+    "bottom=true,facing=north,top=true": {
+      "model": "destroy:block/bubble_cap/both_directional",
+      "y": 180
+    },
+    "bottom=true,facing=south,top=false": {
+      "model": "destroy:block/bubble_cap/bottom_directional"
+    },
+    "bottom=true,facing=south,top=true": {
+      "model": "destroy:block/bubble_cap/both_directional"
+    },
+    "bottom=true,facing=west,top=false": {
+      "model": "destroy:block/bubble_cap/bottom_directional",
+      "y": 90
+    },
+    "bottom=true,facing=west,top=true": {
+      "model": "destroy:block/bubble_cap/both_directional",
+      "y": 90
     }
   }
 }

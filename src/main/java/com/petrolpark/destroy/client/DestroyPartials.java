@@ -15,7 +15,7 @@ public class DestroyPartials {
 
     public static final PartialModel
 
-    AIR = PartialModel.of(new ResourceLocation("minecraft", "block/air")),
+    AIR = PartialModel.of(ResourceLocation.fromNamespaceAndPath("minecraft", "block/air")),
     
     // Kinetics
     CENTRIFUGE_COG = block("centrifuge/inner"),

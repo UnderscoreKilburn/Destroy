@@ -59,10 +59,18 @@ public class DestroyBlockStateGen {
     public static <B extends BubbleCapBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockstateProvider> bubbleCap() {
         return (c,p) -> {
             final String[] names = {"/neither", "/top", "/bottom", "/both"};
-            p.getVariantBuilder(c.get()).forAllStates(state -> ConfiguredModel.builder()
-                .modelFile(p.models().getExistingFile(p.modLoc("block/" + c.getName()+ names[(state.getValue(B.TOP) ? 1 : 0) + (state.getValue(B.BOTTOM) ? 2 : 0)])))
-                .build()
-            );
+            p.getVariantBuilder(c.get()).forAllStates(state -> {
+                if(state.getValue(B.FACING) == Direction.DOWN) {
+                    return ConfiguredModel.builder()
+                        .modelFile(p.models().getExistingFile(p.modLoc("block/" + c.getName() + names[(state.getValue(B.TOP) ? 1 : 0) + (state.getValue(B.BOTTOM) ? 2 : 0)])))
+                        .build();
+                } else {
+                    return ConfiguredModel.builder()
+                        .modelFile(p.models().getExistingFile(p.modLoc("block/" + c.getName() + names[(state.getValue(B.TOP) ? 1 : 0) + (state.getValue(B.BOTTOM) ? 2 : 0)] + "_directional")))
+                        .rotationY((int)state.getValue(B.FACING).toYRot())
+                        .build();
+                }
+            });
         };
     }
 

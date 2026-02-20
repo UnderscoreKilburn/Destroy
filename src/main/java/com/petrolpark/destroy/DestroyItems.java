@@ -42,6 +42,7 @@ import com.petrolpark.destroy.core.chemistry.storage.testtube.TestTubeItem;
 import com.petrolpark.destroy.core.explosion.ContactExplosiveItem;
 import com.petrolpark.destroy.core.item.BlankRecordItem;
 import com.petrolpark.destroy.core.item.DrinkItem;
+import com.petrolpark.destroy.core.item.MoltenSolidBucketItem;
 import com.petrolpark.destroy.core.item.StackableBowlFoodItem;
 import com.petrolpark.destroy.core.item.WithSecondaryItem;
 import com.simibubi.create.AllItems;
@@ -218,11 +219,17 @@ public class DestroyItems {
     ZEOLITE = REGISTRATE.item("zeolite", Item::new)
         .register();
 
-    public static final ItemEntry<SolidBucketItem>
+    public static final ItemEntry<MoltenSolidBucketItem>
     
-    MOLTEN_STAINLESS_STEEL_BUCKET = REGISTRATE.item("molten_stainless_steel_bucket", p -> new SolidBucketItem(DestroyBlocks.MOLTEN_STAINLESS_STEEL.get(), SoundEvents.BUCKET_EMPTY_LAVA, p))
+    MOLTEN_STAINLESS_STEEL_BUCKET = REGISTRATE.item("molten_stainless_steel_bucket", p -> new MoltenSolidBucketItem(
+            DestroyBlocks.MOLTEN_STAINLESS_STEEL.get(),
+            SoundEvents.BUCKET_EMPTY_LAVA,
+            DestroyFluids.MOLTEN_STAINLESS_STEEL, p))
         .register(),
-    MOLTEN_BOROSILICATE_GLASS_BUCKET = REGISTRATE.item("molten_borosilicate_glass_bucket", p -> new SolidBucketItem(DestroyBlocks.MOLTEN_BOROSILICATE_GLASS.get(), SoundEvents.BUCKET_EMPTY_LAVA, p))
+    MOLTEN_BOROSILICATE_GLASS_BUCKET = REGISTRATE.item("molten_borosilicate_glass_bucket", p -> new MoltenSolidBucketItem(
+            DestroyBlocks.MOLTEN_BOROSILICATE_GLASS.get(),
+            SoundEvents.BUCKET_EMPTY_LAVA,
+            DestroyFluids.MOLTEN_BOROSILICATE_GLASS, p))
         .register();
 
     // DUSTS

@@ -19,6 +19,23 @@ public class IonFluidIngredient extends MoleculeFluidIngredient {
 
     public static final Type TYPE = new Type();
 
+    public static IonFluidIngredient of(LegacySpecies molecule, int amount) {
+        return of(molecule, molecule.getPureConcentration(), amount);
+    }
+
+    public static IonFluidIngredient of(LegacySpecies molecule, float concentration, int amount) {
+        return of(molecule, concentration - .1f, concentration + .1f, amount);
+    }
+
+    public static IonFluidIngredient of(LegacySpecies molecule, float minConcentration, float maxConcentration, int amount) {
+        IonFluidIngredient ingredient = new IonFluidIngredient();
+        ingredient.molecule = molecule;
+        ingredient.minConcentration = minConcentration;
+        ingredient.maxConcentration = maxConcentration;
+        ingredient.amountRequired = amount;
+        return ingredient;
+    }
+
     @Override
     public MixtureFluidIngredientSubType<MoleculeFluidIngredient> getType() {
         return TYPE;

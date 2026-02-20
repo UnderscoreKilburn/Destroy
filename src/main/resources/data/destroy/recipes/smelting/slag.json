@@ -1,8 +1,0 @@
-{
-    "type": "minecraft:smelting",
-    "ingredient": {
-      "item": "destroy:slag"
-    },
-    "result": "minecraft:glass",
-    "cookingtime": 200
-  }

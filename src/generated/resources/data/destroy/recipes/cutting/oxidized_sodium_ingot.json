@@ -1,0 +1,15 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "item": "destroy:oxidized_sodium_ingot"
+    }
+  ],
+  "processingTime": 50,
+  "results": [
+    {
+      "chance": 0.1,
+      "item": "destroy:sodium_ingot"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "create:splashing",
+  "ingredients": [
+    {
+      "item": "destroy:sodium_ingot"
+    }
+  ],
+  "processingTime": 1,
+  "results": [
+    {
+      "item": "destroy:oxidized_sodium_ingot"
+    }
+  ]
+}

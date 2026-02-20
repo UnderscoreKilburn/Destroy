@@ -1,0 +1,16 @@
+{
+  "type": "create:splashing",
+  "ingredients": [
+    {
+      "item": "destroy:ruined_circuit_board"
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:ruined_circuit_mask"
+    },
+    {
+      "item": "destroy:copper_powder"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "create:compacting",
+  "heatRequirement": "cooled",
+  "ingredients": [
+    {
+      "amount": 1000,
+      "fluid": "destroy:molten_borosilicate_glass",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:borosilicate_glass"
+    }
+  ]
+}

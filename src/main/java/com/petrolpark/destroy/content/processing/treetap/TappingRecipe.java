@@ -29,8 +29,6 @@ import java.util.List;
 
 public class TappingRecipe extends ProcessingRecipe<RecipeWrapper> {
 
-    public static final FluidStack LATEX_FLUID = MixtureFluid.of(10, LegacyMixture.pure(DestroyMolecules.ISOPRENE), "fluid.destroy.latex");
-
     protected BlockIngredient blockIngredient;
 
     public TappingRecipe(ProcessingRecipeParams params) {
@@ -38,6 +36,7 @@ public class TappingRecipe extends ProcessingRecipe<RecipeWrapper> {
     };
 
     public BlockIngredient getBlock() {return blockIngredient;}
+    public void setBlock(BlockIngredient block) {blockIngredient = block;}
 
     @Override
     public boolean matches(RecipeWrapper pContainer, Level pLevel) {
@@ -78,36 +77,4 @@ public class TappingRecipe extends ProcessingRecipe<RecipeWrapper> {
     public void writeAdditional(FriendlyByteBuf buffer) {
         blockIngredient.toNetwork(buffer);
     }
-
-    /*
-    * Not a good solution because ProcessingRecipeBuilder was most likely not designed to be extended this way.
-    * This comes with some issues such as block() having to be called before any other function from ProcessingRecipeBuilder
-    * but whatever, it'll do for now.
-    * */
-    public static class Builder extends ProcessingRecipeBuilder<TappingRecipe> {
-        private List<BlockIngredient.Value> blockValues;
-
-        public Builder(ProcessingRecipeFactory<TappingRecipe> factory, ResourceLocation recipeId) {
-            super(factory, recipeId);
-            blockValues  = new ArrayList<>();
-        }
-
-        public Builder block(TagKey<Block> tag) {
-            blockValues.add(new BlockIngredient.TagValue(tag));
-            return this;
-        }
-
-        public Builder block(Block... blocks) {
-            Arrays.stream(blocks).map(b -> new BlockIngredient.BlockValue(b)).forEach(blockValues::add);
-            return this;
-        }
-
-        @Override
-        public TappingRecipe build() {
-            TappingRecipe r = super.build();
-            r.blockIngredient = BlockIngredient.fromValues(blockValues.stream());
-            return r;
-        }
-    }
-    
 };

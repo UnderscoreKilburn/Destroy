@@ -1,0 +1,35 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/lead"
+    },
+    {
+      "tag": "forge:ingots/lead"
+    },
+    {
+      "tag": "forge:dyes/black"
+    },
+    {
+      "tag": "forge:dyes/white"
+    },
+    {
+      "tag": "forge:dyes/yellow"
+    },
+    {
+      "tag": "forge:dyes/red"
+    },
+    {
+      "amount": 250,
+      "fluid": "destroy:urine",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "item": "minecraft:gold_ingot"
+    }
+  ]
+}

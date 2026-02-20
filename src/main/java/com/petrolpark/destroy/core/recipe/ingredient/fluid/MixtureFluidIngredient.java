@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.JsonObject;
 import com.petrolpark.destroy.DestroyFluids;
 import com.petrolpark.destroy.chemistry.legacy.LegacyMixture;
 import com.petrolpark.destroy.chemistry.legacy.ReadOnlyMixture;
 import com.petrolpark.destroy.chemistry.minecraft.MixtureFluid;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -17,7 +19,7 @@ public abstract class MixtureFluidIngredient<T extends MixtureFluidIngredient<T>
 
     public static final Map<String, MixtureFluidIngredientSubType<?>> MIXTURE_FLUID_INGREDIENT_SUBTYPES = new HashMap<>();
 
-    static {
+    public static void registerSubTypes() {
         registerMixtureFluidIngredientSubType(MoleculeFluidIngredient.TYPE);
         registerMixtureFluidIngredientSubType(SaltFluidIngredient.TYPE);
         registerMixtureFluidIngredientSubType(MoleculeTagFluidIngredient.TYPE);
@@ -46,6 +48,12 @@ public abstract class MixtureFluidIngredient<T extends MixtureFluidIngredient<T>
             addNBT(stack.getOrCreateTag());
             return stack;
         }).toList();
+    };
+
+    @Override
+    protected void writeInternal(JsonObject json) {
+        // We only care about the presence of this property, the value currently doesn't matter.
+        json.addProperty(getType().getMixtureFluidIngredientSubtype(), CatnipServices.REGISTRIES.getKeyOrThrow(DestroyFluids.MIXTURE.getSource().getSource()).toString());
     };
 
     public abstract MixtureFluidIngredientSubType<T> getType();

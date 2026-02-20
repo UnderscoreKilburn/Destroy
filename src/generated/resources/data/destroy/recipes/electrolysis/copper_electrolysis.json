@@ -1,0 +1,17 @@
+{
+  "type": "destroy:electrolysis",
+  "ingredients": [
+    {
+      "amount": 25,
+      "concentration": 0.4,
+      "mixtureFluidWithIon": "destroy:mixture",
+      "molecule": "destroy:copper_ii"
+    }
+  ],
+  "processingTime": 200,
+  "results": [
+    {
+      "item": "destroy:copper_powder"
+    }
+  ]
+}

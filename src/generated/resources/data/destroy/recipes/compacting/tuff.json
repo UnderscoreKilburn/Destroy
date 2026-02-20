@@ -1,0 +1,30 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "tag": "destroy:beetroot_ashes"
+    },
+    {
+      "tag": "destroy:beetroot_ashes"
+    },
+    {
+      "tag": "destroy:beetroot_ashes"
+    },
+    {
+      "tag": "destroy:beetroot_ashes"
+    },
+    {
+      "tag": "destroy:beetroot_ashes"
+    },
+    {
+      "amount": 100,
+      "fluid": "minecraft:lava",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:tuff"
+    }
+  ]
+}

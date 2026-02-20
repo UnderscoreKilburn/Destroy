@@ -1,9 +1,0 @@
-{
-    "type": "minecraft:smelting",
-    "ingredient": {
-      "item": "destroy:nether_crocoite"
-    },
-    "result": "destroy:chromium_nugget",
-    "experience": 0.1,
-    "cookingtime": 200
-  }

@@ -1,0 +1,45 @@
+{
+  "type": "destroy:arc_furnace",
+  "ingredients": [
+    {
+      "item": "minecraft:charcoal"
+    },
+    {
+      "tag": "forge:dusts/iron"
+    },
+    {
+      "tag": "forge:dusts/iron"
+    },
+    {
+      "tag": "forge:dusts/iron"
+    },
+    {
+      "tag": "forge:dusts/iron"
+    },
+    {
+      "tag": "forge:dusts/iron"
+    },
+    {
+      "tag": "forge:dusts/nickel"
+    },
+    {
+      "tag": "forge:dusts/nickel"
+    },
+    {
+      "tag": "forge:dusts/chromium"
+    },
+    {
+      "tag": "destroy:fluxes"
+    }
+  ],
+  "processingTime": 25600,
+  "results": [
+    {
+      "item": "destroy:slag"
+    },
+    {
+      "amount": 1000,
+      "fluid": "destroy:molten_stainless_steel"
+    }
+  ]
+}

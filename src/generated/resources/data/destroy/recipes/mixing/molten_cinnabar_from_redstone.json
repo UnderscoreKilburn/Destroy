@@ -1,0 +1,15 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "superheated",
+  "ingredients": [
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+  "results": [
+    {
+      "amount": 100,
+      "fluid": "destroy:molten_cinnabar"
+    }
+  ]
+}

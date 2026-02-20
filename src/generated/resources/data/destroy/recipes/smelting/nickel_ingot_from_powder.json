@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.0,
+  "ingredient": {
+    "item": "destroy:nickel_powder"
+  },
+  "result": "destroy:nickel_ingot"
+}

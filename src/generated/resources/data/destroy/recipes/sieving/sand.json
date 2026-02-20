@@ -1,0 +1,15 @@
+{
+  "type": "destroy:sieving",
+  "ingredients": [
+    {
+      "item": "minecraft:sand"
+    }
+  ],
+  "lucky_first_time": false,
+  "results": [
+    {
+      "chance": 0.75,
+      "item": "destroy:silica"
+    }
+  ]
+}

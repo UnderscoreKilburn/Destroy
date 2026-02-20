@@ -86,8 +86,8 @@ public class GlassblowingRecipe extends ProcessingRecipe<RecipeWrapper> {
         super.writeAdditional(json);
         json.add("shape", blowingShapes.stream().map(bs -> {
             JsonArray shape = new JsonArray();
-            shape.set(0, new JsonPrimitive(bs.length()));
-            shape.set(1, new JsonPrimitive(bs.radius()));
+            shape.add(bs.length());
+            shape.add(bs.radius());
             return shape;
         }).collect(JsonArray::new, JsonArray::add, JsonArray::addAll));
     };

@@ -1,0 +1,14 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "tag": "forge:plates/copper"
+    }
+  ],
+  "processingTime": 100,
+  "results": [
+    {
+      "item": "destroy:copper_powder"
+    }
+  ]
+}

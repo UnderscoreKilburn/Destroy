@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "tag": "destroy:plastics/rigid"
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:circuit_mask"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    }
+  ],
+  "processingTime": 10,
+  "results": [
+    {
+      "count": 8,
+      "item": "destroy:white_confetti"
+    }
+  ]
+}

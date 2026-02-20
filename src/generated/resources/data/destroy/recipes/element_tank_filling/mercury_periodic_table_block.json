@@ -1,0 +1,15 @@
+{
+  "type": "destroy:element_tank_filling",
+  "ingredients": [
+    {
+      "amount": 1000,
+      "pureMixture": "destroy:mixture",
+      "species": "destroy:mercury"
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:mercury_periodic_table_block"
+    }
+  ]
+}

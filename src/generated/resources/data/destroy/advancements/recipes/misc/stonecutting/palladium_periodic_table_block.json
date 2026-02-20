@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_palladium_block": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:storage_blocks/palladium"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "destroy:stonecutting/palladium_periodic_table_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_palladium_block",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "destroy:stonecutting/palladium_periodic_table_block"
+    ]
+  },
+  "sends_telemetry_event": false
+}

@@ -1,0 +1,41 @@
+{
+  "type": "destroy:distillation",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "amount": 400,
+      "fluid": "destroy:moonshine",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "amount": 200,
+      "fluid": "minecraft:water"
+    },
+    {
+      "amount": 200,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 37.18091,
+              "Molecule": "destroy:water"
+            },
+            {
+              "Concentration": 0.5239761,
+              "Molecule": "destroy:acetic_acid"
+            },
+            {
+              "Concentration": 5.13965,
+              "Molecule": "destroy:ethanol"
+            }
+          ],
+          "Temperature": 298.0,
+          "TranslationKey": "fluid.destroy.ethanol_distillate"
+        }
+      }
+    }
+  ]
+}

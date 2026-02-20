@@ -1,0 +1,31 @@
+{
+  "type": "destroy:sieving",
+  "ingredients": [
+    {
+      "item": "destroy:emerald_infused_beetroot_ashes"
+    }
+  ],
+  "lucky_first_time": false,
+  "processingTime": 12800,
+  "results": [
+    {
+      "item": "minecraft:emerald"
+    },
+    {
+      "chance": 0.5,
+      "item": "minecraft:emerald"
+    },
+    {
+      "chance": 0.2,
+      "item": "destroy:silica"
+    },
+    {
+      "chance": 0.2,
+      "item": "destroy:crushed_raw_chromium"
+    },
+    {
+      "chance": 0.5,
+      "item": "destroy:beetroot_ashes"
+    }
+  ]
+}

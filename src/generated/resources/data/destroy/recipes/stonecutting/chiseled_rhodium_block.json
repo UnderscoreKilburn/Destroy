@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "tag": "forge:storage_blocks/rhodium"
+  },
+  "result": "destroy:chiseled_rhodium_block"
+}

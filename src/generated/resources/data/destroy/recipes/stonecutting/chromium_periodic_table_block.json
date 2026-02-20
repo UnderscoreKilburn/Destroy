@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "tag": "forge:storage_blocks/chromium"
+  },
+  "result": "destroy:chromium_periodic_table_block"
+}

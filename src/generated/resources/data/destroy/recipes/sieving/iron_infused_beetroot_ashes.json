@@ -1,0 +1,31 @@
+{
+  "type": "destroy:sieving",
+  "ingredients": [
+    {
+      "item": "destroy:iron_infused_beetroot_ashes"
+    }
+  ],
+  "lucky_first_time": false,
+  "processingTime": 12800,
+  "results": [
+    {
+      "item": "create:crushed_raw_iron"
+    },
+    {
+      "chance": 0.5,
+      "item": "create:crushed_raw_iron"
+    },
+    {
+      "chance": 0.2,
+      "item": "create:crushed_raw_nickel"
+    },
+    {
+      "chance": 0.1,
+      "item": "destroy:crushed_raw_chromium"
+    },
+    {
+      "chance": 0.5,
+      "item": "destroy:beetroot_ashes"
+    }
+  ]
+}

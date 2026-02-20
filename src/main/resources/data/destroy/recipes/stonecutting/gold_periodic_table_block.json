@@ -1,8 +1,0 @@
-{
-    "type": "minecraft:stonecutting",
-    "ingredient": {
-      "tag": "forge:storage_blocks/gold"
-    },
-    "result": "destroy:gold_periodic_table_block",
-    "count": 1
-  }

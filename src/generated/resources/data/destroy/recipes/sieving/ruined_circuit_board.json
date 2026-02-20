@@ -1,0 +1,17 @@
+{
+  "type": "destroy:sieving",
+  "ingredients": [
+    {
+      "item": "destroy:ruined_circuit_board"
+    }
+  ],
+  "lucky_first_time": false,
+  "results": [
+    {
+      "item": "destroy:ruined_circuit_mask"
+    },
+    {
+      "item": "destroy:copper_powder"
+    }
+  ]
+}

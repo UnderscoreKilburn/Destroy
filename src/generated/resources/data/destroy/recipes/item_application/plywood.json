@@ -1,0 +1,16 @@
+{
+  "type": "create:item_application",
+  "ingredients": [
+    {
+      "item": "destroy:unvarnished_plywood"
+    },
+    {
+      "item": "destroy:polyurethane"
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:plywood"
+    }
+  ]
+}

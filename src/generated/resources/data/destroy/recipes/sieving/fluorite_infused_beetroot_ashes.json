@@ -1,0 +1,31 @@
+{
+  "type": "destroy:sieving",
+  "ingredients": [
+    {
+      "item": "destroy:fluorite_infused_beetroot_ashes"
+    }
+  ],
+  "lucky_first_time": false,
+  "processingTime": 12800,
+  "results": [
+    {
+      "item": "destroy:fluorite"
+    },
+    {
+      "chance": 0.5,
+      "item": "destroy:fluorite"
+    },
+    {
+      "chance": 0.3,
+      "item": "destroy:chalk_dust"
+    },
+    {
+      "chance": 0.1,
+      "item": "minecraft:quartz"
+    },
+    {
+      "chance": 0.5,
+      "item": "destroy:beetroot_ashes"
+    }
+  ]
+}

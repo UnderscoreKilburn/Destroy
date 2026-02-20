@@ -1,0 +1,18 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "destroy:empty_carton"
+    },
+    {
+      "amount": 250,
+      "fluid": "destroy:apple_juice",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:apple_juice_carton"
+    }
+  ]
+}

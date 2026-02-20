@@ -1,0 +1,19 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "minecraft:weathered_copper"
+    },
+    {
+      "amount": 5,
+      "concentration": 1.0,
+      "mixtureFluidWithMolecule": "destroy:mixture",
+      "molecule": "destroy:acetic_acid"
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:oxidized_copper"
+    }
+  ]
+}

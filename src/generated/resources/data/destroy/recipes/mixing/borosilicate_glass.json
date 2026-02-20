@@ -1,0 +1,31 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "destroy:silica"
+    },
+    {
+      "item": "destroy:silica"
+    },
+    {
+      "item": "destroy:silica"
+    },
+    {
+      "item": "destroy:borax"
+    },
+    [
+      {
+        "tag": "forge:dusts/lime"
+      },
+      {
+        "item": "destroy:oxidized_sodium_ingot"
+      }
+    ]
+  ],
+  "results": [
+    {
+      "amount": 1000,
+      "fluid": "destroy:molten_borosilicate_glass"
+    }
+  ]
+}

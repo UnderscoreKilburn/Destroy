@@ -1,0 +1,23 @@
+{
+  "type": "destroy:aging",
+  "ingredients": [
+    {
+      "item": "minecraft:popped_chorus_fruit"
+    },
+    {
+      "tag": "destroy:yeast"
+    },
+    {
+      "amount": 1000,
+      "fluid": "minecraft:water",
+      "nbt": {}
+    }
+  ],
+  "processingTime": 12000,
+  "results": [
+    {
+      "amount": 1000,
+      "fluid": "destroy:chorus_wine"
+    }
+  ]
+}

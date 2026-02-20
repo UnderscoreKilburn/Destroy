@@ -1,0 +1,25 @@
+{
+  "type": "destroy:glassblowing",
+  "ingredients": [
+    {
+      "amount": 250,
+      "fluid": "destroy:molten_borosilicate_glass",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:beaker"
+    }
+  ],
+  "shape": [
+    [
+      1.0,
+      4.0
+    ],
+    [
+      7.0,
+      3.0
+    ]
+  ]
+}

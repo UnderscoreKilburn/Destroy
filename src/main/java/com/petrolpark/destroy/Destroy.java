@@ -1,9 +1,12 @@
 package com.petrolpark.destroy;
 
-import com.petrolpark.destroy.core.data.DestroyGeneratedEntriesProvider;
+import com.petrolpark.destroy.core.recipe.ingredient.fluid.MixtureFluidIngredient;
+import com.petrolpark.destroy.datagen.DestroyDatagen;
+import com.petrolpark.destroy.datagen.DestroyGeneratedEntriesProvider;
 import com.petrolpark.destroy.core.data.DestroyRegistrate;
-import com.petrolpark.destroy.core.chemistry.vat.material.DestroyVatMaterialGen;
-import com.petrolpark.destroy.core.data.recipe.DestroyRecipeProvider;
+import com.petrolpark.destroy.datagen.recipe.DestroyStandardRecipeGen;
+import com.petrolpark.destroy.datagen.recipe.DestroyVatMaterialGen;
+import com.petrolpark.destroy.datagen.recipe.DestroyRecipeProvider;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -30,7 +33,7 @@ import com.petrolpark.destroy.config.DestroyAllConfigs;
 import com.petrolpark.destroy.content.processing.trypolithography.CircuitPatternHandler;
 import com.petrolpark.destroy.content.processing.trypolithography.CircuitPuncherHandler;
 import com.petrolpark.destroy.core.chemistry.hazard.ContaminatedItemTooltipModifier;
-import com.petrolpark.destroy.core.data.DestroyTagDatagen;
+import com.petrolpark.destroy.datagen.DestroyTagDatagen;
 import com.petrolpark.destroy.core.item.tooltip.IDynamicItemDescription;
 import com.petrolpark.destroy.core.item.tooltip.TempramentalItemDescription;
 import com.simibubi.create.content.equipment.goggles.GogglesItem;
@@ -97,6 +100,8 @@ public class Destroy {
         if (!datagen.get()) DestroySoundEvents.prepare(); // Sound datagen is broken and I can't be bothered to fix it
 
         // Chemistry
+        MixtureFluidIngredient.registerSubTypes();
+
         DestroyGroupFinder.register();
         DestroyTopologies.register();
         DestroyMolecules.register();
@@ -135,7 +140,7 @@ public class Destroy {
         modEventBus.addListener(Destroy::onRegister);
         if (!datagen.get()) modEventBus.addListener(DestroySoundEvents::register);
         modEventBus.addListener(DestroyClient::clientInit);
-        modEventBus.addListener(EventPriority.LOWEST, Destroy::gatherData);
+        modEventBus.addListener(EventPriority.LOWEST, DestroyDatagen::gatherData);
 
         // Client
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> DestroyClient.clientCtor(modEventBus, forgeEventBus));
@@ -162,30 +167,9 @@ public class Destroy {
         GogglesItem.addIsWearingPredicate(player -> player.isCreative() && DestroyAllConfigs.SERVER.automaticGoggles.get());
     };
 
-
     public static void onRegister(final RegisterEvent event) {
         DestroyItemAttributeTypes.init();
         DestroyPotatoProjectileEntityHitActions.init();
         DestroyPotatoProjectileBlockHitActions.init();
     }
-
-    // Datagen
-    public static void gatherData(GatherDataEvent event) {
-        DestroyTagDatagen.addGenerators();
-
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-
-        DestroyGeneratedEntriesProvider generatedEntriesProvider = new DestroyGeneratedEntriesProvider(output, lookupProvider);
-        lookupProvider = generatedEntriesProvider.getRegistryProvider();
-
-        generator.addProvider(event.includeServer(), generatedEntriesProvider);
-        generator.addProvider(event.includeServer(), new DestroyVatMaterialGen(output, MOD_ID));
-
-		if (event.includeServer()) {
-			DestroyRecipeProvider.registerAllProcessing(generator, output);
-		}
-    };
 };

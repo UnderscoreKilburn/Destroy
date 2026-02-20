@@ -1,0 +1,57 @@
+{
+  "type": "destroy:distillation",
+  "biomes": [
+    "#minecraft:is_beach",
+    "#minecraft:is_ocean"
+  ],
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "amount": 1000,
+      "fluid": "minecraft:water",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "amount": 500,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 1.0,
+              "Molecule": "destroy:chloride"
+            },
+            {
+              "Concentration": 1.0,
+              "Molecule": "destroy:sodium_ion"
+            },
+            {
+              "Concentration": 52.108456,
+              "Molecule": "destroy:water"
+            }
+          ],
+          "Temperature": 298.0,
+          "TranslationKey": "fluid.destroy.brine"
+        }
+      }
+    },
+    {
+      "amount": 500,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 55.493893,
+              "Molecule": "destroy:water"
+            }
+          ],
+          "Temperature": 298.0,
+          "TranslationKey": "fluid.destroy.distilled_water"
+        }
+      }
+    }
+  ]
+}

@@ -55,7 +55,7 @@ import com.petrolpark.destroy.core.chemistry.vat.VatControllerBlock;
 import com.petrolpark.destroy.core.chemistry.vat.VatSideBlock;
 import com.petrolpark.destroy.core.chemistry.vat.observation.colorimeter.ColorimeterBlock;
 import com.petrolpark.destroy.core.chemistry.vat.uv.BlacklightBlock;
-import com.petrolpark.destroy.core.data.DestroyBlockStateGen;
+import com.petrolpark.destroy.datagen.DestroyBlockStateGen;
 import com.petrolpark.destroy.core.explosion.DynamiteBlock;
 import com.petrolpark.destroy.core.explosion.PrimeableBombBlock;
 import com.petrolpark.destroy.core.explosion.PrimedBombEntity;
@@ -80,18 +80,24 @@ import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
+import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
+import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -532,7 +538,7 @@ public class DestroyBlocks {
         ).transform(TagGen.pickaxeOnly())
         .tag(BlockTags.NEEDS_IRON_TOOL)
         .tag(DestroyTags.Blocks.ARC_FURNACE_TRANSFORMABLE.tag)
-        .transform(TagGen.tagBlockAndItem(forgeBlockTag("storage_blocks/carbon_fiber"), forgeItemTag("storage_blocks/carbon_fiber")))
+        .transform(TagGen.tagBlockAndItem(DestroyTags.Blocks.CARBON_FIBER_STORAGE_BLOCKS.tag, DestroyTags.Blocks.CARBON_FIBER_STORAGE_BLOCKS.itemTag.get()))
         .tag(Tags.Items.STORAGE_BLOCKS)
         .build()
         .register(),
@@ -713,6 +719,12 @@ public class DestroyBlocks {
         .tag(BlockTags.BEACON_BASE_BLOCKS)
         .transform(TagGen.tagBlockAndItem(forgeBlockTag("storage_blocks/rhodium"), forgeItemTag("storage_blocks/rhodium")))
         .tag(Tags.Items.STORAGE_BLOCKS)
+        .recipe((c, p) -> {
+            DataIngredient source = DataIngredient.tag(forgeItemTag("storage_blocks/rhodium"));
+            SingleItemRecipeBuilder.stonecutting(source, RecipeCategory.MISC, c.get(), 1)
+                .unlockedBy("has_rhodium_block", RegistrateRecipeProvider.has(forgeItemTag("storage_blocks/rhodium")))
+                .save(p, Destroy.asResource("stonecutting/" + c.getName()));
+        })
         .build()
         .register();
 
@@ -941,13 +953,21 @@ public class DestroyBlocks {
 
     // Periodic Table blocks
     public static BlockEntry<PeriodicTableBlock> solidPeriodicTableBlock(String name, NonNullSupplier<? extends Block> block, ResourceLocation sideTexture, String storageTag) {
+        TagKey<Block> blockTag = forgeBlockTag("storage_blocks/"+storageTag);
+        TagKey<Item> itemTag = forgeItemTag("storage_blocks/"+storageTag);
         return REGISTRATE.block(name + "_periodic_table_block", PeriodicTableBlock::new)
             .initialProperties(block)
             .transform(TagGen.pickaxeOnly())
-            .tag(Tags.Blocks.STORAGE_BLOCKS, forgeBlockTag("storage_blocks/"+storageTag))
+            .tag(Tags.Blocks.STORAGE_BLOCKS, blockTag)
             .blockstate(DestroyBlockStateGen.periodicTableSolidBlock(Destroy.asResource("block/periodic_table/" + name), sideTexture))
             .item(PeriodicTableBlockItem::new)
-            .tag(Tags.Items.STORAGE_BLOCKS, forgeItemTag("storage_blocks/"+storageTag))
+            .tag(Tags.Items.STORAGE_BLOCKS, itemTag)
+            .recipe((c, p) -> {
+                DataIngredient source = DataIngredient.tag(itemTag);
+                SingleItemRecipeBuilder.stonecutting(source, RecipeCategory.MISC, c.get(), 1)
+                    .unlockedBy("has_" + name + "_block", RegistrateRecipeProvider.has(itemTag))
+                    .save(p, Destroy.asResource("stonecutting/" + c.getName()));
+            })
             .build()
             .register();
     }

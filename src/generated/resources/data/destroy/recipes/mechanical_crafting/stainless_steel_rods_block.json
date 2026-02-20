@@ -1,0 +1,18 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": false,
+  "key": {
+    "R": {
+      "tag": "forge:rods/stainless_steel"
+    }
+  },
+  "pattern": [
+    "RRRR",
+    "RRRR",
+    "RRRR",
+    "RRRR"
+  ],
+  "result": {
+    "item": "destroy:stainless_steel_rods_block"
+  }
+}

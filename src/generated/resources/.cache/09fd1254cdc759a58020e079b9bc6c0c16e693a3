@@ -1,0 +1,8 @@
+// 1.20.1	2026-02-19T00:29:40.4724291	destroy's sequenced assembly recipes
+d8272f3b5b96d22812c349a16df0066770400ba4 data/destroy/recipes/sequenced_assembly/blacklight.json
+a9400014aa4d4f8ac71668cef30cdf1e473f9ab5 data/destroy/recipes/sequenced_assembly/card_stock.json
+fed45235a92099e681e7dfa6255a462e9e55baf4 data/destroy/recipes/sequenced_assembly/catalytic_converter.json
+03f51d6e6e1e1b454a2a54d3a89ab1a0f5177b80 data/destroy/recipes/sequenced_assembly/mashed_potato.json
+dddb1958afd1f39802f99081ac84cafa24914c8e data/destroy/recipes/sequenced_assembly/napalm_sundae.json
+a50e55a9b10f27a37f6f0730eeccefd90fa6885a data/destroy/recipes/sequenced_assembly/unvarnished_plywood.json
+ddcc3c295925e51bb4e7418edb966e33eba5ac7a data/destroy/recipes/sequenced_assembly/voltaic_pile.json

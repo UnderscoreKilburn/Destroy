@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": {
+    "item": "destroy:crushed_raw_palladium"
+  },
+  "result": "destroy:palladium_ingot"
+}

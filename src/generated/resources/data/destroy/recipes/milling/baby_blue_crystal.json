@@ -1,0 +1,21 @@
+{
+  "type": "create:milling",
+  "conditions": [
+    {
+      "type": "petrolpark:config_boolean",
+      "mod": "destroy",
+      "value": "enableBabyBlue"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "destroy:baby_blue_crystal"
+    }
+  ],
+  "processingTime": 100,
+  "results": [
+    {
+      "item": "destroy:baby_blue_powder"
+    }
+  ]
+}

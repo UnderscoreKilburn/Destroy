@@ -1,0 +1,14 @@
+{
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "minecraft:turtle_egg"
+    }
+  ],
+  "processingTime": 50,
+  "results": [
+    {
+      "item": "destroy:chalk_dust"
+    }
+  ]
+}

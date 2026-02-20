@@ -1,0 +1,29 @@
+{
+  "type": "create:compacting",
+  "heatRequirement": "superheated",
+  "ingredients": [
+    {
+      "item": "destroy:nanodiamonds"
+    },
+    {
+      "item": "destroy:nanodiamonds"
+    },
+    {
+      "item": "destroy:nanodiamonds"
+    },
+    {
+      "item": "destroy:nanodiamonds"
+    },
+    {
+      "item": "destroy:nanodiamonds"
+    },
+    {
+      "item": "destroy:borax"
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:diamond"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": false,
+  "key": {
+    "F": {
+      "item": "destroy:gas_filter"
+    },
+    "G": {
+      "item": "create:goggles"
+    },
+    "N": {
+      "tag": "destroy:plastics/textile"
+    },
+    "P": {
+      "tag": "destroy:plastics/inert"
+    },
+    "Y": {
+      "tag": "forge:dyes/yellow"
+    }
+  },
+  "pattern": [
+    " NNN ",
+    "NPGPN",
+    "NPYPN",
+    " NFN "
+  ],
+  "result": {
+    "item": "destroy:gas_mask"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_chromium_block": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:storage_blocks/chromium"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "destroy:stonecutting/chromium_periodic_table_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_chromium_block",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "destroy:stonecutting/chromium_periodic_table_block"
+    ]
+  },
+  "sends_telemetry_event": false
+}

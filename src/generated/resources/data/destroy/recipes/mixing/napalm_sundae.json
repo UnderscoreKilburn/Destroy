@@ -1,0 +1,25 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "cooled",
+  "ingredients": [
+    {
+      "tag": "destroy:plastics/porous"
+    },
+    {
+      "amount": 250,
+      "fluid": "destroy:crude_oil",
+      "nbt": {}
+    },
+    {
+      "amount": 250,
+      "fluid": "destroy:cream",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "amount": 500,
+      "fluid": "destroy:napalm_sundae"
+    }
+  ]
+}

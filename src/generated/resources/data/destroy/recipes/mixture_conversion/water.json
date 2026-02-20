@@ -1,0 +1,27 @@
+{
+  "type": "destroy:mixture_conversion",
+  "ingredients": [
+    {
+      "amount": 1,
+      "fluid": "minecraft:water",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "amount": 1,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 55.493893,
+              "Molecule": "destroy:water"
+            }
+          ],
+          "Temperature": 298.0
+        }
+      }
+    }
+  ]
+}

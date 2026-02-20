@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "destroy:ruined_circuit_mask"
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:circuit_mask"
+    }
+  ]
+}

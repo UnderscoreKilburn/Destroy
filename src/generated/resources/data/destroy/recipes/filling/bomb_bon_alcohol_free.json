@@ -1,0 +1,28 @@
+{
+  "type": "create:filling",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "petrolpark:config_boolean",
+        "mod": "destroy",
+        "value": "enableAlcohol"
+      }
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "destroy:empty_bomb_bon"
+    },
+    {
+      "amount": 200,
+      "fluid": "create:chocolate",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:bomb_bon"
+    }
+  ]
+}

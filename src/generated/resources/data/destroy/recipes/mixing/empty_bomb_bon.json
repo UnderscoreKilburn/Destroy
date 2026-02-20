@@ -1,0 +1,27 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "cooled",
+  "ingredients": [
+    {
+      "tag": "destroy:explosives/primary"
+    },
+    {
+      "tag": "destroy:explosives/secondary"
+    },
+    {
+      "amount": 2,
+      "concentration": 1.0,
+      "mixtureFluidWithMolecule": "destroy:mixture",
+      "molecule": "destroy:glycerol"
+    },
+    {
+      "amount": 200,
+      "fluidTag": "forge:chocolate"
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:empty_bomb_bon"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "type": "create:filling",
+  "conditions": [
+    {
+      "type": "petrolpark:config_boolean",
+      "mod": "destroy",
+      "value": "enableBabyBlue"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "destroy:syringe"
+    },
+    {
+      "amount": 1,
+      "concentration": 5.0,
+      "mixtureFluidWithMolecule": "destroy:mixture",
+      "molecule": "destroy:methyl_salicylate"
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:baby_blue_syringe"
+    }
+  ]
+}

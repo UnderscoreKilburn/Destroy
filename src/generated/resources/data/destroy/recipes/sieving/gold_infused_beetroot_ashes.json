@@ -1,0 +1,31 @@
+{
+  "type": "destroy:sieving",
+  "ingredients": [
+    {
+      "item": "destroy:gold_infused_beetroot_ashes"
+    }
+  ],
+  "lucky_first_time": true,
+  "processingTime": 12800,
+  "results": [
+    {
+      "item": "create:crushed_raw_gold"
+    },
+    {
+      "chance": 0.5,
+      "item": "create:crushed_raw_gold"
+    },
+    {
+      "chance": 0.3,
+      "item": "create:crushed_raw_copper"
+    },
+    {
+      "chance": 0.03,
+      "item": "destroy:crushed_raw_palladium"
+    },
+    {
+      "chance": 0.5,
+      "item": "destroy:beetroot_ashes"
+    }
+  ]
+}

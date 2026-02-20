@@ -1,0 +1,22 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "amount": 5,
+      "fluid": "destroy:crude_oil",
+      "nbt": {}
+    },
+    {
+      "amount": 5,
+      "anion": "destroy:nitrate",
+      "cation": "destroy:ammonium",
+      "concentration": 3.0,
+      "mixtureFluidWithSalt": "destroy:mixture"
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:anfo"
+    }
+  ]
+}

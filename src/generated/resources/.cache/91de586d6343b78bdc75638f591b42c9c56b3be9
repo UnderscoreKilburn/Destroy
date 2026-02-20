@@ -1,0 +1,8 @@
+// 1.20.1	2026-02-19T00:29:40.4704249	destroy's mechanical crafting recipes
+a6590eeda72ba8b722a116800d93ab454796b609 data/destroy/recipes/mechanical_crafting/gas_mask.json
+4ba1791a30a47bfba84ac146e8ae29a60c1def79 data/destroy/recipes/mechanical_crafting/hazmat_leggings.json
+2f873bbe992b0564ed4a93a22a64048e27c92137 data/destroy/recipes/mechanical_crafting/hazmat_suit.json
+9753305896c3c67715a73c8cb5d28c62a41c186a data/destroy/recipes/mechanical_crafting/insulated_stainless_steel_block.json
+90351e6f73615a2c5676f40598f6e4197fc6cd06 data/destroy/recipes/mechanical_crafting/pumpjack.json
+7812eb118d321598e2c142f7c0fda92b8074f4b1 data/destroy/recipes/mechanical_crafting/stainless_steel_rods_block.json
+30d9bdab5c413c4cd18fb5d8f8db938effb93ffa data/destroy/recipes/mechanical_crafting/swiss_army_knife.json

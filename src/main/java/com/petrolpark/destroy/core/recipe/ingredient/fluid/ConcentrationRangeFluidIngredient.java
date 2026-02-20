@@ -56,8 +56,13 @@ public abstract class ConcentrationRangeFluidIngredient<T extends MixtureFluidIn
 
     @Override
     protected void writeInternal(JsonObject json) {
-        json.addProperty("min_concentration", minConcentration);
-        json.addProperty("max_concentration", maxConcentration);
+        super.writeInternal(json);
+        if(Math.abs(maxConcentration - minConcentration - 0.2f) < 1e-4f) {
+            json.addProperty("concentration", getTargetConcentration());
+        } else {
+            json.addProperty("min_concentration", minConcentration);
+            json.addProperty("max_concentration", maxConcentration);
+        }
     };
 
     public float getTargetConcentration() {

@@ -1,0 +1,31 @@
+{
+  "type": "destroy:sieving",
+  "ingredients": [
+    {
+      "item": "destroy:redstone_infused_beetroot_ashes"
+    }
+  ],
+  "lucky_first_time": false,
+  "processingTime": 12800,
+  "results": [
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "chance": 0.5,
+      "item": "minecraft:redstone"
+    },
+    {
+      "chance": 0.2,
+      "item": "destroy:silica"
+    },
+    {
+      "chance": 0.1,
+      "item": "create:crushed_raw_iron"
+    },
+    {
+      "chance": 0.5,
+      "item": "destroy:beetroot_ashes"
+    }
+  ]
+}

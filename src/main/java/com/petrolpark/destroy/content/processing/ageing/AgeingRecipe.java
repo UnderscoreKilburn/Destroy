@@ -11,6 +11,7 @@ public class AgeingRecipe extends SingleFluidRecipe {
 
     public AgeingRecipe(ProcessingRecipeParams params) {
         super(DestroyRecipeTypes.AGING, params);
+        if (processingDuration <= 0) processingDuration = 200;
     };
 
     @Override

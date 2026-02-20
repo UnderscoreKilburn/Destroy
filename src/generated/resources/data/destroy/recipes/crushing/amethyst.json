@@ -1,0 +1,16 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "tag": "forge:gems/amethyst"
+    }
+  ],
+  "processingTime": 100,
+  "results": [
+    {
+      "chance": 0.75,
+      "count": 6,
+      "item": "destroy:silica"
+    }
+  ]
+}

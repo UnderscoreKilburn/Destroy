@@ -1,9 +1,0 @@
-{
-    "type":  "petrolpark:decaying_item_cooking",
-    "serializer": "minecraft:smelting",
-    "ingredient": {
-        "tag": "forge:dusts/chalk"
-    },
-    "result": "destroy:quicklime",
-    "cookingtime": 200
-}

@@ -1,0 +1,18 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "amount": 250,
+      "fluid": "destroy:moonshine",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:moonshine_bottle"
+    }
+  ]
+}

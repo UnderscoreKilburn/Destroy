@@ -1,0 +1,14 @@
+{
+  "type": "destroy:obliteration",
+  "ingredients": [
+    {
+      "item": "minecraft:coal_block"
+    }
+  ],
+  "results": [
+    {
+      "chance": 0.1,
+      "item": "destroy:nanodiamonds"
+    }
+  ]
+}

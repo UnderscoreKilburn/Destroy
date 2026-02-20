@@ -1,0 +1,44 @@
+{
+  "type": "destroy:distillation",
+  "heatRequirement": "superheated",
+  "ingredients": [
+    {
+      "amount": 1000,
+      "fluid": "destroy:molten_cinnabar",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "amount": 516,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 67.47096,
+              "Molecule": "destroy:mercury"
+            }
+          ],
+          "Temperature": 298.0
+        }
+      }
+    },
+    {
+      "amount": 614,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 8.068287,
+              "Molecule": "destroy:octasulfur"
+            }
+          ],
+          "Temperature": 388.0,
+          "TranslationKey": "fluid.destroy.molten_sulfur"
+        }
+      }
+    }
+  ]
+}

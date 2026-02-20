@@ -1,0 +1,50 @@
+{
+  "type": "create:mixing",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:and",
+        "values": [
+          {
+            "type": "forge:tag_empty",
+            "tag": "forge:raw_materials/sulfur"
+          },
+          {
+            "type": "forge:tag_empty",
+            "tag": "forge:dusts/sulfur"
+          }
+        ]
+      }
+    }
+  ],
+  "heatRequirement": "heated",
+  "ingredients": [
+    [
+      {
+        "tag": "forge:raw_materials/sulfur"
+      },
+      {
+        "tag": "forge:dusts/sulfur"
+      }
+    ]
+  ],
+  "results": [
+    {
+      "amount": 250,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 8.068287,
+              "Molecule": "destroy:octasulfur"
+            }
+          ],
+          "Temperature": 388.0,
+          "TranslationKey": "fluid.destroy.molten_sulfur"
+        }
+      }
+    }
+  ]
+}

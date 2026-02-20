@@ -1,0 +1,23 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "destroy:nether_crocoite"
+    }
+  ],
+  "processingTime": 250,
+  "results": [
+    {
+      "chance": 0.25,
+      "item": "create:crushed_raw_lead"
+    },
+    {
+      "chance": 0.25,
+      "item": "destroy:crushed_raw_chromium"
+    },
+    {
+      "chance": 0.75,
+      "item": "create:experience_nugget"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "tag": "forge:dusts/lime"
+    },
+    {
+      "tag": "forge:dusts/lime"
+    },
+    {
+      "tag": "forge:dusts/lime"
+    },
+    {
+      "tag": "forge:dusts/lime"
+    },
+    {
+      "tag": "forge:dusts/lime"
+    }
+  ],
+  "results": [
+    {
+      "item": "create:limestone"
+    }
+  ]
+}

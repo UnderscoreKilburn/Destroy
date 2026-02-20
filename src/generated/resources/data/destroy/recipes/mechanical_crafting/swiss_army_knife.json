@@ -1,0 +1,38 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": false,
+  "key": {
+    "A": {
+      "item": "minecraft:iron_axe"
+    },
+    "D": {
+      "item": "destroy:nanodiamonds"
+    },
+    "H": {
+      "item": "minecraft:iron_shovel"
+    },
+    "I": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "M": {
+      "item": "create:precision_mechanism"
+    },
+    "O": {
+      "item": "minecraft:iron_hoe"
+    },
+    "P": {
+      "tag": "destroy:plastics/rigid"
+    },
+    "S": {
+      "item": "minecraft:shears"
+    }
+  },
+  "pattern": [
+    "PPPPPPP",
+    "MIASHOD",
+    "PPPPPPP"
+  ],
+  "result": {
+    "item": "destroy:swiss_army_knife"
+  }
+}

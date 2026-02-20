@@ -1,18 +1,20 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-      "TA",
-      "AT"
-    ],
-    "key": {
-      "T": {
-        "item": "minecraft:tuff"
-      },
-      "A": {
-        "item": "destroy:silica"
-      }
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:tuff"
     },
-    "result": {
-      "item": "destroy:zeolite"
+    {
+      "item": "minecraft:tuff"
+    },
+    {
+      "item": "destroy:silica"
+    },
+    {
+      "item": "destroy:silica"
     }
+  ],
+  "result": {
+    "item": "destroy:zeolite"
   }
+}

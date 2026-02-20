@@ -1,0 +1,32 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:charcoal"
+    },
+    {
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "tag": "forge:ingots/nickel"
+    },
+    {
+      "tag": "forge:nuggets/chromium"
+    },
+    {
+      "tag": "forge:nuggets/chromium"
+    },
+    {
+      "tag": "destroy:fluxes"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "item": "destroy:stainless_steel_ingot"
+    }
+  ]
+}

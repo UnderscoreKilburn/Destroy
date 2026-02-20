@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-17T07:18:51.5370006	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2026-02-18T01:52:43.4897271	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 9583bbca7c5e03f2ebe6d1611730c81873bed9d4 assets/destroy/blockstates/aging_barrel.json
 391a63a1be808a7eaeb2ac4bf47aac0c1d2a1e05 assets/destroy/blockstates/anfo_block.json
 a0487e31c10af4a6745a8cad3e9d0747d098b315 assets/destroy/blockstates/arc_furnace_lid.json
@@ -425,6 +425,19 @@ f1ce79deafa699330032af74d3e467dd681df446 data/create/tags/blocks/movable_empty_c
 8ca0643f8f90b65cc6f2ff2d78a7b90569dd7021 data/create/tags/items/crushed_raw_materials.json
 8ac06abe3bc4f73863d79daa7514a9dd697697fe data/create/tags/items/upright_on_belt.json
 7a957419c1e20d12a9f7b88e87b79da08a4285ed data/curios/tags/items/head.json
+1d1e63da33fbcd452e8d01500a9494eb57af9b97 data/destroy/advancements/recipes/misc/stonecutting/carbon_periodic_table_block.json
+35f93337e1ebafdbe3b5baeadd98ba2de3e60eca data/destroy/advancements/recipes/misc/stonecutting/chiseled_rhodium_block.json
+95e918be2edb44e1549635479bfc1c0a1edd12f8 data/destroy/advancements/recipes/misc/stonecutting/chromium_periodic_table_block.json
+bf2df89bed6932cb3fce24d716264820b4bb0583 data/destroy/advancements/recipes/misc/stonecutting/copper_periodic_table_block.json
+f07e9fcd6ac61ffd66c7b4baf6f249a9a188f212 data/destroy/advancements/recipes/misc/stonecutting/gold_periodic_table_block.json
+e9f7d0cea9ca7f75a40e5cd06596c26bd3c20469 data/destroy/advancements/recipes/misc/stonecutting/iodine_periodic_table_block.json
+a684ece9af168eecf1af04c1120142bf7089db39 data/destroy/advancements/recipes/misc/stonecutting/iron_periodic_table_block.json
+2fc3e6e134ca5e74df3b2ee3475be7f46b4585ce data/destroy/advancements/recipes/misc/stonecutting/lead_periodic_table_block.json
+daf2f489b0d182c1252bdf502e9f68fc198096b1 data/destroy/advancements/recipes/misc/stonecutting/nickel_periodic_table_block.json
+c9b759c3146a24eb2ad8e39e1caaa64548cbebde data/destroy/advancements/recipes/misc/stonecutting/palladium_periodic_table_block.json
+749952b293c94a52735fd1c17f40b4842668b2b9 data/destroy/advancements/recipes/misc/stonecutting/platinum_periodic_table_block.json
+3d4e317ac9e3681c025b0e286021be022b8b1ce0 data/destroy/advancements/recipes/misc/stonecutting/rhodium_periodic_table_block.json
+8a2112271d06ba225dec005b0d1947eaf3b3f784 data/destroy/advancements/recipes/misc/stonecutting/zinc_periodic_table_block.json
 d9c4475c3ea56b27d4aba16c0cd48b117ff6507b data/destroy/loot_tables/blocks/aging_barrel.json
 0eecfc7324264392c8df7aabf650694f1c5729a6 data/destroy/loot_tables/blocks/anfo_block.json
 be368a093be3c677b1308d2ba4d979e9cee38e2a data/destroy/loot_tables/blocks/arc_furnace_lid.json
@@ -525,6 +538,19 @@ a229c2a2c2a80def208a5b600a19c249097bc2b0 data/destroy/loot_tables/blocks/unvarni
 6e67506dd49b699a8510aba90d8e13382e00f346 data/destroy/loot_tables/blocks/vat_side.json
 cc32e54d3ea6cfc27268c9aa9ec4c2d05443ad8c data/destroy/loot_tables/blocks/zinc_infused_beetroot.json
 cef90c044dfe4d555554b38811f95bff1b431bc3 data/destroy/loot_tables/blocks/zinc_periodic_table_block.json
+7e95b5d1159d259bfcddf0879d67293665559adc data/destroy/recipes/stonecutting/carbon_periodic_table_block.json
+035cfa3643bd89493e2c4a99bfdaa9128c40be90 data/destroy/recipes/stonecutting/chiseled_rhodium_block.json
+67e2130103e736c2cac984ffc00398c6d8bc25ab data/destroy/recipes/stonecutting/chromium_periodic_table_block.json
+af1d6fd95396abfc3692b74d8cf6747de4d649bc data/destroy/recipes/stonecutting/copper_periodic_table_block.json
+d58544f9fb28b6887a20873cdd7dd37c2201dc6a data/destroy/recipes/stonecutting/gold_periodic_table_block.json
+1acf46ca8519263a19fdc2da548c192e77317f08 data/destroy/recipes/stonecutting/iodine_periodic_table_block.json
+c6eedd86455c2cfc30805158cc874f6dd68d140d data/destroy/recipes/stonecutting/iron_periodic_table_block.json
+44db54b64f0100481bb785c56545d75cab8e2135 data/destroy/recipes/stonecutting/lead_periodic_table_block.json
+b49e2cbdbcd507aefdf1ac39c4f51dc07158f41b data/destroy/recipes/stonecutting/nickel_periodic_table_block.json
+2acdc91de1a3b72bc903e566f658a986008c6a4f data/destroy/recipes/stonecutting/palladium_periodic_table_block.json
+b4d4c592f1b6d953771fe3b15a4eed8f56082d59 data/destroy/recipes/stonecutting/platinum_periodic_table_block.json
+bd50717ce944b511ec8b573da49ce5a3f20e05ab data/destroy/recipes/stonecutting/rhodium_periodic_table_block.json
+efff6d969032963f675b2af269eafcfe8251f254 data/destroy/recipes/stonecutting/zinc_periodic_table_block.json
 d43c71a9c5c2e016aee6a1ffc62681e7cc189dde data/destroy/tags/blocks/acid_rain_destructible.json
 9c8472a64a3dcde9ed2c0ad0bb67999d78d40431 data/destroy/tags/blocks/acid_rain_dirt_replaceable.json
 700d67f89e17f6d0594dbf73340bcc665dc74820 data/destroy/tags/blocks/arc_furnace_transformable.json

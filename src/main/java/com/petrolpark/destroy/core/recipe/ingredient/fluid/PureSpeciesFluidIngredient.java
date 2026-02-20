@@ -24,6 +24,13 @@ public class PureSpeciesFluidIngredient extends MixtureFluidIngredient<PureSpeci
 
     public LegacySpecies species;
 
+    public static PureSpeciesFluidIngredient of(LegacySpecies species, int amount) {
+        PureSpeciesFluidIngredient ingredient = new PureSpeciesFluidIngredient();
+        ingredient.species = species;
+        ingredient.amountRequired = amount;
+        return ingredient;
+    }
+
     @Override
     public MixtureFluidIngredientSubType<PureSpeciesFluidIngredient> getType() {
         return TYPE;
@@ -45,8 +52,7 @@ public class PureSpeciesFluidIngredient extends MixtureFluidIngredient<PureSpeci
     };
 
     @Override
-    protected void writeInternal(FriendlyByteBuf buffer) {
-        buffer.writeUtf(species.getFullID());
+    protected void writeInternal(FriendlyByteBuf buffer) {buffer.writeUtf(species.getFullID());
     };
 
     @Override
@@ -56,6 +62,7 @@ public class PureSpeciesFluidIngredient extends MixtureFluidIngredient<PureSpeci
 
     @Override
     protected void writeInternal(JsonObject json) {
+        super.writeInternal(json);
         json.addProperty("species", species.getFullID());
     };
 

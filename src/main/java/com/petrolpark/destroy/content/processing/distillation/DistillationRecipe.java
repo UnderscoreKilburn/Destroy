@@ -53,5 +53,5 @@ public class DistillationRecipe extends SingleFluidRecipe implements IBiomeSpeci
     public Set<BiomeValue> getAllowedBiomes() {
         return biomes;
     };
-    
+
 }

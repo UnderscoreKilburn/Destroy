@@ -1,0 +1,66 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "create:sturdy_sheet"
+  },
+  "loops": 1,
+  "results": [
+    {
+      "item": "destroy:blacklight"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "destroy:unfinished_blacklight"
+        },
+        {
+          "amount": 250,
+          "concentration": 67.47096,
+          "mixtureFluidWithMolecule": "destroy:mixture",
+          "molecule": "destroy:mercury"
+        }
+      ],
+      "results": [
+        {
+          "item": "destroy:unfinished_blacklight"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "destroy:unfinished_blacklight"
+        },
+        {
+          "item": "minecraft:tinted_glass"
+        }
+      ],
+      "results": [
+        {
+          "item": "destroy:unfinished_blacklight"
+        }
+      ]
+    },
+    {
+      "type": "destroy:charging",
+      "ingredients": [
+        {
+          "item": "destroy:unfinished_blacklight"
+        }
+      ],
+      "processingTime": 200,
+      "results": [
+        {
+          "item": "destroy:unfinished_blacklight"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "destroy:unfinished_blacklight"
+  }
+}

@@ -1,6 +1,7 @@
 package com.petrolpark.destroy;
 
 
+import com.simibubi.create.Create;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -14,11 +15,37 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
+
+import static com.petrolpark.destroy.DestroyTags.NameSpace.MOD;
+import static com.petrolpark.destroy.DestroyTags.NameSpace.FORGE;
 
 public class DestroyTags {
 
     // Mostly all copied from Create source code
+
+    public enum NameSpace {
+
+        MOD(Destroy.MOD_ID),
+        CREATE(Create.ID),
+        FORGE("forge");
+
+        public final String id;
+
+        NameSpace(String id) {
+            this.id = id;
+        }
+
+        public ResourceLocation id(String path) {
+            return ResourceLocation.fromNamespaceAndPath(this.id, path);
+        }
+
+        public ResourceLocation id(Enum<?> entry, @Nullable String pathOverride) {
+            return this.id(pathOverride != null ? pathOverride : Lang.asId(entry.name()));
+        }
+    }
 
     public enum Items {
 
@@ -57,6 +84,13 @@ public class DestroyTags {
         SCHEMATICANNON_FUELS,
         SECONDARY_EXPLOSIVES("explosives/secondary"),
         OBLITERATION_EXPLOSIVES,  // This tag is only used to display the right Blocks in JEI.
+
+        DUSTS_IRON(FORGE, "dusts/iron"),
+        DUSTS_NICKEL(FORGE, "dusts/nickel"),
+        DUSTS_CHROMIUM(FORGE, "dusts/chromium"),
+        DUSTS_LIME(FORGE, "dusts/lime"),
+
+        RAW_NICKEL(FORGE, "raw_materials/nickel"),
         ;
 
         public final TagKey<Item> tag;
@@ -64,11 +98,12 @@ public class DestroyTags {
         Items() {
             this(null);
         };
-
         Items(String path) {
-			ResourceLocation id = Destroy.asResource(path == null ? Lang.asId(name()) : path);
-			tag = ItemTags.create(id);
-		};
+            this(MOD, path);
+        };
+        Items(NameSpace namespace, String path) {
+            tag = ItemTags.create(namespace.id(this, path));
+        };
 
         @SuppressWarnings("deprecation") // Create does it therefore so can I
         public boolean matches(Item item) {
@@ -87,18 +122,38 @@ public class DestroyTags {
         BEETROOTS,
         ACID_RAIN_DESTRUCTIBLE,
         GANGUE,
-        ACID_RAIN_DIRT_REPLACEABLE;
+        ACID_RAIN_DIRT_REPLACEABLE,
+
+        NICKEL_ORE(FORGE, "ores/nickel"),
+        FLUORITE_ORE(FORGE, "ores/fluorite"),
+
+        RAW_NICKEL_STORAGE_BLOCKS(FORGE, "storage_blocks/raw_nickel"),
+        FLUORITE_STORAGE_BLOCKS(FORGE, "storage_blocks/fluorite"),
+        CARBON_FIBER_STORAGE_BLOCKS(FORGE, "storage_blocks/carbon_fiber"),
+        IODINE_STORAGE_BLOCKS(FORGE, "storage_blocks/iodine"),
+        CHROMIUM_STORAGE_BLOCKS(FORGE, "storage_blocks/chromium"),
+        PLATINUM_STORAGE_BLOCKS(FORGE, "storage_blocks/platinum"),
+        PALLADIUM_STORAGE_BLOCKS(FORGE, "storage_blocks/palladium"),
+        RHODIUM_STORAGE_BLOCKS(FORGE, "storage_blocks/rhodium"),
+        NICKEL_STORAGE_BLOCKS(FORGE, "storage_blocks/nickel"),
+        LEAD_STORAGE_BLOCKS(FORGE, "storage_blocks/lead"),
+        STAINLESS_STEEL_STORAGE_BLOCKS(FORGE, "storage_blocks/stainless_steel"),
+
+        ;
 
         public final TagKey<Block> tag;
+        public final Lazy<TagKey<Item>> itemTag;
 
         Blocks() {
             this(null);
         };
-
         Blocks(String path) {
-			ResourceLocation id = Destroy.asResource(path == null ? Lang.asId(name()) : path);
-			tag = BlockTags.create(id);
+            this(MOD, path);
 		};
+        Blocks(NameSpace namespace, String path) {
+            tag = BlockTags.create(namespace.id(this, path));
+            itemTag = Lazy.of(() -> ItemTags.create(tag.location()));
+        };
 
         @SuppressWarnings("deprecation") // Create does it therefore so can I
         public boolean matches(Block block) {
@@ -112,12 +167,21 @@ public class DestroyTags {
         DEPLETES_OZONE,
         GREENHOUSE_GAS,
         RADIOACTIVE,
-        COOLANT;
+        COOLANT,
+
+        CRUDE_OIL(FORGE, "crude_oil"),
+        ;
 
         public final TagKey<Fluid> tag;
 
         Fluids() {
-			tag = FluidTags.create(Destroy.asResource(Lang.asId(name())));
+			this(null);
+        };
+        Fluids(String path) {
+            this(MOD, path);
+        };
+        Fluids(NameSpace namespace, String path) {
+            tag = FluidTags.create(namespace.id(this, path));
         };
 
         @SuppressWarnings("deprecation") // Create does it therefore so can I
@@ -127,7 +191,8 @@ public class DestroyTags {
     };
 
     public enum MobEffects {
-        CAUSES_INFERTILITY;
+        CAUSES_INFERTILITY,
+        ;
 
         public final TagKey<MobEffect> tag;
 

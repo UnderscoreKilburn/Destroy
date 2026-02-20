@@ -1,0 +1,25 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": false,
+  "key": {
+    "N": {
+      "tag": "destroy:plastics/textile"
+    },
+    "P": {
+      "tag": "destroy:plastics/inert"
+    },
+    "Y": {
+      "tag": "forge:dyes/yellow"
+    }
+  },
+  "pattern": [
+    " NNN ",
+    "NPPPN",
+    "NPYPN",
+    "NPNPN",
+    " N N "
+  ],
+  "result": {
+    "item": "destroy:hazmat_leggings"
+  }
+}

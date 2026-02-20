@@ -1,0 +1,65 @@
+{
+  "type": "destroy:electrolysis",
+  "ingredients": [
+    {
+      "amount": 250,
+      "concentration": 67.47096,
+      "mixtureFluidWithMolecule": "destroy:mixture",
+      "molecule": "destroy:mercury"
+    },
+    {
+      "amount": 250,
+      "anion": "destroy:chloride",
+      "cation": "destroy:sodium_ion",
+      "concentration": 1.0,
+      "mixtureFluidWithSalt": "destroy:mixture"
+    }
+  ],
+  "processingTime": 200,
+  "results": [
+    {
+      "amount": 255,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 0.9,
+              "Molecule": "destroy:sodium_metal"
+            },
+            {
+              "Concentration": 66.028145,
+              "Molecule": "destroy:mercury"
+            }
+          ],
+          "Temperature": 298.0,
+          "TranslationKey": "fluid.destroy.sodium_amalgam"
+        }
+      }
+    },
+    {
+      "amount": 245,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 0.92,
+              "Molecule": "destroy:hypochlorous_acid"
+            },
+            {
+              "Concentration": 51.566288,
+              "Molecule": "destroy:water"
+            },
+            {
+              "Concentration": 0.92,
+              "Molecule": "destroy:hydrochloric_acid"
+            }
+          ],
+          "Temperature": 298.0,
+          "TranslationKey": "fluid.destroy.chlorine_solution"
+        }
+      }
+    }
+  ]
+}

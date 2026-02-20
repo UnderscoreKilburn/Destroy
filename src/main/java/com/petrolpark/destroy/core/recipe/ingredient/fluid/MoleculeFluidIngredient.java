@@ -23,6 +23,23 @@ public class MoleculeFluidIngredient extends ConcentrationRangeFluidIngredient<M
 
     protected LegacySpecies molecule;
 
+    public static MoleculeFluidIngredient of(LegacySpecies molecule, int amount) {
+        return of(molecule, molecule.getPureConcentration(), amount);
+    }
+
+    public static MoleculeFluidIngredient of(LegacySpecies molecule, float concentration, int amount) {
+        return of(molecule, concentration - .1f, concentration + .1f, amount);
+    }
+
+    public static MoleculeFluidIngredient of(LegacySpecies molecule, float minConcentration, float maxConcentration, int amount) {
+        MoleculeFluidIngredient ingredient = new MoleculeFluidIngredient();
+        ingredient.molecule = molecule;
+        ingredient.minConcentration = minConcentration;
+        ingredient.maxConcentration = maxConcentration;
+        ingredient.amountRequired = amount;
+        return ingredient;
+    }
+
     @Override
     public MixtureFluidIngredientSubType<MoleculeFluidIngredient> getType() {
         return TYPE;

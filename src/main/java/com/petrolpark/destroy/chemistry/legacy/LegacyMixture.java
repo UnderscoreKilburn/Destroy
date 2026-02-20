@@ -117,6 +117,14 @@ public class LegacyMixture extends ReadOnlyMixture {
         return mixture;
     };
 
+    public static LegacyMixture pure(LegacySpecies ion, LegacySpecies counterIon) {
+        LegacyMixture mixture = new LegacyMixture();
+        mixture.addMolecule(ion, Math.abs(counterIon.getCharge()));
+        mixture.addMolecule(counterIon, Math.abs(ion.getCharge()));
+        mixture.recalculateVolume(1000);
+        return mixture;
+    };
+
     public static LegacyMixture readNBT(CompoundTag compound) {
         LegacyMixture mixture = new LegacyMixture();
         

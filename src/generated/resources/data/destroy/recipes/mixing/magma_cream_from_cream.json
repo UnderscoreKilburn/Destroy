@@ -1,0 +1,19 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "item": "minecraft:magma_block"
+    },
+    {
+      "amount": 200,
+      "fluid": "destroy:cream",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:magma_cream"
+    }
+  ]
+}

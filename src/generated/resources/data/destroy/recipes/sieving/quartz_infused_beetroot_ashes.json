@@ -1,0 +1,31 @@
+{
+  "type": "destroy:sieving",
+  "ingredients": [
+    {
+      "item": "destroy:quartz_infused_beetroot_ashes"
+    }
+  ],
+  "lucky_first_time": false,
+  "processingTime": 12800,
+  "results": [
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "chance": 0.5,
+      "item": "minecraft:quartz"
+    },
+    {
+      "chance": 0.3,
+      "item": "destroy:nether_crocoite"
+    },
+    {
+      "chance": 0.1,
+      "item": "create:crushed_raw_gold"
+    },
+    {
+      "chance": 0.5,
+      "item": "destroy:beetroot_ashes"
+    }
+  ]
+}

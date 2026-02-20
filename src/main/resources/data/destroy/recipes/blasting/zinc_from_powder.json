@@ -1,8 +1,0 @@
-{
-    "type": "minecraft:blasting",
-    "ingredient": {
-      "tag": "forge:dusts/zinc"
-    },
-    "result": "create:zinc_ingot",
-    "cookingtime": 100
-  }

@@ -1,0 +1,18 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "destroy:spray_bottle"
+    },
+    {
+      "amount": 250,
+      "fluid": "destroy:perfume",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:perfume_bottle"
+    }
+  ]
+}

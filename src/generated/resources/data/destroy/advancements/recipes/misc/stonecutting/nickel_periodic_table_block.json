@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_nickel_block": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:storage_blocks/nickel"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "destroy:stonecutting/nickel_periodic_table_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_nickel_block",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "destroy:stonecutting/nickel_periodic_table_block"
+    ]
+  },
+  "sends_telemetry_event": false
+}

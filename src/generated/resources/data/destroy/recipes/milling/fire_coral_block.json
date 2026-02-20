@@ -1,0 +1,23 @@
+{
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "minecraft:fire_coral_block"
+    }
+  ],
+  "processingTime": 100,
+  "results": [
+    {
+      "count": 3,
+      "item": "destroy:chalk_dust"
+    },
+    {
+      "chance": 0.5,
+      "item": "destroy:chalk_dust"
+    },
+    {
+      "count": 2,
+      "item": "minecraft:red_dye"
+    }
+  ]
+}

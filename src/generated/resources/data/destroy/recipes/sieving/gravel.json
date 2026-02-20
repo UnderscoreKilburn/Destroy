@@ -1,0 +1,19 @@
+{
+  "type": "destroy:sieving",
+  "ingredients": [
+    {
+      "item": "minecraft:gravel"
+    }
+  ],
+  "lucky_first_time": false,
+  "results": [
+    {
+      "chance": 0.25,
+      "item": "minecraft:flint"
+    },
+    {
+      "chance": 0.125,
+      "item": "minecraft:iron_nugget"
+    }
+  ]
+}

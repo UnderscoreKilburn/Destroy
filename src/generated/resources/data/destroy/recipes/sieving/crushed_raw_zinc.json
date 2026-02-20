@@ -1,0 +1,19 @@
+{
+  "type": "destroy:sieving",
+  "ingredients": [
+    {
+      "item": "create:crushed_raw_zinc"
+    }
+  ],
+  "lucky_first_time": false,
+  "results": [
+    {
+      "count": 9,
+      "item": "create:zinc_nugget"
+    },
+    {
+      "chance": 0.25,
+      "item": "minecraft:gunpowder"
+    }
+  ]
+}

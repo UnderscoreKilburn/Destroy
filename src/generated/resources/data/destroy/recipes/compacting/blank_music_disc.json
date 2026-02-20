@@ -1,0 +1,17 @@
+{
+  "type": "create:compacting",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "item": "destroy:polyvinyl_chloride"
+    },
+    {
+      "item": "minecraft:charcoal"
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:blank_music_disc"
+    }
+  ]
+}

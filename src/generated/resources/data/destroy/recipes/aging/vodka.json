@@ -1,0 +1,46 @@
+{
+  "type": "destroy:aging",
+  "conditions": [
+    {
+      "type": "petrolpark:config_boolean",
+      "mod": "destroy",
+      "value": "enableAlcohol"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "destroy:mashed_potato"
+    },
+    {
+      "tag": "destroy:yeast"
+    },
+    {
+      "amount": 1000,
+      "fluid": "minecraft:water",
+      "nbt": {}
+    }
+  ],
+  "processingTime": 9600,
+  "results": [
+    {
+      "amount": 1000,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 33.296337,
+              "Molecule": "destroy:water"
+            },
+            {
+              "Concentration": 6.852866,
+              "Molecule": "destroy:ethanol"
+            }
+          ],
+          "Temperature": 297.99997,
+          "TranslationKey": "fluid.destroy.vodka"
+        }
+      }
+    }
+  ]
+}

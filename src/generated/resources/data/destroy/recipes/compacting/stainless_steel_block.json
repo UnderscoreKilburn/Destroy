@@ -1,0 +1,16 @@
+{
+  "type": "create:compacting",
+  "heatRequirement": "cooled",
+  "ingredients": [
+    {
+      "amount": 1000,
+      "fluid": "destroy:molten_stainless_steel",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:stainless_steel_block"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "type": "destroy:distillation",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "amount": 1000,
+      "fluid": "destroy:undistilled_moonshine",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "amount": 200,
+      "fluid": "minecraft:water"
+    },
+    {
+      "amount": 800,
+      "fluid": "destroy:moonshine"
+    }
+  ]
+}

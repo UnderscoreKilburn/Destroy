@@ -28,6 +28,20 @@ public class SaltFluidIngredient extends ConcentrationRangeFluidIngredient<SaltF
     protected LegacySpecies cation;
     protected LegacySpecies anion;
 
+    public static SaltFluidIngredient of(LegacySpecies cation, LegacySpecies anion, float concentration, int amount) {
+        return of(cation, anion, concentration - .1f, concentration + .1f, amount);
+    }
+
+    public static SaltFluidIngredient of(LegacySpecies cation, LegacySpecies anion, float minConcentration, float maxConcentration, int amount) {
+        SaltFluidIngredient ingredient = new SaltFluidIngredient();
+        ingredient.cation = cation;
+        ingredient.anion = anion;
+        ingredient.minConcentration = minConcentration;
+        ingredient.maxConcentration = maxConcentration;
+        ingredient.amountRequired = amount;
+        return ingredient;
+    }
+
     @Override
     public MixtureFluidIngredientSubType<SaltFluidIngredient> getType() {
         return TYPE;

@@ -1,0 +1,33 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:charcoal"
+    },
+    {
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "tag": "forge:ingots/nickel"
+    },
+    {
+      "tag": "forge:nuggets/chromium"
+    },
+    {
+      "tag": "forge:nuggets/chromium"
+    }
+  ],
+  "processingTime": 1,
+  "results": [
+    {
+      "item": "destroy:stainless_steel_ingot"
+    },
+    {
+      "chance": 0.5,
+      "item": "destroy:stainless_steel_ingot"
+    }
+  ]
+}

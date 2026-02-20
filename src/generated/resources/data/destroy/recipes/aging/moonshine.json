@@ -1,0 +1,30 @@
+{
+  "type": "destroy:aging",
+  "conditions": [
+    {
+      "type": "petrolpark:config_boolean",
+      "mod": "destroy",
+      "value": "enableAlcohol"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "tag": "destroy:yeast"
+    },
+    {
+      "amount": 1000,
+      "fluid": "minecraft:water",
+      "nbt": {}
+    }
+  ],
+  "processingTime": 9600,
+  "results": [
+    {
+      "amount": 1000,
+      "fluid": "destroy:undistilled_moonshine"
+    }
+  ]
+}

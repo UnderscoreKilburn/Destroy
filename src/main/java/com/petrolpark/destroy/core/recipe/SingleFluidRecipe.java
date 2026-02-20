@@ -12,7 +12,6 @@ public abstract class SingleFluidRecipe extends ProcessingRecipe<RecipeWrapper> 
 
     public SingleFluidRecipe(IRecipeTypeInfo typeInfo, ProcessingRecipeParams params) {
         super(typeInfo, params);
-        if (processingDuration <= 0) processingDuration = 20;
     };
 
     public FluidIngredient getRequiredFluid() {

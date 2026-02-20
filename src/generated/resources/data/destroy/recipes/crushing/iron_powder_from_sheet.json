@@ -1,0 +1,14 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "tag": "forge:plates/iron"
+    }
+  ],
+  "processingTime": 100,
+  "results": [
+    {
+      "item": "destroy:iron_powder"
+    }
+  ]
+}

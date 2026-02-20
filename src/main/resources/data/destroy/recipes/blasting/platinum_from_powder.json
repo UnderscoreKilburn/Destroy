@@ -1,8 +1,0 @@
-{
-    "type": "minecraft:blasting",
-    "ingredient": {
-      "tag": "forge:dusts/platinum"
-    },
-    "result": "destroy:platinum_ingot",
-    "cookingtime": 100
-  }

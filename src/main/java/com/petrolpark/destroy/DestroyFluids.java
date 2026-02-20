@@ -87,7 +87,7 @@ public class DestroyFluids {
         .register(),
     PERFUME = coloredSwirlingFluid("perfume", 0x80ffcff7)
         .register(),
-    SKIMMED_MILK = coloredWaterFluid("skimmed_milk", 0xFF000000)
+    SKIMMED_MILK = coloredWaterFluid("skimmed_milk", 0xF0E2E1DC)
         .register(),
     MOONSHINE = coloredWaterFluid("moonshine", 0xC0A18666)
         .register(),

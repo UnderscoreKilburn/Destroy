@@ -1,0 +1,14 @@
+{
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "destroy:circuit_mask"
+    }
+  ],
+  "processingTime": 150,
+  "results": [
+    {
+      "item": "destroy:ruined_circuit_mask"
+    }
+  ]
+}

@@ -24,6 +24,19 @@ public class MoleculeTagFluidIngredient extends ConcentrationRangeFluidIngredien
 
     protected LegacySpeciesTag tag;
 
+    public static MoleculeTagFluidIngredient of(LegacySpeciesTag tag, float concentration, int amount) {
+        return of(tag, concentration - .1f, concentration + .1f, amount);
+    }
+
+    public static MoleculeTagFluidIngredient of(LegacySpeciesTag tag, float minConcentration, float maxConcentration, int amount) {
+        MoleculeTagFluidIngredient ingredient = new MoleculeTagFluidIngredient();
+        ingredient.tag = tag;
+        ingredient.minConcentration = minConcentration;
+        ingredient.maxConcentration = maxConcentration;
+        ingredient.amountRequired = amount;
+        return ingredient;
+    }
+
     public MoleculeTagFluidIngredient(LegacySpeciesTag tag, float minConc, float maxConc) {
         this.tag = tag;
         minConcentration = minConc;

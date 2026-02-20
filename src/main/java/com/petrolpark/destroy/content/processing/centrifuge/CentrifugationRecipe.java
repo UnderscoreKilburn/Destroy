@@ -17,6 +17,7 @@ public class CentrifugationRecipe extends SingleFluidRecipe implements IBiomeSpe
 
     public CentrifugationRecipe(ProcessingRecipeParams params) {
         super(DestroyRecipeTypes.CENTRIFUGATION, params);
+        if (processingDuration <= 0) processingDuration = 500;
     };
 
     public FluidStack getDenseOutputFluid() {

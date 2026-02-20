@@ -1,0 +1,16 @@
+{
+  "type": "create:compacting",
+  "heatRequirement": "cooled",
+  "ingredients": [
+    {
+      "amount": 1000,
+      "fluid": "minecraft:water",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:packed_ice"
+    }
+  ]
+}

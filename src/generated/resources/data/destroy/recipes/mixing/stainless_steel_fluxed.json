@@ -1,0 +1,44 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:charcoal"
+    },
+    {
+      "tag": "forge:dusts/iron"
+    },
+    {
+      "tag": "forge:dusts/iron"
+    },
+    {
+      "tag": "forge:dusts/iron"
+    },
+    {
+      "tag": "forge:dusts/iron"
+    },
+    {
+      "tag": "forge:dusts/iron"
+    },
+    {
+      "tag": "forge:dusts/nickel"
+    },
+    {
+      "tag": "forge:dusts/nickel"
+    },
+    {
+      "tag": "forge:dusts/chromium"
+    },
+    {
+      "tag": "destroy:fluxes"
+    }
+  ],
+  "results": [
+    {
+      "item": "destroy:slag"
+    },
+    {
+      "amount": 500,
+      "fluid": "destroy:molten_stainless_steel"
+    }
+  ]
+}

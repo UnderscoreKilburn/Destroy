@@ -1,0 +1,114 @@
+{
+  "type": "destroy:distillation",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "amount": 100,
+      "fluidTag": "forge:crude_oil"
+    }
+  ],
+  "results": [
+    {
+      "amount": 9,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 8.068287,
+              "Molecule": "destroy:octasulfur"
+            }
+          ],
+          "Temperature": 388.0,
+          "TranslationKey": "fluid.destroy.molten_sulfur"
+        }
+      }
+    },
+    {
+      "amount": 24,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 2.0408788,
+              "Molecule": "destroy:paraxylene"
+            },
+            {
+              "Concentration": 2.0408788,
+              "Molecule": "destroy:ethylbenzene"
+            },
+            {
+              "Concentration": 2.0408788,
+              "Molecule": "destroy:metaxylene"
+            },
+            {
+              "Concentration": 2.0408788,
+              "Molecule": "destroy:orthoxylene"
+            }
+          ],
+          "Temperature": 298.0,
+          "TranslationKey": "fluid.destroy.mixed_xylenes"
+        }
+      }
+    },
+    {
+      "amount": 14,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 9.357567,
+              "Molecule": "destroy:toluene"
+            }
+          ],
+          "Temperature": 298.0
+        }
+      }
+    },
+    {
+      "amount": 53,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 11.219915,
+              "Molecule": "destroy:benzene"
+            }
+          ],
+          "Temperature": 298.0
+        }
+      }
+    },
+    {
+      "amount": 1000,
+      "fluid": "destroy:mixture",
+      "nbt": {
+        "Mixture": {
+          "Contents": [
+            {
+              "Concentration": 0.06306198,
+              "Molecule": "destroy:methane"
+            },
+            {
+              "Concentration": 0.12612396,
+              "Molecule": "destroy:butadiene"
+            },
+            {
+              "Concentration": 0.18918596,
+              "Molecule": "destroy:ethene"
+            },
+            {
+              "Concentration": 0.12612396,
+              "Molecule": "destroy:propene"
+            }
+          ],
+          "Temperature": 298.0,
+          "TranslationKey": "fluid.destroy.refinery_gas"
+        }
+      }
+    }
+  ]
+}

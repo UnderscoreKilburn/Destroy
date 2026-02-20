@@ -1,0 +1,28 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:charcoal"
+    },
+    {
+      "amount": 250,
+      "anion": "destroy:nitrate",
+      "cation": "destroy:potassium_ion",
+      "max_concentration": 5.0,
+      "min_concentration": 1.0,
+      "mixtureFluidWithSalt": "destroy:mixture"
+    },
+    {
+      "amount": 250,
+      "concentration": 8.068287,
+      "mixtureFluidWithMolecule": "destroy:mixture",
+      "molecule": "destroy:octasulfur"
+    }
+  ],
+  "results": [
+    {
+      "count": 4,
+      "item": "minecraft:gunpowder"
+    }
+  ]
+}

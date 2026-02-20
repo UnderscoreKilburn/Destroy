@@ -1,0 +1,15 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "cooled",
+  "ingredients": [
+    {
+      "item": "minecraft:magma_cream"
+    }
+  ],
+  "results": [
+    {
+      "amount": 200,
+      "fluid": "destroy:cream"
+    }
+  ]
+}

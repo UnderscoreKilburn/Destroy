@@ -1,10 +1,23 @@
 package com.petrolpark.destroy.content.processing.distillation;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.simibubi.create.content.fluids.FluidFX;
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.data.IntAttached;
+import net.createmod.catnip.data.Iterate;
+import net.createmod.catnip.nbt.NBTHelper;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,6 +84,13 @@ public class BubbleCapBlockEntity extends SmartBlockEntity implements IHaveLabGo
     protected SmartFluidTankBehaviour internalTank, tank;
     protected LazyOptional<IFluidHandler> allFluidCapability;
 
+    boolean contentsChanged;
+    List<Direction> disabledSpoutputs;
+    Direction preferredSpoutput;
+    protected List<FluidStack> spoutputFluidBuffer;
+    public static final int OUTPUT_ANIMATION_TIME = 10;
+    List<IntAttached<FluidStack>> visualizedOutputFluids;
+
     public DestroyAdvancementBehaviour advancementBehaviour;
     protected PollutingBehaviour pollutingBehaviour;
 
@@ -84,18 +104,26 @@ public class BubbleCapBlockEntity extends SmartBlockEntity implements IHaveLabGo
         ticksToFill = 0;
         particleFluid = FluidStack.EMPTY;
         initializationTicks = 3;
+
+        contentsChanged = true;
+        visualizedOutputFluids = Collections.synchronizedList(new ArrayList<>());
+        disabledSpoutputs = new ArrayList<>();
+        preferredSpoutput = null;
+        spoutputFluidBuffer = new ArrayList<>();
     };
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         tank = new GeniusFluidTankBehaviour(SmartFluidTankBehaviour.OUTPUT, this, 1, getTankCapacity(), true)
-            .whenFluidUpdates(this::notifyUpdate);
+            .whenFluidUpdates(() -> {contentsChanged = true; notifyUpdate();});
         internalTank = new GeniusFluidTankBehaviour(SmartFluidTankBehaviour.INPUT, this, 1, getTankCapacity(), true)
             .forbidExtraction()
             .forbidInsertion()
             .whenFluidUpdates(this::notifyUpdate);
+
         behaviours.add(tank);
         behaviours.add(internalTank);
+
         allFluidCapability = LazyOptional.of(() -> { // For Polluting Behaviour, we need access to all tanks
 			return new CombinedTankWrapper(tank.getCapability().orElse(null), internalTank.getCapability().orElse(null));
 		});
@@ -141,10 +169,27 @@ public class BubbleCapBlockEntity extends SmartBlockEntity implements IHaveLabGo
 
         if (clientPacket) { // If we need to tell the client to start rendering particles
             particleFluid = FluidStack.loadFluidStackFromNBT(compound.getCompound("ParticleFluid"));
+
+            NBTHelper.iterateCompoundList(compound.getList("VisualizedFluids", Tag.TAG_COMPOUND),
+                c -> visualizedOutputFluids
+                    .add(IntAttached.with(OUTPUT_ANIMATION_TIME, FluidStack.loadFluidStackFromNBT(c))));
+            if(visualizedOutputFluids.size() > 0) {
+                Destroy.LOGGER.info("got {} visualized output fluids", visualizedOutputFluids.size());
+            }
         };
 
         ticksToFill = compound.getInt("TicksToFill");
         initializationTicks = compound.getInt("InitializationTicks");
+
+        preferredSpoutput = null;
+        if (compound.contains("PreferredSpoutput"))
+            preferredSpoutput = NBTHelper.readEnum(compound, "PreferredSpoutput", Direction.class);
+        disabledSpoutputs.clear();
+        ListTag disabledList = compound.getList("DisabledSpoutput", Tag.TAG_STRING);
+        disabledList.forEach(d -> disabledSpoutputs.add(Direction.valueOf((d).getAsString())));
+        spoutputFluidBuffer = NBTHelper.readCompoundList(compound.getList("FluidOverflow", Tag.TAG_COMPOUND),
+            FluidStack::loadFluidStackFromNBT);
+
     };
 
     @Override
@@ -158,20 +203,50 @@ public class BubbleCapBlockEntity extends SmartBlockEntity implements IHaveLabGo
         compound.putInt("TicksToFill", ticksToFill);
         if (clientPacket) {
             compound.put("ParticleFluid", particleFluid.writeToNBT(new CompoundTag()));
+
+            compound.put("VisualizedFluids", NBTHelper.writeCompoundList(visualizedOutputFluids, ia -> ia.getValue()
+                .writeToNBT(new CompoundTag())));
+            visualizedOutputFluids.clear();
         };
         compound.putInt("InitializationTicks", initializationTicks);
+
+        if (preferredSpoutput != null)
+            NBTHelper.writeEnum(compound, "PreferredSpoutput", preferredSpoutput);
+        ListTag disabledList = new ListTag();
+        disabledSpoutputs.forEach(d -> disabledList.add(StringTag.valueOf(d.name())));
+        compound.put("DisabledSpoutput", disabledList);
+        compound.put("FluidOverflow",
+            NBTHelper.writeCompoundList(spoutputFluidBuffer, fs -> fs.writeToNBT(new CompoundTag())));
+
     };
 
+    @Override
+    public void lazyTick() {
+        super.lazyTick();
+
+        if (!level.isClientSide) {
+            updateSpoutput();
+        }
+    }
     @Override
     @SuppressWarnings("null")
     public void tick() {
         super.tick();
+        if (level.isClientSide) {
+            if (!visualizedOutputFluids.isEmpty())
+                createOutputFluidParticles(level.random);
+
+            tickVisualizedOutputs();
+        }
         if (!particleFluid.isEmpty()) {
             if (getLevel().isClientSide()) { // It thinks getLevel() might be null (it can't be).
                 spawnParticles(particleFluid);
             };
             particleFluid = FluidStack.EMPTY; // Reset this, we've made them now
         };
+        if (!spoutputFluidBuffer.isEmpty() && !level.isClientSide)
+            tryClearingSpoutputOverflow();
+
         if (initializationTicks > 0) initializationTicks--;
         if (ticksToFill > 0) {
             ticksToFill--;
@@ -184,13 +259,98 @@ public class BubbleCapBlockEntity extends SmartBlockEntity implements IHaveLabGo
             FluidStack transferredFluid = getInternalTank().drain(TRANSFER_SPEED, FluidAction.EXECUTE);
             internalTank.forbidInsertion();
             getTank().fill(transferredFluid, FluidAction.EXECUTE);
+            contentsChanged = true;
         };
         if (!hasLevel()) return;
         if (isController && hasLevel()) {
             tower.tick(getLevel());
         };
+
+        contentsChanged = false;
         sendData();
     };
+
+    private void tryClearingSpoutputOverflow() {
+        BlockState blockState = getBlockState();
+        if (!(blockState.getBlock() instanceof BubbleCapBlock))
+            return;
+        Direction direction = blockState.getValue(BubbleCapBlock.FACING);
+        BlockEntity be = level.getBlockEntity(worldPosition.below()
+            .relative(direction));
+
+        IFluidHandler targetTank = be == null ? null
+            : be.getCapability(ForgeCapabilities.FLUID_HANDLER, direction.getOpposite())
+            .orElse(null);
+
+        boolean update = false;
+
+        for (Iterator<FluidStack> iterator = spoutputFluidBuffer.iterator(); iterator.hasNext(); ) {
+            FluidStack fluidStack = iterator.next();
+
+            if (direction == Direction.DOWN) {
+                iterator.remove();
+                update = true;
+                continue;
+            }
+
+            if (targetTank == null)
+                break;
+
+            for (boolean simulate : Iterate.trueAndFalse) {
+                FluidAction action = simulate ? FluidAction.SIMULATE : FluidAction.EXECUTE;
+                int fill = targetTank instanceof SmartFluidTankBehaviour.InternalFluidHandler
+                    ? ((SmartFluidTankBehaviour.InternalFluidHandler) targetTank).forceFill(fluidStack.copy(), action)
+                    : targetTank.fill(fluidStack.copy(), action);
+                if (fill != fluidStack.getAmount())
+                    break;
+                if (simulate)
+                    continue;
+
+                update = true;
+                iterator.remove();
+                if (visualizedOutputFluids.size() < 3)
+                    visualizedOutputFluids.add(IntAttached.withZero(fluidStack));
+            }
+        }
+
+        if (update) {
+            sendData();
+        }
+    }
+
+    public boolean canContinueProcessing() {
+        return spoutputFluidBuffer.isEmpty();
+    }
+
+    public boolean acceptOutput(FluidStack outputFluid, boolean simulate) {
+        BlockState blockState = getBlockState();
+        if (!(blockState.getBlock() instanceof BubbleCapBlock))
+            return false;
+
+        Direction direction = blockState.getValue(BubbleCapBlock.FACING);
+        if (direction != Direction.DOWN) {
+            BlockEntity be = level.getBlockEntity(worldPosition.below()
+                .relative(direction));
+
+            IFluidHandler targetTank = be == null ? null
+                : be.getCapability(ForgeCapabilities.FLUID_HANDLER, direction.getOpposite())
+                .orElse(null);
+            boolean externalTankNotPresent = targetTank == null;
+
+            if (simulate)
+                return true;
+
+            if (!externalTankNotPresent)
+                spoutputFluidBuffer.add(outputFluid.copy());
+            return true;
+        }
+
+        if(!simulate) {
+            getTank().setFluid(outputFluid);
+            contentsChanged = true;
+        }
+        return true;
+    }
 
     public void onDistill() {
         if (!isController) return;
@@ -245,7 +405,9 @@ public class BubbleCapBlockEntity extends SmartBlockEntity implements IHaveLabGo
 
     @Override
     public MutableComponent format(int value) {
-        return DestroyLang.translateDirect("gui.bubble_cap.bubble_cap_liquid_amount", value);
+        return CreateLang.text(value + " ")
+            .add(CreateLang.translate("generic.unit.millibuckets"))
+            .component();
     }
 
     /**
@@ -281,6 +443,35 @@ public class BubbleCapBlockEntity extends SmartBlockEntity implements IHaveLabGo
             getLevel().addParticle(particleData, center.x, center.y - 0.3f, center.z, 0, 0, 0); // It thinks 'getLevel()' might be null (it can't be at this point)
         };
     };
+
+    private void tickVisualizedOutputs() {
+        visualizedOutputFluids.forEach(IntAttached::decrement);
+        visualizedOutputFluids.removeIf(IntAttached::isOrBelowZero);
+    }
+
+    private void createOutputFluidParticles(RandomSource r) {
+        BlockState blockState = getBlockState();
+        if (!(blockState.getBlock() instanceof BubbleCapBlock))
+            return;
+        Direction direction = blockState.getValue(BubbleCapBlock.FACING);
+        if (direction == Direction.DOWN)
+            return;
+        Vec3 directionVec = Vec3.atLowerCornerOf(direction.getNormal());
+        Vec3 outVec = VecHelper.getCenterOf(worldPosition)
+            .add(directionVec.scale(.65)
+                .subtract(0, 1 / 4f, 0));
+        Vec3 outMotion = directionVec.scale(1 / 16f)
+            .add(0, -1 / 16f, 0);
+
+        for (int i = 0; i < 2; i++) {
+            visualizedOutputFluids.forEach(ia -> {
+                FluidStack fluidStack = ia.getValue();
+                ParticleOptions fluidParticle = FluidFX.getFluidParticle(fluidStack);
+                Vec3 m = VecHelper.offsetRandomly(outMotion, r, 1 / 16f);
+                level.addAlwaysVisibleParticle(fluidParticle, outVec.x, outVec.y, outVec.z, m.x, m.y, m.z);
+            });
+        }
+    }
 
     public void removeFromDistillationTower() {
         if (tower == null) return;
@@ -367,6 +558,47 @@ public class BubbleCapBlockEntity extends SmartBlockEntity implements IHaveLabGo
 
         return true;
     };
+
+    public void onWrenched(Direction face) {
+        BlockState blockState = getBlockState();
+        Direction currentFacing = blockState.getValue(BubbleCapBlock.FACING);
+
+        disabledSpoutputs.remove(face);
+        if (currentFacing == face) {
+            if (preferredSpoutput == face)
+                preferredSpoutput = null;
+            disabledSpoutputs.add(face);
+        } else
+            preferredSpoutput = face;
+
+        updateSpoutput();
+    }
+
+    private void updateSpoutput() {
+        BlockState blockState = getBlockState();
+        Direction currentFacing = blockState.getValue(BubbleCapBlock.FACING);
+        Direction newFacing = Direction.DOWN;
+        for (Direction test : Iterate.horizontalDirections) {
+            boolean canOutputTo = BubbleCapBlock.canOutputTo(level, worldPosition, test);
+            if (canOutputTo && !disabledSpoutputs.contains(test))
+                newFacing = test;
+        }
+
+        if (preferredSpoutput != null && BubbleCapBlock.canOutputTo(level, worldPosition, preferredSpoutput)
+            && preferredSpoutput != Direction.UP)
+            newFacing = preferredSpoutput;
+
+        if (newFacing == currentFacing)
+            return;
+
+        level.setBlockAndUpdate(worldPosition, blockState.setValue(BubbleCapBlock.FACING, newFacing));
+
+        if (newFacing.getAxis()
+            .isVertical())
+            return;
+
+        notifyUpdate();
+    }
 
 
     public static class BubbleCapDisplaySource extends MixtureContentsDisplaySource {

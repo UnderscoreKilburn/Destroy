@@ -7,8 +7,14 @@ import com.petrolpark.destroy.DestroyBlockEntityTypes;
 import com.petrolpark.destroy.DestroyBlocks;
 import com.petrolpark.destroy.DestroyVoxelShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.content.fluids.drain.ItemDrainBlockEntity;
+import com.simibubi.create.content.kinetics.belt.BeltBlockEntity;
+import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
+import com.simibubi.create.content.logistics.funnel.FunnelBlock;
+import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
 
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -121,5 +127,20 @@ public class BubbleCapBlock extends Block implements IBE<BubbleCapBlockEntity>, 
     public BlockEntityType<? extends BubbleCapBlockEntity> getBlockEntityType() {
         return DestroyBlockEntityTypes.BUBBLE_CAP.get();
     };
-    
+
+    public static boolean canOutputTo(BlockGetter world, BlockPos blockPos, Direction direction) {
+        BlockPos neighbour = blockPos.relative(direction);
+        BlockPos output = neighbour.below();
+
+        if(!world.getBlockState(blockPos).getValue(BOTTOM))
+            return false;
+
+        BlockEntity blockEntity = world.getBlockEntity(output);
+        if (blockEntity instanceof BasinBlockEntity || blockEntity instanceof ItemDrainBlockEntity) {
+            return true;
+        }
+
+        return false;
+    }
+
 };

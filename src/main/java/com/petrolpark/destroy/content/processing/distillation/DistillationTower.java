@@ -112,13 +112,42 @@ public class DistillationTower {
         bubbleCaps = newBubbleCaps;
     };
 
+    public enum ProcessResult {
+        SUCCESS,
+        WAITING,
+        FAIL
+    };
+
     public void tick(Level level) {
-        tick--;
+        BubbleCapBlockEntity controller = getControllerBubbleCap();
+        if (controller == null) return;
+        if (controller.getLevel() != level) return;
+        if(!controller.canContinueProcessing()) return;
+
+        if(controller.getTank().getFluid().isEmpty()) {
+            tick = getProcessingTime();
+        } else {
+            boolean wait = controller.contentsChanged || !controller.canContinueProcessing();
+            if(wait)
+                tick = Math.max(tick, 20);
+
+            tick--;
+            if(tick <= 0) {
+                findRecipe(level);
+                ProcessResult result = process();
+                if(result == ProcessResult.WAITING)
+                    tick = 20;
+                else
+                    tick = getProcessingTime();
+            }
+        }
+
+        /*tick--;
         if (tick <= 0) {
             findRecipe(level);
             process();
             tick = getProcessingTime(); // Reset counter
-        };
+        };*/
     };
 
     public void findRecipe(Level level) {
@@ -141,22 +170,24 @@ public class DistillationTower {
      * Applies the current Recipe.
      * @return Whether the Recipe was successfully processed
      */
-    public boolean process() {
+    public ProcessResult process() {
 
         BubbleCapBlockEntity controller = getControllerBubbleCap();
-        if (controller == null) return false;
+        if (controller == null) return ProcessResult.FAIL;
         Level level = controller.getLevel();
-        if (level == null) return false;
+        if (level == null) return ProcessResult.FAIL;
 
         // Mixtures
         FluidStack fluidStack = getControllerBubbleCap().getTank().getFluid();
-        if (fluidStack.isEmpty()) return false;
+        if (fluidStack.isEmpty()) return ProcessResult.FAIL;
         if (DestroyFluids.isMixture(fluidStack.getFluid()) && fluidStack.getOrCreateTag().contains("Mixture", Tag.TAG_COMPOUND)) {
             ReadOnlyMixture mixture = ReadOnlyMixture.readNBT(ReadOnlyMixture::new, fluidStack.getOrCreateTag().getCompound("Mixture"));
             List<FluidStack> fractions = getFractionsOfMixture(mixture, fluidStack.getAmount(), getHeight() - 1);
-            if (fractions.size() <= 1) return false; // If the only result is the residue, there is no point distilling
-            for (boolean simulate : Iterate.trueAndFalse) {
+            if (fractions.size() <= 1) return ProcessResult.FAIL; // If the only result is the residue, there is no point distilling
 
+            FluidStack particleFluid = controller.getTank().getFluid().copy();
+
+            for (boolean simulate : Iterate.trueAndFalse) {
                 // Check if resultant Fluids can fit
                 int i = 0;
                 for (FluidStack fraction : fractions) { // Ignore the first 'fraction', this is the residue and goes in the Reboiler
@@ -167,37 +198,38 @@ public class DistillationTower {
                     BubbleCapBlockEntity bubbleCap = bubbleCaps.get(i);
 
                     SmartFluidTank tankToTryFill = simulate ? bubbleCap.getTank() : bubbleCap.getInternalTank(); // Try filling the visual tank, but actually fill the internal tank so the Bubble Cap isn't overfilled
-                    if (simulate && !bubbleCap.getInternalTank().isEmpty()) return false; // If the tanks are still filling from a previous distillation, don't try distilling again
+                    if (simulate && !bubbleCap.getInternalTank().isEmpty()) return ProcessResult.WAITING; // If the tanks are still filling from a previous distillation, don't try distilling again
 
-                    if (tankToTryFill.fill(fraction, simulate ? FluidAction.SIMULATE : FluidAction.EXECUTE) < fraction.getAmount()) return false; // If not all the Fluid can be added to this Bubble Cap return false
+                    if (tankToTryFill.fill(fraction, simulate ? FluidAction.SIMULATE : FluidAction.EXECUTE) < fraction.getAmount()) return ProcessResult.FAIL; // If not all the Fluid can be added to this Bubble Cap return false
                     if (!simulate) bubbleCap.setTicksToFill(i * BubbleCapBlockEntity.getTankCapacity() / BubbleCapBlockEntity.getTransferRate());
                     i++;
                 };
+
+                controller.getTank().drain(BubbleCapBlockEntity.getTankCapacity(), simulate ? FluidAction.SIMULATE : FluidAction.EXECUTE);
+                if(!controller.acceptOutput(fractions.get(0), simulate))
+                    return ProcessResult.FAIL;
             };
 
-            // If we've got to this point, the distillation is successful
-            FluidStack fluidDrained = controller.getTank().drain(BubbleCapBlockEntity.getTankCapacity(), FluidAction.EXECUTE); // Drain the Reboiler of what is being distilled
-            controller.getTank().fill(fractions.get(0), FluidAction.EXECUTE); // Fill the Reboiler with residue
-            controller.particleFluid = fluidDrained.copy();
+            controller.particleFluid = particleFluid;
             controller.onDistill();
-            return true;
+            return ProcessResult.SUCCESS;
         };
 
         // Recipes
-        if (lastRecipe == null) return false;
-        if (lastRecipe.getFractions() > getHeight() - 1) return false;
+        if (lastRecipe == null) return ProcessResult.FAIL;
+        if (lastRecipe.getFractions() > getHeight() - 1) return ProcessResult.FAIL;
 
         FluidStack fluidDrained = FluidStack.EMPTY;
         for (boolean simulate : Iterate.trueAndFalse) { // First simulate to check if all the Fluids can actually fit, then execute if they do. 
 
             // Check if heat requirement is fulfilled
-            if (!lastRecipe.getRequiredHeat().testBlazeBurner(BasinBlockEntity.getHeatLevelOf(controller.getLevel().getBlockState(controller.getBlockPos().below(1))))) return false;
+            if (!lastRecipe.getRequiredHeat().testBlazeBurner(BasinBlockEntity.getHeatLevelOf(controller.getLevel().getBlockState(controller.getBlockPos().below(1))))) return ProcessResult.FAIL;
 
             // Check if required Fluid is present
             int requiredFluidAmount = lastRecipe.getRequiredFluid().getRequiredAmount();
             fluidDrained = getControllerBubbleCap().getTank().drain(requiredFluidAmount, simulate ? FluidAction.SIMULATE : FluidAction.EXECUTE);
             if (fluidDrained.getAmount() < requiredFluidAmount) { // If there is not enough Fluid in the controller Bubble Cap
-                return false;
+                return ProcessResult.FAIL;
             };
 
             // Check if resultant Fluids can fit
@@ -206,9 +238,9 @@ public class DistillationTower {
                 BubbleCapBlockEntity bubbleCap = bubbleCaps.get(i + 1);
 
                 SmartFluidTank tankToTryFill = simulate ? bubbleCap.getTank() : bubbleCap.getInternalTank(); // Try filling the visual tank, but actually fill the internal tank so the Bubble Cap isn't overfilled
-                if (simulate && !bubbleCap.getInternalTank().isEmpty()) return false; // If the Tanks are still filling from a previous distillation, don't try distilling again
+                if (simulate && !bubbleCap.getInternalTank().isEmpty()) return ProcessResult.WAITING; // If the Tanks are still filling from a previous distillation, don't try distilling again
                 
-                if (tankToTryFill.fill(distillate, simulate ? FluidAction.SIMULATE : FluidAction.EXECUTE) < distillate.getAmount()) return false; // If not all the Fluid can be added to this Bubble Cap
+                if (tankToTryFill.fill(distillate, simulate ? FluidAction.SIMULATE : FluidAction.EXECUTE) < distillate.getAmount()) return ProcessResult.FAIL; // If not all the Fluid can be added to this Bubble Cap
                 if (!simulate) bubbleCap.setTicksToFill(i * BubbleCapBlockEntity.getTankCapacity() / BubbleCapBlockEntity.getTransferRate());
             };
 
@@ -219,7 +251,7 @@ public class DistillationTower {
         if (controller.advancementBehaviour.getPlayer() instanceof ServerPlayer player) {
             player.triggerRecipeCrafted(lastRecipe, List.of());
         };
-        return true;
+        return ProcessResult.SUCCESS;
     };
 
     /**
@@ -237,7 +269,7 @@ public class DistillationTower {
         float maxTemperature = Math.max(getTemperatureForDistillationTower(getControllerBubbleCap().getLevel(), getControllerPos()), mixture.getTemperature());
 
         if (numberOfFractions == 0) return fractions;
-        if (numberOfFractions == 1) return List.of(MixtureFluid.of(mixtureAmount, mixture));
+        //if (numberOfFractions == 1) return List.of(MixtureFluid.of(mixtureAmount, mixture));
 
         LegacyMixture gasMixture = new LegacyMixture().setTemperature(roomTemperature); // If there are gases, these do not separate by boiling point (as they never condense), so these are all grouped into one FluidStack
         boolean thereAreGases = false;
@@ -266,15 +298,23 @@ public class DistillationTower {
 
         if (thereAreGases) numberOfFractions--; // If there is a gas fraction, there must be one fewer liquid fractions
 
-        float interval = (highestBoilingPoint - lowestBoilingPoint) / numberOfFractions; // Split the whole temperature range into (numberOfFraction) equal-sized temperature ranges...
         List<LegacyMixture> liquidMixtures = new ArrayList<>(numberOfFractions);
-        for (int i = 0; i < numberOfFractions; i++) liquidMixtures.add(new LegacyMixture().setTemperature(roomTemperature));
+        if(numberOfFractions > 0)
+        {
+            float interval = (highestBoilingPoint - lowestBoilingPoint) / numberOfFractions; // Split the whole temperature range into (numberOfFraction) equal-sized temperature ranges...
+            for (int i = 0; i < numberOfFractions; i++)
+                liquidMixtures.add(new LegacyMixture().setTemperature(roomTemperature));
 
-        for (LegacySpecies molecule : liquids) {
-            checkEachFraction: for (int fraction = 0; fraction < numberOfFractions; fraction++) { // ...If a Molecule's BP is in the nth temperature range, it goes in the nth fraction
-                if (molecule.getBoilingPoint() <= lowestBoilingPoint + ((fraction + 1) * interval)) {
-                    liquidMixtures.get(fraction).addMolecule(molecule, mixture.getConcentrationOf(molecule));
-                    break checkEachFraction;
+            for (LegacySpecies molecule : liquids)
+            {
+                checkEachFraction:
+                for (int fraction = 0; fraction < numberOfFractions; fraction++)
+                { // ...If a Molecule's BP is in the nth temperature range, it goes in the nth fraction
+                    if (molecule.getBoilingPoint() <= lowestBoilingPoint + ((fraction + 1) * interval))
+                    {
+                        liquidMixtures.get(fraction).addMolecule(molecule, mixture.getConcentrationOf(molecule));
+                        break checkEachFraction;
+                    };
                 };
             };
         };

@@ -92,6 +92,8 @@ public class VatFluidTankBehaviour extends GeniusFluidTankBehaviour {
             totalVolume += gasStack.getAmount();
         };
 
+        if(totalVolume == 0) return new LegacyMixture();
+
         LegacyMixture mixture = LegacyMixture.mix(mixtures);
         mixture.scale((float)vatCapacity / (float)totalVolume); //TODO use different volume as this makes things slowww
         return mixture;
@@ -115,6 +117,8 @@ public class VatFluidTankBehaviour extends GeniusFluidTankBehaviour {
             gasMixture.getContents(false).forEach(molecule -> moleculesAndMoles.merge(molecule, gasMixture.getConcentrationOf(molecule) * gasStack.getAmount(), (f1, f2) -> f1 + f2));
             totalVolume += gasStack.getAmount();
         };
+
+        if(totalVolume == 0) return mixture;
 
         for (Entry<LegacySpecies, Float> entry : moleculesAndMoles.entrySet()) {
             mixture.addMolecule(entry.getKey(), entry.getValue() / totalVolume); //TODO use different volume as this makes things slow

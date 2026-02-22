@@ -75,7 +75,6 @@ public enum NamedMixtures {
         double totalVolumeInLiters = (double)totalVolume / Constants.MILLIBUCKETS_PER_LITER;
         double solventVolumeInLiters = totalVolumeInLiters;
 
-        Map<LegacySpecies, Double> molesOfMolecules = new HashMap<>();
         for (Map.Entry<LegacySpecies, Double> entry : contents.entrySet()) {
             LegacySpecies molecule = entry.getKey();
             double molesOfMolecule = entry.getValue() * totalVolumeInLiters;

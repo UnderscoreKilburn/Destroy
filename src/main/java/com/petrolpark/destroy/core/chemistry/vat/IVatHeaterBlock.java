@@ -1,5 +1,7 @@
 package com.petrolpark.destroy.core.chemistry.vat;
 
+import com.jesz.createdieselgenerators.content.burner.BurnerBlock;
+import com.jesz.createdieselgenerators.content.burner.BurnerBlockEntity;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock.HeatLevel;
@@ -32,6 +34,17 @@ public interface IVatHeaterBlock {
         // IVatHeaters
         if (state.getBlock() instanceof IVatHeaterBlock heater) {
             return heater.getHeatingPower(level, state, blockPos, face);
+        };
+
+        // Create: Diesel Generators compat
+        if (state.getBlock() instanceof BurnerBlock burner) {
+            if (level.getBlockEntity(blockPos) instanceof BurnerBlockEntity burnerBlockEntity) {
+                float heat = burnerBlockEntity.heat - 1;
+
+                if(heat <= 0f) return 0f;
+                else return DestroyAllConfigs.SERVER.blocks.blazeBurnerSuperHeatingPower.getF() * heat;
+            };
+            return 0f;
         };
 
         // Blaze Burners, Coolers, etc.

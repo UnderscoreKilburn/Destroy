@@ -8,6 +8,7 @@ import java.util.function.UnaryOperator;
 
 import javax.annotation.Nullable;
 
+import net.createmod.catnip.platform.CatnipServices;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Math;
 
@@ -282,7 +283,7 @@ public class VatSideBlockEntity extends CopycatBlockEntity implements IHaveLabGo
     };
 
     /**
-     * Inhertited from {@link ThresholdSwitchObservable}
+     * Inherited from {@link ThresholdSwitchObservable}
      */
 
 
@@ -306,7 +307,8 @@ public class VatSideBlockEntity extends CopycatBlockEntity implements IHaveLabGo
 
     @Override
     public MutableComponent format(int value) {
-        return DestroyLang.translateDirect("gui.vat.vat_liquid_amount", value);
+        if (getController() == null) return Component.empty();
+        return getController().format(value);
     }
 
     /**
@@ -559,7 +561,10 @@ public class VatSideBlockEntity extends CopycatBlockEntity implements IHaveLabGo
         if (getDisplayType().showsTemperature) {
             TemperatureUnit unit = DestroyAllConfigs.CLIENT.chemistry.temperatureUnit.get();
             DestroyLang.translate("tooltip.vat.temperature", unit.of(controller.getTemperature(), df)).style(ChatFormatting.WHITE).forGoggles(tooltip);
-            if (DestroyAllConfigs.CLIENT.chemistry.nerdMode.get()) DestroyLang.translate("tooltip.vat.power", df.format(controller.heatingPower / 1000f)).forGoggles(tooltip);
+
+            if (DestroyAllConfigs.CLIENT.chemistry.nerdMode.get()) {
+                DestroyLang.translate("tooltip.vat.power", df.format(controller.heatingPower / 1000f)).forGoggles(tooltip);
+            }
         } else if (getDisplayType().showsPressure) {
             Vat vat = getVatOptional().get();
             DestroyLang.translate("tooltip.vat.pressure.header").style(ChatFormatting.WHITE).forGoggles(tooltip);
@@ -568,6 +573,10 @@ public class VatSideBlockEntity extends CopycatBlockEntity implements IHaveLabGo
         } else {
             VatControllerBlockEntity.vatFluidTooltip(getController(), tooltip);
         };
+
+        if(CatnipServices.PLATFORM.isDevelopmentEnvironment())
+            tooltip.add(Component.literal(controller.debugText).withStyle(ChatFormatting.GRAY));
+
         return true;
     };
 

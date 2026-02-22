@@ -203,6 +203,9 @@ dependencies {
     jarJar(implementation("org.jheaps:jheaps:[0.14]"))
     jarJar(implementation("org.apfloat:apfloat:[1.10.1]"))
 
+    // Apache Commons Math
+    jarJar(implementation("org.apache.commons:commons-math3:3.6.1"))
+
     // CDK
     //implementation "org.openscience.cdk:cdk-bundle:2.9"
 
@@ -230,6 +233,9 @@ dependencies {
     // CBC
     implementation fg.deobf("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}")
     implementation fg.deobf("com.rbasamoyai:createbigcannons:${cbc_version}")
+
+    // Diesel Generators
+    implementation fg.deobf("curse.maven:create-diesel-generators-869316:7350909")
 
     // Embeddium
     compileOnly fg.deobf("maven.modrinth:embeddium:${embeddium_version}+mc${minecraft_version}")

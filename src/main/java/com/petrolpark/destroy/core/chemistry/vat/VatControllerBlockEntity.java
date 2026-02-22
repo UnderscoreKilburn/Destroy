@@ -52,6 +52,7 @@ import com.simibubi.create.foundation.utility.CreateLang;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.lang.FontHelper;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction.Axis;
@@ -100,6 +101,12 @@ public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveL
      * The amount of UV being supplied to this Vat.
      */
     protected float UVPower;
+
+    /**
+     * The temperature of the Vat's structure (separate from the temperature of its contents).
+     */
+    protected float vatTemperature;
+    protected String debugText = "";
 
     /*
      * As the client side doesn't have access to the cached Mixture, store the pressure, temperature, and whether it is boiling or at equilibrium
@@ -191,63 +198,136 @@ public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveL
             temperature.tickChaser();
             addParticles();
         } else {
+            debugText = "";
+
             if (getVatOptional().isEmpty()) return;
             boolean shouldUpdateFluidMixture = false;
             Vat vat = getVatOptional().get();
-            if (tankBehaviour.isEmpty()) return;
-            double fluidAmount = getCapacity() / Constants.MILLIBUCKETS_PER_LITER; // Converts getFluidAmount() in mB to liters
 
+            float fluidAmount = getCapacity() / Constants.MILLIBUCKETS_PER_LITER; // Converts getFluidAmount() in mB to liters
             int cyclesPerTick = getSimulationLevel();
 
-            // Heating
-            for (int cycle = 0; cycle < cyclesPerTick; cycle++) {
-                float energyChange = heatingPower;
-                energyChange += (Pollution.getLocalTemperature(getLevel(), getBlockPos()) - cachedMixture.getTemperature()) * vat.getConductance(); // Fourier's Law (sort of), the divide by 20 is for 20 ticks per second
-                energyChange /= 20 * cyclesPerTick;
-                if (Math.abs(energyChange / (fluidAmount * cachedMixture.getVolumetricHeatCapacity())) > 0.001f && fluidAmount != 0d) { // Only bother heating if the temperature change will be somewhat significant
-                    cachedMixture.heat(energyChange / (float)fluidAmount);
-                    cachedMixture.disturbEquilibrium();
-                } else {
-                    break;
-                };
-            };
+            // Pretend the walls of the Vat are thinner than they really are so we can use somewhat realistic conductance value and have believable results
+            float vatThickness = 0.02f;
+            float vatStructureVolume = vat.getSideBlockPositions().size() * vatThickness;
+            float vatConductance = vat.getConductance();
 
-            // Take all Items out of the Inventory
-            List<ItemStack> availableItemStacks = new ArrayList<>();
-            for (int slot = 0; slot < inventory.getSlots(); slot++) {
-                ItemStack stack = inventory.getStackInSlot(slot);
-                if (!stack.isEmpty()) availableItemStacks.add(stack.copy());
-            };
+            // Since the tooltip already says higher conductance makes the vat gain heat more quickly (it does not, either in the mod or in real life)
+            // let's make it actually do that by assigning each vat material a volumetric heat capacity inversely proportional to its conductance value.
+            // This is wildly incorrect but should make each material behave in a more intuitive way, and I prefer that to adding a heat capacity value
+            // to each material and having to explain the difference with heat conductance.
+            float vatStructureVolumetricHeatCapacity = 3000000f * 100f * vat.getSideBlockPositions().size() / vatConductance;
 
-            ReactionContext context = new ReactionContext(availableItemStacks, UVPower, false);
+            // Use a heavily simplified model where the blocks the Vat is built out of and its actual contents are part of the same body
+            // In practice this means the Vat's temperature and the temperature of its contents are always equal, and the Mixture inside only
+            // receives a fraction of the energy provided.
 
-            // Reacting
-            if (!cachedMixture.isAtEquilibrium()) {
+            // How much energy it takes to raise the temperature of the Vat's structure by 1K (in joules per kelvin)
+            float vatHeatCapacity = vatStructureVolume * vatStructureVolumetricHeatCapacity;
 
-                // Dissolve new items
-                availableItemStacks = cachedMixture.dissolveItems(context, fluidAmount);
-                inventory.clearContent(); // Clear all Items as they may get re-inserted
+            // How much energy it takes to raise the temperature of the Mixture inside the Vat by 1K (in joules per kelvin)
+            float mixtureHeatCapacity = fluidAmount * (tankBehaviour.isEmpty() ? 0f : cachedMixture.getVolumetricHeatCapacity());
 
-                // React
-                context = new ReactionContext(availableItemStacks, UVPower, false); // Update the context
-                cachedMixture.reactForTick(context, getSimulationLevel());
-                shouldUpdateFluidMixture = true;
+            // How much of the incoming energy the Mixture should take so that both the Mixture and the Vat increase in temperature equally
+            float mixtureEnergyFraction = mixtureHeatCapacity / (vatHeatCapacity + mixtureHeatCapacity);
 
-                if (!cachedMixture.isAtEquilibrium()) advancementBehaviour.awardDestroyAdvancement(DestroyAdvancementTrigger.USE_VAT);
-            };
+            boolean settled = false;
+            if(mixtureEnergyFraction > 0.001f && !tankBehaviour.isEmpty())
+            {
+                for (int cycle = 0; cycle < cyclesPerTick && !settled; cycle++)
+                {
+                    settled = true;
 
-            // Put all Items back in the Inventory
-            for (ItemStack itemStack : availableItemStacks) {
-                ItemHandlerHelper.insertItemStacked(inventory, itemStack, false);
-            };
+                    // Fourier's Law (sort of), the divide by 20 is for 20 ticks per second
+                    float energyChange = heatingPower + (Pollution.getLocalTemperature(getLevel(), getBlockPos()) - cachedMixture.getTemperature()) * vatConductance / vatThickness;
+                    energyChange /= 20 * cyclesPerTick;
 
-            if (shouldUpdateFluidMixture) {
-                // Enact Reaction Results
-                cachedMixture.getCompletedResults(fluidAmount).entrySet().forEach(entry -> {
-                    for (int i = 0; i < entry.getValue(); i++) entry.getKey().onVatReaction(getLevel(), this);
-                });
-                updateFluidMixture();
-            };
+                    // The Mixture only receives a portion of the energy received, it's implied the walls comprising the Vat receive the rest
+                    energyChange *= mixtureEnergyFraction;
+
+                    if (Math.abs(energyChange) > 10.f)
+                    {
+                        cachedMixture.heat(energyChange / fluidAmount);
+                        cachedMixture.disturbEquilibrium();
+                        settled = false;
+                    }
+
+                    // The Vat's structure receives the rest of the energy, we don't need to calculate that because we already know what the result should be
+                    vatTemperature = cachedMixture.getTemperature();
+                }
+            } else {
+                // When the Vat's contents have a heat capacity close to 0 (e.g. close to a full vacuum),
+                // simulate heating through the Vat's structure instead of the Mixture inside.
+                for (int cycle = 0; cycle < cyclesPerTick && !settled; cycle++)
+                {
+                    settled = true;
+
+                    // Fourier's Law (sort of), the divide by 20 is for 20 ticks per second
+                    float energyChange = heatingPower + (Pollution.getLocalTemperature(getLevel(), getBlockPos()) - vatTemperature) * vatConductance / vatThickness;
+                    energyChange /= 20 * cyclesPerTick;
+
+                    energyChange *= 1.f - mixtureEnergyFraction;
+                    float temperatureChange = energyChange / vatHeatCapacity;
+                    if(Math.abs(energyChange) > 10.f)
+                    {
+                        vatTemperature += temperatureChange;
+                        settled = false;
+                    }
+                }
+
+                // No need to get fancy simulating boiling liquids because we're working with such a minuscule amount it doesn't matter.
+                cachedMixture.setTemperature(vatTemperature);
+            }
+
+            debugText = debugText + "settled: " + String.valueOf(settled);
+
+            if(!tankBehaviour.isEmpty())
+            {
+                // Take all Items out of the Inventory
+                List<ItemStack> availableItemStacks = new ArrayList<>();
+                for (int slot = 0; slot < inventory.getSlots(); slot++)
+                {
+                    ItemStack stack = inventory.getStackInSlot(slot);
+                    if (!stack.isEmpty()) availableItemStacks.add(stack.copy());
+                }
+                ;
+
+                ReactionContext context = new ReactionContext(availableItemStacks, UVPower, false);
+
+                // Reacting
+                if (!cachedMixture.isAtEquilibrium())
+                {
+
+                    // Dissolve new items
+                    availableItemStacks = cachedMixture.dissolveItems(context, fluidAmount);
+                    inventory.clearContent(); // Clear all Items as they may get re-inserted
+
+                    // React
+                    context = new ReactionContext(availableItemStacks, UVPower, false); // Update the context
+                    cachedMixture.reactForTick(context, getSimulationLevel());
+                    shouldUpdateFluidMixture = true;
+
+                    if (!cachedMixture.isAtEquilibrium())
+                        advancementBehaviour.awardDestroyAdvancement(DestroyAdvancementTrigger.USE_VAT);
+                }
+                ;
+
+                // Put all Items back in the Inventory
+                for (ItemStack itemStack : availableItemStacks)
+                {
+                    ItemHandlerHelper.insertItemStacked(inventory, itemStack, false);
+                }
+                ;
+
+                if (shouldUpdateFluidMixture)
+                {
+                    // Enact Reaction Results
+                    cachedMixture.getCompletedResults(fluidAmount).entrySet().forEach(entry -> {
+                        for (int i = 0; i < entry.getValue(); i++) entry.getKey().onVatReaction(getLevel(), this);
+                    });
+                    updateFluidMixture();
+                }
+            }
 
             // Releasing gas if there is an open vent
             VatSideBlockEntity openVent = getOpenVent();
@@ -287,6 +367,14 @@ public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveL
         heatingPower = tag.getFloat("HeatingPower");
         UVPower = tag.getFloat("UVPower");
 
+        if(tag.contains("VatTemperature"))
+            vatTemperature = tag.getFloat("VatTemperature");
+        else
+            vatTemperature = getLevel() == null ? 289f : Pollution.getLocalTemperature(getLevel(), getBlockPos()); // Initialize default temperature if we're loading from a previous version
+
+        if(CatnipServices.PLATFORM.isDevelopmentEnvironment())
+            debugText = tag.getString("DebugText");
+
         // Vat
         if (tag.contains("Vat", Tag.TAG_COMPOUND)) {
             vat = Vat.read(tag.getCompound("Vat"), getBlockPos());
@@ -318,6 +406,10 @@ public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveL
 
         tag.putFloat("HeatingPower", heatingPower);
         tag.putFloat("UVPower", UVPower);
+        tag.putFloat("VatTemperature", vatTemperature);
+
+        if(CatnipServices.PLATFORM.isDevelopmentEnvironment())
+            tag.putString("DebugText", debugText);
 
         // Vat
         if (vat.isPresent()) {
@@ -447,6 +539,7 @@ public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveL
         });
 
         vat = Optional.of(newVat.get());
+        vatTemperature = Pollution.getLocalTemperature(getLevel(), getBlockPos());
         finalizeVatConstruction();
         updateCachedMixture();
         flush();
@@ -632,14 +725,22 @@ public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveL
 
     @Override
     public MutableComponent format(int value) {
-        return DestroyLang.translateDirect("gui.vat.vat_liquid_amount", value);
+        return CreateLang.text(value + " ")
+            .add(CreateLang.translate("generic.unit.millibuckets"))
+            .component();
     }
 
     @SuppressWarnings("null")
     public float getTemperature() { 
         if (getLevel().isClientSide()) return temperature.getChaseTarget(); // It thinks getLevel() might be null (it's not)
-        if (getVatOptional().isEmpty() || cachedMixture == null) return Pollution.getLocalTemperature(getLevel(), getBlockPos());
+        //if (getVatOptional().isEmpty() || cachedMixture == null) return Pollution.getLocalTemperature(getLevel(), getBlockPos());
+        if(getVatOptional().isEmpty() || cachedMixture == null) return vatTemperature;
         return cachedMixture.getTemperature();
+    };
+
+    @SuppressWarnings("null")
+    public float getVatTemperature() {
+        return vatTemperature;
     };
 
     /**

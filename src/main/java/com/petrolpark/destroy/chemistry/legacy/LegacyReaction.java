@@ -868,13 +868,13 @@ public class LegacyReaction {
         private String reactionString() {
             String reactionString = "";
             for (LegacySpecies reactant : reaction.reactants.keySet()) {
-                reactionString += reactant.getSerlializedMolecularFormula(false);
+                reactionString += reactant.getSerializedMolecularFormula(false);
                 reactionString += " + ";
             };
             if (reaction.reactants.keySet().size() > 0) reactionString = reactionString.substring(0, reactionString.length() - 3);
             reactionString = reactionString + " => ";
             for (LegacySpecies product : reaction.products.keySet()) {
-                reactionString += product.getSerlializedMolecularFormula(false);
+                reactionString += product.getSerializedMolecularFormula(false);
                 reactionString += " + ";
             };
             if (reaction.products.keySet().size() > 0) reactionString = reactionString.substring(0, reactionString.length() - 3);

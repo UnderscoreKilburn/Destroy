@@ -192,7 +192,7 @@ public class VatScreen extends AbstractSimiScreen {
                 filter == null || filter.getValue().isEmpty()
                 || molecule.getName(false).getString().toUpperCase().indexOf(search) > -1 // Check common name against filter
                 || molecule.getName(true).getString().toUpperCase().indexOf(search) > -1 // Check IUPAC name against filter
-                || molecule.getSerlializedMolecularFormula(false).toUpperCase().indexOf(search) > -1 // Check formula against filter
+                || molecule.getSerializedMolecularFormula(false).toUpperCase().indexOf(search) > -1 // Check formula against filter
             ) {
                 orderedMolecules.add(Pair.of(molecule, mixture.getConcentrationOf(molecule) * amount / Constants.MILLIBUCKETS_PER_LITER));
             };

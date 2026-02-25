@@ -79,7 +79,12 @@ public class BubbleCapBlock extends Block implements IBE<BubbleCapBlockEntity>, 
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor levelAccessor, BlockPos pos, BlockPos neighborPos) {
-        return stateForPositionInTower(levelAccessor, pos);
+        BlockState newState = stateForPositionInTower(levelAccessor, pos);
+        if(newState.getValue(BOTTOM))
+            newState = newState.setValue(FACING, state.getValue(FACING));
+        withBlockEntityDo(levelAccessor, pos, BubbleCapBlockEntity::createOrAddToTower);
+
+        return newState;
     };
 
     @Override

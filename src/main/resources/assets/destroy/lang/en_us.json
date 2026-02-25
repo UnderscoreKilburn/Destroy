@@ -1339,6 +1339,7 @@
     "destroy.tooltip.bubble_cap.output_tank": "This Bubble Cap:",
     "destroy.tooltip.bubble_cap.reboiler": "Reboiler",
     "destroy.tooltip.bubble_cap.reboiler_temperature": "Reboiler Temperature: %1$s",
+    "destroy.tooltip.bubble_cap.temperature": "Temperature: %1$s",
     "destroy.tooltip.centrifuge.lubrication": "Lubrication:",
     "destroy.tooltip.centrifuge.input_tank": "Unprocessed:",
     "destroy.tooltip.centrifuge.dense_output_tank": "Dense Product:",

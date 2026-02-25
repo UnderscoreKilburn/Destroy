@@ -46,7 +46,7 @@ public class DestroyDistillationRecipeGen extends ExtendedProcessingRecipeGen<Di
         .require(DestroyFluids.MOLTEN_CINNABAR.get(), 1000)
         .output(MixtureFluid.of(516, LegacyMixture.pure(DestroyMolecules.MERCURY)))
         .output(NamedMixtures.MOLTEN_SULFUR.get(614))
-        .requiresHeat(HeatCondition.SUPERHEATED)),
+        .requiresHeat(HeatCondition.HEATED)),
     CRUDE_OIL = create("crude_oil", b -> b
         .require(DestroyTags.Fluids.CRUDE_OIL.tag, 100)
         .output(NamedMixtures.MOLTEN_SULFUR.get(9))

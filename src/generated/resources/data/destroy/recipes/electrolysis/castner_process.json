@@ -24,12 +24,12 @@
         "Mixture": {
           "Contents": [
             {
-              "Concentration": 0.9,
-              "Molecule": "destroy:sodium_metal"
-            },
-            {
               "Concentration": 66.028145,
               "Molecule": "destroy:mercury"
+            },
+            {
+              "Concentration": 0.9,
+              "Molecule": "destroy:sodium_metal"
             }
           ],
           "Temperature": 298.0,
@@ -44,16 +44,16 @@
         "Mixture": {
           "Contents": [
             {
-              "Concentration": 0.92,
-              "Molecule": "destroy:hypochlorous_acid"
-            },
-            {
               "Concentration": 51.566288,
               "Molecule": "destroy:water"
             },
             {
               "Concentration": 0.92,
               "Molecule": "destroy:hydrochloric_acid"
+            },
+            {
+              "Concentration": 0.92,
+              "Molecule": "destroy:hypochlorous_acid"
             }
           ],
           "Temperature": 298.0,

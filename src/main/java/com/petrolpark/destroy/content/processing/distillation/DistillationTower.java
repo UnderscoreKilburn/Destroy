@@ -38,10 +38,14 @@ public class DistillationTower {
     private DistillationRecipe lastRecipe;
     private int tick;
 
+    private int lastFluidAmountInReboiler;
+
     public DistillationTower(Level level, BlockPos controllerPos) { // Create a new Distillation Tower from scratch
         position = controllerPos;
         bubbleCaps = new ArrayList<>();
         tick = getProcessingTime();
+        lastFluidAmountInReboiler = 0;
+
         int i = 0;
         while (true) {
             BlockEntity be = level.getBlockEntity(controllerPos.above(i));
@@ -61,6 +65,8 @@ public class DistillationTower {
     public DistillationTower(CompoundTag compound, Level level, BlockPos pos) { // Create a new Distillation Tower from NBT
         position = pos;
         tick = compound.getInt("Tick");
+        lastFluidAmountInReboiler = compound.getInt("LastFluidAmount");
+
         int height = compound.getInt("Height");
         bubbleCaps = new ArrayList<>();
         for (int i = 0; i < height; i++) {
@@ -124,10 +130,20 @@ public class DistillationTower {
         if (controller.getLevel() != level) return;
         if(!controller.canContinueProcessing()) return;
 
+        boolean wait = false;
+        int fluidAmountInReboiler = controller.getTank().getFluidAmount();
+        if(fluidAmountInReboiler != lastFluidAmountInReboiler) {
+            // Can't rely on the callback provided to SmartFluidTankBehaviour.whenFluidUpdates because that can apparently be
+            // called even when the tank is already full (and it only happens with certain pipe configurations? weird, could actually be a Create bug).
+            // Only track the amount of fluid for now since you would have to do some seriously weird shit to change the contents of a reboiler without changing its amount.
+            wait = true;
+            lastFluidAmountInReboiler = fluidAmountInReboiler;
+        }
+
         if(controller.getTank().getFluid().isEmpty()) {
             tick = getProcessingTime();
         } else {
-            boolean wait = controller.contentsChanged || !controller.canContinueProcessing();
+            wait = wait || !controller.canContinueProcessing();
             if(wait)
                 tick = Math.max(tick, 20);
 
@@ -191,7 +207,7 @@ public class DistillationTower {
                 // Check if resultant Fluids can fit
                 int i = 0;
                 for (FluidStack fraction : fractions) { // Ignore the first 'fraction', this is the residue and goes in the Reboiler
-                    if (i == 0) {
+                    if (i == 0 || fraction.isEmpty()) {
                         i++;
                         continue;
                     }; 
@@ -263,8 +279,45 @@ public class DistillationTower {
      * @return A list of Fluid Stacks of maximum size {@code numberOfFractions + 1}, with the first being the residue, and the rest being subsequent fractions
      */
     private List<FluidStack> getFractionsOfMixture(ReadOnlyMixture mixture, int mixtureAmount, int numberOfFractions) {
-        List<FluidStack> fractions = new ArrayList<>(numberOfFractions);
+        // TODO: numberOfFractions could be omitted with this new system since it should always be equal to getHeight()-1
+        List<FluidStack> fractions = new ArrayList<>(numberOfFractions+1);
+        float roomTemperature = Pollution.getLocalTemperature(getControllerBubbleCap().getLevel(), getControllerPos());
 
+        // If a mixture is hotter than the reboiler, pretend the reboiler is at that temperature instead
+        // e.g. steam pumped into a cold reboiler will still rise to the bubble cap above it
+        float mixtureTemperature = mixture.getTemperature()+0.001f;
+
+        if (numberOfFractions == 0) return fractions;
+
+        List<LegacyMixture> mixtures = new ArrayList<>(numberOfFractions+1);
+        for(int i=0 ; i<numberOfFractions+1 ; i++) {
+            mixtures.add(new LegacyMixture().setTemperature(roomTemperature));
+        }
+
+        int highestFraction = 0;
+        for (LegacySpecies molecule : mixture.getContents(false)) {
+            for(int i=0 ; i<numberOfFractions+1 ; i++) {
+                float temperature = getFractionTemperature(i);
+                if(i == 0 && mixtureTemperature > temperature)
+                    temperature = mixtureTemperature;
+
+                if(molecule.getBoilingPoint() > temperature || i == numberOfFractions) {
+                    highestFraction = Math.max(highestFraction, i);
+                    mixtures.get(i).addMolecule(molecule, mixture.getConcentrationOf(molecule));
+                    break;
+                }
+            }
+        };
+
+        for (int i=0; i<=highestFraction ; i++) {
+            LegacyMixture fractionMixture = mixtures.get(i);
+            int amount = fractionMixture.recalculateVolume(mixtureAmount);
+            fractions.add(MixtureFluid.of(amount, fractionMixture));
+        };
+
+        return fractions;
+
+        /*
         float roomTemperature = Pollution.getLocalTemperature(getControllerBubbleCap().getLevel(), getControllerPos());
         float maxTemperature = Math.max(getTemperatureForDistillationTower(getControllerBubbleCap().getLevel(), getControllerPos()), mixture.getTemperature());
 
@@ -334,14 +387,25 @@ public class DistillationTower {
             fractions.add(MixtureFluid.of(amount, gasMixture)); // Add the gas fraction if necessary
         };
 
-        return fractions;
+        return fractions;*/
     };
 
     public CompoundTag serializeNBT() {
         CompoundTag compound = new CompoundTag();
         compound.putInt("Height", getHeight());
         compound.putInt("Tick", tick);
+        compound.putInt("LastFluidAmount", lastFluidAmountInReboiler);
         return compound;
+    };
+
+    public float getFractionTemperature(int fraction) {
+        int height = getHeight();
+        float startTemperature = getTemperatureForDistillationTower(getControllerBubbleCap().getLevel(), getControllerPos());
+        float endTemperature = Pollution.getLocalTemperature(getControllerBubbleCap().getLevel(), getControllerPos());
+
+        if (height <= 1) return startTemperature;
+
+        return startTemperature + fraction * (endTemperature - startTemperature) / (height - 1);
     };
 
     /**

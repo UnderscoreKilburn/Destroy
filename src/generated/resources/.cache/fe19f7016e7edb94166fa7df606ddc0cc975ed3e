@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-20T04:45:51.2593596	Destroy's Processing Recipes
+// 1.20.1	2026-02-22T17:27:24.1653898	Destroy's Processing Recipes
 ca7d05c1e8b8e1e7eaae2cf57373c86fa072fead data/destroy/recipes/aging/chorus_wine.json
 d4053e726c9fa26351806eb47e35ab8a647fbc2f data/destroy/recipes/aging/moonshine.json
 667f078620bd87d4309eb7106a6eefdb57477d1e data/destroy/recipes/aging/vodka.json
@@ -47,14 +47,14 @@ d987e00f0b015db92191d5f16a171626326fab4f data/destroy/recipes/crushing/rose_quar
 5fd10bf9bb4d4b8d72330da46a427117bc31340d data/destroy/recipes/cutting/oxidized_sodium_ingot.json
 f45306bc09ab9b1fb78263003e9858bf42b67860 data/destroy/recipes/cutting/paper.json
 7e52524d027c2208b3ac1edb1b17e7eb4845ce92 data/destroy/recipes/disc_electroplating/disc_electroplating.json
-0b9d1c82e2920a0d32af90f750edd73506475833 data/destroy/recipes/distillation/borax.json
-f9cc3f73d442b05efda307b707c12ecb4f52c8e7 data/destroy/recipes/distillation/brine.json
-0a5c7845bfd8fc904bc25d63e02efd1ef9d31e76 data/destroy/recipes/distillation/cinnabar.json
-1639a1865ff73ffc23fda39570e071b4ab4178d2 data/destroy/recipes/distillation/crude_oil.json
-dc9810c59dd5693e6695ee493434cd832279f6f0 data/destroy/recipes/distillation/ethanol_from_moonshine.json
+2dc34b27fdc952487eeca67e8f8710cc5b0dd9a3 data/destroy/recipes/distillation/borax.json
+35914288d8cb0882379cfe427ba4a5d8a702fba1 data/destroy/recipes/distillation/brine.json
+306f4b7958df80c074df1096c9ffb817d3d7a7fe data/destroy/recipes/distillation/cinnabar.json
+458da8c3668e94ba794708fb8b92bc346de6183e data/destroy/recipes/distillation/crude_oil.json
+57f9cd7b02ccff2c4bcad2cfb29f9dd2af55522c data/destroy/recipes/distillation/ethanol_from_moonshine.json
 8b32b8297b24592464eef65767642cc18a31fba2 data/destroy/recipes/distillation/moonshine.json
-71f9d5dacc499501ec10bbc19a6321826a0e8e29 data/destroy/recipes/distillation/urine.json
-4759a5b4e2f371be31f3efd6c9d9141711871433 data/destroy/recipes/electrolysis/castner_process.json
+74770dea3bbba4a9c8e7909f8d866851542a0a96 data/destroy/recipes/distillation/urine.json
+874be7a66a766d5605262732ded9075a9acf6b14 data/destroy/recipes/electrolysis/castner_process.json
 7f8e461a3585955ef257cd0e5e9115487255f02c data/destroy/recipes/electrolysis/chromium_electrolysis.json
 7f4c622664edce38255cd007bf038cb68ea8c147 data/destroy/recipes/electrolysis/copper_electrolysis.json
 8ae4b7f743d2c44d343605588720f084b0a9eec7 data/destroy/recipes/electrolysis/iron_electrolysis.json
@@ -68,7 +68,7 @@ e1a02359b05d46080148c69c5615f652ea892589 data/destroy/recipes/element_tank_filli
 42cc0fbc57cc26c6bfdf5e91fb95b0cbd0099106 data/destroy/recipes/element_tank_filling/oxygen_periodic_table_block.json
 4f0a6d540b3f10c8f95c2880fdcff886239e93e3 data/destroy/recipes/emptying/chorus_wine_bottle.json
 7fb14eabeb701d1a4a6d24489b5c5cbe76fd5c47 data/destroy/recipes/emptying/moonshine_bottle.json
-3a44e5631ec3f98ab59a6d2694cb89b1c0619e08 data/destroy/recipes/emptying/tear_bottle.json
+2555295e69969eed98ddaa0f4ba7ce1c0af99d56 data/destroy/recipes/emptying/tear_bottle.json
 bb7ed3255bd33bab1dc4fad2d824f602087155f7 data/destroy/recipes/emptying/undistilled_moonshine_bottle.json
 19e0582a9260a8e3893e8a7ce1b8b18748d93457 data/destroy/recipes/emptying/urine_bottle.json
 b52e7c83acd3f569dc0b1a02366c8c5f75ab935d data/destroy/recipes/filling/apple_juice_carton.json

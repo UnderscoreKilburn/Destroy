@@ -23,8 +23,7 @@ public class ThresholdSwitchBlockMixin {
     * */
     @WrapOperation(method = "getStateForPlacement", at = @At(value = "INVOKE",
         target = "Lnet/minecraft/world/level/block/entity/BlockEntity;getCapability(Lnet/minecraftforge/common/capabilities/Capability;)Lnet/minecraftforge/common/util/LazyOptional;",
-        ordinal = 0,
-        remap = true), remap = false)
+        ordinal = 0))
     LazyOptional<?> pretendValidContainer(BlockEntity instance, Capability<?> capability, Operation<LazyOptional<?>> original) {
         if(instance instanceof ThresholdSwitchObservable) {
             // We just want isPresent() to return true for the returned value

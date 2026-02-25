@@ -1,6 +1,6 @@
 {
   "type": "destroy:distillation",
-  "heatRequirement": "superheated",
+  "heatRequirement": "heated",
   "ingredients": [
     {
       "amount": 1000,

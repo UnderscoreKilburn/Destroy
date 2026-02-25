@@ -173,9 +173,6 @@ public class BubbleCapBlockEntity extends SmartBlockEntity implements IHaveLabGo
             NBTHelper.iterateCompoundList(compound.getList("VisualizedFluids", Tag.TAG_COMPOUND),
                 c -> visualizedOutputFluids
                     .add(IntAttached.with(OUTPUT_ANIMATION_TIME, FluidStack.loadFluidStackFromNBT(c))));
-            if(visualizedOutputFluids.size() > 0) {
-                Destroy.LOGGER.info("got {} visualized output fluids", visualizedOutputFluids.size());
-            }
         };
 
         ticksToFill = compound.getInt("TicksToFill");
@@ -327,22 +324,24 @@ public class BubbleCapBlockEntity extends SmartBlockEntity implements IHaveLabGo
         if (!(blockState.getBlock() instanceof BubbleCapBlock))
             return false;
 
-        Direction direction = blockState.getValue(BubbleCapBlock.FACING);
-        if (direction != Direction.DOWN) {
-            BlockEntity be = level.getBlockEntity(worldPosition.below()
-                .relative(direction));
+        if(!outputFluid.isEmpty()) {
+            Direction direction = blockState.getValue(BubbleCapBlock.FACING);
+            if (direction != Direction.DOWN) {
+                BlockEntity be = level.getBlockEntity(worldPosition.below()
+                    .relative(direction));
 
-            IFluidHandler targetTank = be == null ? null
-                : be.getCapability(ForgeCapabilities.FLUID_HANDLER, direction.getOpposite())
-                .orElse(null);
-            boolean externalTankNotPresent = targetTank == null;
+                IFluidHandler targetTank = be == null ? null
+                    : be.getCapability(ForgeCapabilities.FLUID_HANDLER, direction.getOpposite())
+                    .orElse(null);
+                boolean externalTankNotPresent = targetTank == null;
 
-            if (simulate)
+                if (simulate)
+                    return true;
+
+                if (!externalTankNotPresent)
+                    spoutputFluidBuffer.add(outputFluid.copy());
                 return true;
-
-            if (!externalTankNotPresent)
-                spoutputFluidBuffer.add(outputFluid.copy());
-            return true;
+            }
         }
 
         if(!simulate) {
@@ -554,7 +553,8 @@ public class BubbleCapBlockEntity extends SmartBlockEntity implements IHaveLabGo
         DestroyLang.tankInfoTooltip(tooltip, DestroyLang.translate("tooltip.bubble_cap.input_tank"), inputTank);
 
         TemperatureUnit unit = DestroyAllConfigs.CLIENT.chemistry.temperatureUnit.get();
-        if (isController) DestroyLang.translate("tooltip.bubble_cap.reboiler_temperature", unit.of(DistillationTower.getTemperatureForDistillationTower(getLevel(), worldPosition), df)).forGoggles(tooltip);
+        if (isController) DestroyLang.translate("tooltip.bubble_cap.reboiler_temperature", unit.of(clientTower.getFractionTemperature(0))).forGoggles(tooltip);
+        else              DestroyLang.translate("tooltip.bubble_cap.temperature", unit.of(clientTower.getFractionTemperature(fraction))).forGoggles(tooltip);
 
         return true;
     };

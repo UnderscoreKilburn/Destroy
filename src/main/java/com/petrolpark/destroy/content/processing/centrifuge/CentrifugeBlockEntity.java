@@ -1,11 +1,6 @@
 package com.petrolpark.destroy.content.processing.centrifuge;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,6 +19,7 @@ import com.petrolpark.destroy.chemistry.legacy.LegacyMixture.Phases;
 import com.petrolpark.destroy.chemistry.minecraft.MixtureFluid;
 import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
+import com.petrolpark.destroy.content.processing.centrifuge.CentrifugeBlockEntity.PhasedMoleculeGroup.PhasedMolecule;
 import com.petrolpark.destroy.content.processing.centrifuge.potion.PotionSeparationRecipes;
 import com.petrolpark.destroy.core.block.entity.IDirectionalOutputFluidBlockEntity;
 import com.petrolpark.destroy.core.block.entity.IHaveLabGoggleInformation;
@@ -36,6 +32,7 @@ import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.content.fluids.potion.PotionFluid.BottleType;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
+import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.fluid.CombinedTankWrapper;
@@ -73,6 +70,12 @@ public class CentrifugeBlockEntity extends KineticBlockEntity implements IDirect
 
     private static final Object centrifugationRecipeKey = new Object();
 
+    // SmartBlockEntity only supports one behaviour per type and weird things happen when multiple behaviours with the
+    // same type are added, so let's make our own type for the second output.
+    // The correct solution would be to have only one output behaviour with two tanks but I can't figure out an elegant way
+    // to make each side access a different tank so this will have to do for now.
+    public static final BehaviourType<SmartFluidTankBehaviour> OUTPUT2 = new BehaviourType<>("Output2");
+
     private SmartFluidTankBehaviour inputTank, denseOutputTank, lightOutputTank;
     protected LazyOptional<IFluidHandler> allFluidCapability;
 
@@ -99,7 +102,7 @@ public class CentrifugeBlockEntity extends KineticBlockEntity implements IDirect
         denseOutputTank = new GeniusFluidTankBehaviour(SmartFluidTankBehaviour.OUTPUT, this, 1, getEachTankCapacity(), true)
             .whenFluidUpdates(this::onFluidStackChanged)
             .forbidInsertion();
-        lightOutputTank = new GeniusFluidTankBehaviour(SmartFluidTankBehaviour.OUTPUT, this, 1, getEachTankCapacity(), true)
+        lightOutputTank = new GeniusFluidTankBehaviour(OUTPUT2, this, 1, getEachTankCapacity(), true)
             .whenFluidUpdates(this::onFluidStackChanged)
             .forbidInsertion();
         behaviours.addAll(List.of(inputTank, denseOutputTank, lightOutputTank));
@@ -226,237 +229,297 @@ public class CentrifugeBlockEntity extends KineticBlockEntity implements IDirect
         return lightOutputTank.getPrimaryHandler();
     };
 
-    public void process() {
-        if (lastRecipe == null) { // If there is no Recipe
-            if (DestroyFluids.isMixture(getInputTank().getFluid())) { // If there are Fluids to Centrifuge
+    protected static class PhasedMoleculeGroup {
+        float totalVolume = 0f;
+        float totalCharge = 0f;
 
-                boolean debug = false;
-                LegacyMixture mixture = LegacyMixture.readNBT(getInputTank().getFluid().getOrCreateChildTag("Mixture"));
+        List<PhasedMolecule> molecules = new ArrayList<>();
+        record PhasedMolecule(LegacySpecies molecule, float moles, float volume, boolean gas, float charge) {}
 
-                if (mixture == null) return;
-                if (!(DestroyFluids.isMixture(getDenseOutputTank().getFluid()) || getDenseOutputTank().isEmpty()) || !(DestroyFluids.isMixture(getLightOutputTank().getFluid()) || getLightOutputTank().isEmpty())) return; // Don't go any further if either output tank can't take Mixture
-                
-                int amount = IntStream.of(new int[]{getInputTank().getFluidAmount(), getDenseOutputTank().getSpace() * 2, getLightOutputTank().getSpace() * 2}).min().getAsInt(); // Determine how much can be processed
-                if (amount == 0) return; // If either of the two output tanks can't fit anything at all, give up
-                float totalVolume = amount / 1000f;
+        void add(LegacySpecies molecule, float moles, float volume, boolean gas) {
+            float charge = moles * molecule.getCharge();
+            molecules.add(new PhasedMolecule(molecule, moles, volume, gas, charge));
+            totalVolume += volume;
+            totalCharge += charge;
+        }
 
-                if (debug) Destroy.LOGGER.info("Total starting volume: "+totalVolume);
+        boolean tryBalanceCharge(PhasedMoleculeGroup other) {
+            if(totalCharge == 0f) return true;
 
-                Map<Pair<LegacySpecies, Boolean>, Float> phasedMoleculesRemainingMoles = new HashMap<>();
-                Map<Pair<LegacySpecies, Boolean>, Float> phasedMoleculesRemainingVolumes = new HashMap<>();
-                Map<Pair<LegacySpecies, Boolean>, Float> phasedMoleculesMolesInLightMixture = new HashMap<>();
-                Map<Pair<LegacySpecies, Boolean>, Float> phasedMoleculesMolesInDenseMixture = new HashMap<>();
+            ListIterator<PhasedMolecule> it = other.molecules.listIterator();
+            while(it.hasNext()) {
+                PhasedMolecule m = it.next();
+                if(m.charge != 0f && (totalCharge > 0f) != (m.charge > 0f)) {
+                    boolean finished = Math.abs(m.charge) >= Math.abs(totalCharge);
+                    float toTransfer = Math.min(1f, -totalCharge / m.charge);
+                    float toKeep = 1f - toTransfer;
+                    add(m.molecule, m.moles * toTransfer, m.volume * toTransfer, m.gas);
 
-                Phases phases = mixture.separatePhases(totalVolume);
-                float liquidVolume = (float)(double)phases.liquidVolume();
-                float gasVolume = totalVolume - liquidVolume;
-                LegacyMixture gasMixture = phases.gasMixture();
-                gasMixture.scale(gasVolume);
-                LegacyMixture liquidMixture = phases.liquidMixture();
-
-                for (LegacySpecies molecule : liquidMixture.getContents(false)) {
-                    Pair<LegacySpecies, Boolean> phasedMolecule = Pair.of(molecule, false);
-                    float moles = liquidMixture.getConcentrationOf(molecule) * liquidVolume;
-                    phasedMoleculesRemainingVolumes.put(phasedMolecule, moles / molecule.getPureConcentration());
-                    phasedMoleculesRemainingMoles.put(phasedMolecule, moles);
-                };
-                
-                float totalGasConcentration = gasMixture.getTotalConcentration();
-                for (LegacySpecies molecule : gasMixture.getContents(false)) {
-                    Pair<LegacySpecies, Boolean> phasedMolecule = Pair.of(molecule, true);
-                    float moles = gasMixture.getConcentrationOf(molecule) * gasVolume;
-                    phasedMoleculesRemainingVolumes.put(phasedMolecule, moles / totalGasConcentration); 
-                    phasedMoleculesRemainingMoles.put(phasedMolecule, moles);
-                };
-
-                if (debug) {
-                    float sumVolume = 0f;
-                    for (float volume : phasedMoleculesRemainingVolumes.values()) sumVolume += volume;
-                    Destroy.LOGGER.info("Total volume of all Molecules: "+sumVolume);
-                };
-
-                List<Pair<LegacySpecies, Boolean>> orderedPhasedMolecules = new ArrayList<>(phasedMoleculesRemainingVolumes.keySet());
-                Collections.sort(orderedPhasedMolecules, (p1, p2) -> {
-                    LegacySpecies m1 = p1.getFirst();
-                    LegacySpecies m2 = p2.getFirst();
-                    return Float.compare(
-                        mixture.getConcentrationOf(m2) * m2.getMass() / phasedMoleculesRemainingVolumes.get(p2), // This quantity is proportional to the density of Molecule 1 in this Mixture
-                        mixture.getConcentrationOf(m1) * m1.getMass() / phasedMoleculesRemainingVolumes.get(p1)
-                    );
-                });
-
-                float volumeOfDenseMixture = 0f;
-
-                splitEachMolecule: for (Pair<LegacySpecies, Boolean> phasedMolecule : orderedPhasedMolecules) {
-                    
-                    LegacySpecies molecule = phasedMolecule.getFirst();
-                    if (!phasedMoleculesRemainingMoles.containsKey(phasedMolecule)) continue splitEachMolecule; // Don't try if this Molecule has already been removed (implying it is an ion)
-                    float moles = phasedMoleculesRemainingMoles.get(phasedMolecule);
-
-                    if (debug) {
-                        Destroy.LOGGER.info("Now splitting '"+phasedMolecule.getFirst().getFullID()+"', gas = "+phasedMolecule.getSecond());
-                        Destroy.LOGGER.info("   Moles remaining: "+moles);
-                    };
-
-                    if (molecule.getCharge() == 0) {
-
-                        float volume = phasedMoleculesRemainingVolumes.get(phasedMolecule);
-                        float volumeInDenseMixture = Math.min(volume, (totalVolume / 2f) - volumeOfDenseMixture);
-                        float propotionInDenseMixture = volumeInDenseMixture / volume;
-
-                        if (debug) {
-                            Destroy.LOGGER.info("   Total volume: "+volume);
-                            Destroy.LOGGER.info("   Volume which could fit in the dense Mixture: "+volumeInDenseMixture);
-                            Destroy.LOGGER.info("   Current volume of dense Mixture: "+volumeOfDenseMixture);
-                        };
-
-                        phasedMoleculesMolesInDenseMixture.put(phasedMolecule, moles * propotionInDenseMixture);
-                        phasedMoleculesMolesInLightMixture.put(phasedMolecule, moles * (1 - propotionInDenseMixture));
-                        volumeOfDenseMixture += volumeInDenseMixture;
-                        phasedMoleculesRemainingVolumes.replace(phasedMolecule, 0f); // All of any given neutral Molecule will be used up at once. Evens so, we don't strictly need to set this.
-                        phasedMoleculesRemainingMoles.replace(phasedMolecule, 0f);
-                    
+                    if(toKeep <= 0f) {
+                        other.totalCharge -= m.charge;
+                        other.totalVolume -= m.volume;
+                        it.remove();
                     } else {
+                        other.totalCharge -= m.charge * toTransfer;
+                        other.totalVolume -= m.volume * toTransfer;
+                        it.set(new PhasedMolecule(m.molecule, m.moles * toKeep, m.volume * toKeep, m.gas, m.charge * toKeep));
+                    }
 
-                        findCounterions: while (Optional.ofNullable(phasedMoleculesRemainingVolumes.get(phasedMolecule)).orElse(0f) > 0f) {
+                    if(finished)
+                        return true;
+                }
+            }
 
-                            Pair<LegacySpecies, Boolean> phasedCounterion = getNextIon(orderedPhasedMolecules, phasedMoleculesRemainingVolumes, molecule.getCharge() < 0);
-                            LegacySpecies counterion = phasedCounterion.getFirst();
-                            if (counterion == null) {
-                                Destroy.LOGGER.error("Tried to centrifuge charge-imbalanced Mixture");
-                                break findCounterions;
-                            };
+            return false;
+        }
 
-                            float counterionMolesRequired = -moles * (float)molecule.getCharge() / (float)counterion.getCharge();
-                            float proportionAvailable = phasedMoleculesRemainingMoles.get(phasedCounterion) / counterionMolesRequired;
+        void forceChargeToZero() {
+            if(totalCharge == 0f) return;
 
-                            if (debug) {
-                                Destroy.LOGGER.info("   Trying counter-ion '"+counterion.getFullID()+"', gas = "+phasedCounterion.getSecond());
-                                Destroy.LOGGER.info("       Moles of counter-ion required to fully balance: "+counterionMolesRequired);
-                                Destroy.LOGGER.info("       Molar quantity proportional to what is required: "+proportionAvailable);
-                                Destroy.LOGGER.info("       Current volume of dense Mixture: "+volumeOfDenseMixture);
-                            };
+            ListIterator<PhasedMolecule> it = molecules.listIterator();
+            while(it.hasNext()) {
+                PhasedMolecule m = it.next();
+                if (m.charge != 0f && (totalCharge > 0f) == (m.charge > 0f)) {
+                    boolean finished = Math.abs(m.charge) >= Math.abs(totalCharge);
+                    float toRemove = Math.min(1f, totalCharge / m.charge);
+                    float toKeep = 1f - toRemove;
 
-                            if (proportionAvailable <= 0f) break findCounterions; // This should never happen
-                            
-                            float volumeOfMoleculeUsed;
-                            float molesOfMoleculeUsed;
-                            float volumeOfCounterionUsed;
-                            float molesOfCounterionUsed;
-                            
-                            if (proportionAvailable > 1f) { // If we have more than enough of this counterion to balance this ion, all of this Molecule gets used up
-                                volumeOfMoleculeUsed = phasedMoleculesRemainingVolumes.get(phasedMolecule);
-                                molesOfMoleculeUsed = moles;
-                                volumeOfCounterionUsed = phasedMoleculesRemainingVolumes.get(phasedCounterion) / proportionAvailable;
-                                molesOfCounterionUsed = phasedMoleculesRemainingMoles.get(phasedCounterion) / proportionAvailable;
-                            } else { // If we have just the right amount, or need more
-                                volumeOfMoleculeUsed = phasedMoleculesRemainingVolumes.get(phasedMolecule) * proportionAvailable;
-                                molesOfMoleculeUsed = moles * proportionAvailable;
-                                volumeOfCounterionUsed = phasedMoleculesRemainingVolumes.get(phasedCounterion);
-                                molesOfCounterionUsed = phasedMoleculesRemainingMoles.get(phasedCounterion);
-                            };
+                    if(toKeep <= 0f) {
+                        totalCharge -= m.charge;
+                        totalVolume -= m.volume;
+                        it.remove();
+                    } else {
+                        totalCharge -= m.charge * toRemove;
+                        totalVolume -= m.volume * toRemove;
+                        it.set(new PhasedMolecule(m.molecule, m.moles * toKeep, m.volume * toKeep, m.gas, m.charge * toKeep));
+                    }
 
-                            if (debug) {
-                                Destroy.LOGGER.info("           Volume of Molecule which will be added: "+volumeOfMoleculeUsed);
-                                Destroy.LOGGER.info("           Moles of Molecule which will be added: "+molesOfMoleculeUsed);
-                                Destroy.LOGGER.info("           Volume of counter-ion which will be added: "+volumeOfCounterionUsed);
-                                Destroy.LOGGER.info("           Moles of counter-ion which will be added: "+molesOfCounterionUsed);
-                            };
+                    if(finished)
+                        return;
+                }
+            }
+        }
+    }
 
-                            float combinationVolume = volumeOfMoleculeUsed + volumeOfCounterionUsed;
-                            float combinedVolumeInDenseMixture = Math.min(combinationVolume, (totalVolume / 2f) - volumeOfDenseMixture);
-                            float proportionInDenseMixture = combinedVolumeInDenseMixture / combinationVolume;
+    protected static class MixtureBuilder {
+        Map<LegacySpecies, Couple<Float>> contents;
+        float volume;
+        float temperature;
 
-                            // Add this Molecule and the counter-ion to the result Mixtures
-                            phasedMoleculesMolesInDenseMixture.put(phasedMolecule, molesOfMoleculeUsed * proportionInDenseMixture);
-                            phasedMoleculesMolesInDenseMixture.put(phasedCounterion, molesOfCounterionUsed * proportionInDenseMixture);
-                            phasedMoleculesMolesInLightMixture.put(phasedMolecule, molesOfMoleculeUsed * (1- proportionInDenseMixture));
-                            phasedMoleculesMolesInLightMixture.put(phasedCounterion, molesOfCounterionUsed * (1 - proportionInDenseMixture));
+        MixtureBuilder(float volume, float temperature) {
+            this.volume = volume;
+            this.temperature = temperature;
+            this.contents = new HashMap<>();
+        }
 
-                            // Decrement the remaining numbers of Molecules
-                            phasedMoleculesRemainingVolumes.compute(phasedMolecule, (pm, volume) -> {
-                                float newVolume = volume - volumeOfMoleculeUsed;
-                                return newVolume <= 1 / 256f / 256f ? null : newVolume;
+        void add(LegacySpecies molecule, float moles, boolean gas) {
+            Couple<Float> c = contents.computeIfAbsent(molecule, m -> Couple.create(0f, 0f));
+            c.set(!gas, c.get(!gas) + moles);
+        }
+
+        LegacyMixture build() {
+            LegacyMixture mixture = new LegacyMixture();
+            mixture.setTemperature(temperature);
+            for(Entry<LegacySpecies, Couple<Float>> e : contents.entrySet()) {
+                float totalMoles = e.getValue().getFirst() + e.getValue().getSecond();
+                float state = e.getValue().getSecond() / totalMoles;
+                mixture.addMolecule(e.getKey(), totalMoles / volume);
+                mixture.setState(e.getKey(), state);
+            }
+            return mixture;
+        }
+    }
+
+    public void process() {
+        if(lastRecipe == null) {
+            if(DestroyFluids.isMixture(getInputTank().getFluid())) {
+                LegacyMixture mixture = LegacyMixture.readNBT(getInputTank().getFluid().getOrCreateChildTag("Mixture"));
+                boolean debug = false;
+
+                if (mixture.isEmpty()) return;
+
+                if(debug) {
+                    float totalCharge = 0f;
+                    Destroy.LOGGER.info("== raw mixture ==");
+                    for (var m : mixture.getContents(false)) {
+                        Destroy.LOGGER.info("    {}: {}", m.getName(false), mixture.getConcentrationOf(m) * getInputTank().getFluidAmount());
+                        totalCharge += m.getCharge() * mixture.getConcentrationOf(m) * getInputTank().getFluidAmount();
+                    }
+                    Destroy.LOGGER.info("    total charge: {}", totalCharge);
+                }
+
+                // Don't go any further if either output tank can't take Mixture
+                if (!(DestroyFluids.isMixture(getDenseOutputTank().getFluid()) || getDenseOutputTank().isEmpty()) || !(DestroyFluids.isMixture(getLightOutputTank().getFluid()) || getLightOutputTank().isEmpty())) return;
+
+                // Determine how much can be processed
+                int amount = IntStream.of(2*(getInputTank().getFluidAmount()/2), getDenseOutputTank().getSpace() * 2, getLightOutputTank().getSpace() * 2).min().getAsInt();
+                if (amount == 0) return; // If either of the two output tanks can't fit anything at all, give up
+
+                Phases phases = mixture.separatePhases(amount);
+                LegacyMixture liquidMixture = phases.liquidMixture();
+                LegacyMixture gasMixture = phases.gasMixture();
+
+                float liquidVolume = phases.liquidVolume().floatValue();
+                float gasVolume = amount - liquidVolume;
+
+                if(debug) {
+                    float totalCharge = 0f;
+                    Destroy.LOGGER.info("== phase separated mixture ==");
+                    for (var m : mixture.getContents(false)) {
+                        Destroy.LOGGER.info("    {}: liquid {} | gas {} | total {}", m.getName(false),
+                            liquidMixture.getConcentrationOf(m) * liquidVolume,
+                            gasMixture.getConcentrationOf(m),
+                            liquidMixture.getConcentrationOf(m) * liquidVolume + gasMixture.getConcentrationOf(m)
+                        );
+                        totalCharge += m.getCharge() * (liquidMixture.getConcentrationOf(m) * liquidVolume + gasMixture.getConcentrationOf(m));
+                    }
+                    Destroy.LOGGER.info("    total charge: {}", totalCharge);
+                }
+
+                // Sort all the molecules in this Mixture by density (from highest to lowest)
+                // Molecules with the exact same density are grouped into the same bucket
+                TreeMap<Float, PhasedMoleculeGroup> sortedMolecules = new TreeMap<>(Comparator.reverseOrder());
+
+                for(LegacySpecies molecule : liquidMixture.getContents(false)) {
+                    float moles = liquidMixture.getConcentrationOf(molecule) * liquidVolume;
+                    float volume = moles / molecule.getPureConcentration();
+                    //float density = moles * molecule.getMass() / volume;
+                    float density = molecule.getDensity(); // Skip the math and avoid floating point errors by directly getting the density from the molecule itself
+
+                    sortedMolecules.computeIfAbsent(density, d -> new PhasedMoleculeGroup()).add(molecule, moles, volume, false);
+                }
+
+                float totalGasMoles = gasMixture.getTotalConcentration();
+                for(LegacySpecies molecule : gasMixture.getContents(false)) {
+                    float moles = gasMixture.getConcentrationOf(molecule); // gasMixture is returned with an implied volume of 1 so number of moles = concentration
+                    float volume = gasVolume * moles / totalGasMoles;
+                    float density = moles * molecule.getMass() / volume;
+
+                    sortedMolecules.computeIfAbsent(density, d -> new PhasedMoleculeGroup()).add(molecule, moles, volume, true);
+                }
+
+                if(debug) {
+                    float totalCharge = 0f;
+                    Destroy.LOGGER.info("== sorted molecules ==");
+                    for (var e : sortedMolecules.entrySet()) {
+                        Destroy.LOGGER.info("  {}: volume={}, charge={}", e.getKey(), e.getValue().totalVolume, e.getValue().totalCharge);
+                        for (var m : e.getValue().molecules) {
+                            Destroy.LOGGER.info("    {}: volume={}, moles={}, charge={}", m.molecule.getName(false), m.volume, m.moles, m.charge);
+                        }
+                        totalCharge += e.getValue().totalCharge;
+                    }
+                    Destroy.LOGGER.info("  total charge: {}", totalCharge);
+                }
+
+                // If any groups contain ions and have a non-zero charge, pull in counter-ions from the next groups to balance it out
+                List<PhasedMoleculeGroup> sortedMoleculeList = sortedMolecules.values().stream().toList();
+                ListIterator<PhasedMoleculeGroup> it = sortedMoleculeList.listIterator();
+
+                while(it.hasNext()) {
+                    PhasedMoleculeGroup group = it.next();
+                    ListIterator<PhasedMoleculeGroup> it2 = sortedMoleculeList.listIterator(it.nextIndex());
+                    boolean balanced = false;
+                    while(it2.hasNext()) {
+                        if(group.tryBalanceCharge(it2.next())) {
+                            balanced = true;
+                            break;
+                        }
+                    }
+
+                    // If there is any leftover charge, cheat a little and remove ions from this group to ensure the total charge is zero
+                    // If the original mixture didn't have unbalanced ions, this should usually result is a negligible loss
+                    if(!balanced)
+                        group.forceChargeToZero();
+                }
+
+                if(debug) {
+                    float totalCharge = 0f;
+                    Destroy.LOGGER.info("== sorted molecules (balanced) ==");
+                    for (var g : sortedMoleculeList) {
+                        Destroy.LOGGER.info("  volume={}, charge={}", g.totalVolume, g.totalCharge);
+                        for (var m : g.molecules) {
+                            Destroy.LOGGER.info("    {}: volume={}, moles={}, charge={}", m.molecule.getName(false), m.volume, m.moles, m.charge);
+                        }
+                        totalCharge += g.totalCharge;
+                    }
+                    Destroy.LOGGER.info("  total charge: {}", totalCharge);
+                }
+
+                // Distribute the sorted molecules into the dense output first, then the light output
+                float denseMixtureVolume = (float)Math.ceil(amount / 2f);
+                float lightMixtureVolume = amount - denseMixtureVolume;
+                float remaining = denseMixtureVolume;
+
+                MixtureBuilder denseMixtureBuilder = new MixtureBuilder(denseMixtureVolume, mixture.getTemperature());
+                MixtureBuilder lightMixtureBuilder = new MixtureBuilder(lightMixtureVolume, mixture.getTemperature());
+
+                it = sortedMoleculeList.listIterator();
+                while(it.hasNext()) {
+                    PhasedMoleculeGroup group = it.next();
+                    if(remaining > 0f && remaining <= group.totalVolume) {
+                        float fraction = remaining / group.totalVolume;
+                        if(group.totalVolume - remaining < 1e-3f) fraction = 1f;
+
+                        if(remaining > 1e-3f) {
+                            float f = fraction;
+                            group.molecules.replaceAll(m -> {
+                                denseMixtureBuilder.add(m.molecule, m.moles * f, m.gas);
+                                return new PhasedMolecule(m.molecule, m.moles * (1f - f), m.volume * (1f - f), m.gas, m.charge * (1f - f));
                             });
-                            phasedMoleculesRemainingVolumes.compute(phasedCounterion, (pm, volume) -> {
-                                float newVolume = volume - volumeOfCounterionUsed;
-                                return newVolume <= 1 / 256f / 256f ? null : newVolume;
-                            });
-                            phasedMoleculesRemainingMoles.compute(phasedMolecule, (pm, mol) -> {
-                                float newMol = mol - molesOfMoleculeUsed;
-                                return newMol <= 1 / 256f / 256f ? null : newMol;
-                            });
-                            phasedMoleculesRemainingMoles.compute(phasedCounterion, (pm, mol) -> {
-                                float newMol = mol - molesOfCounterionUsed;
-                                return newMol <= 1 / 256f / 256f ? null : newMol;
-                            });
+                            group.totalVolume *= 1f - f;
+                            group.totalCharge *= 1f - f;
+                        }
 
-                            // Increment the amount of dense mixture
-                            volumeOfDenseMixture += combinedVolumeInDenseMixture;
-                        };
-                    };
-                };
+                        if(group.totalVolume > 0.001f)
+                            it.previous();
 
-                LegacyMixture denseMixture = new LegacyMixture();
-                denseMixture.setTemperature(mixture.getTemperature());
-                LegacyMixture lightMixture = new LegacyMixture();
-                lightMixture.setTemperature(mixture.getTemperature());
-
-                for (Pair<LegacyMixture, Map<Pair<LegacySpecies, Boolean>, Float>> mixtureAndMap : List.of(Pair.of(denseMixture, phasedMoleculesMolesInDenseMixture), Pair.of(lightMixture, phasedMoleculesMolesInLightMixture))) {
-                    LegacyMixture resultMixture = mixtureAndMap.getFirst();
-                    Map<Pair<LegacySpecies, Boolean>, Float> map = mixtureAndMap.getSecond();
-                    Map<LegacySpecies, Couple<Float>> moleculeStates = new HashMap<>(map.size()); // Couple is of the form <gas moles, liquid moles>
-                    
-                    // Determine the number of moles of gas and the number of moles of liquid for each Molecule
-                    for (Entry<Pair<LegacySpecies, Boolean>, Float> entry : map.entrySet()) {
-                        Pair<LegacySpecies, Boolean> phasedMolecule = entry.getKey();
-                        moleculeStates.compute(phasedMolecule.getFirst(), (molecule, couple) -> {
-                            if (couple == null) couple = Couple.create(0f, 0f);
-                            couple.set(phasedMolecule.getSecond(), entry.getValue());
-                            return couple;
+                        remaining = 0f;
+                    } else {
+                        MixtureBuilder currentMixtureBuilder = remaining > 0f ? denseMixtureBuilder : lightMixtureBuilder;
+                        group.molecules.forEach(m -> {
+                            currentMixtureBuilder.add(m.molecule, m.moles, m.gas);
                         });
-                    };
+                        remaining -= group.totalVolume;
+                    }
+                }
 
-                    // Add each Molecule to its result Mixture
-                    addMoleculesToMixture: for (Entry<LegacySpecies, Couple<Float>> entry : moleculeStates.entrySet()) {
-                        Couple<Float> moles = entry.getValue();
-                        LegacySpecies molecule = entry.getKey();
-                        float totalMoles = moles.getFirst() + moles.getSecond();
-                        if (totalMoles <= 0f) continue addMoleculesToMixture;
-                        if (debug) {
-                            Destroy.LOGGER.info("Adding Molecule '"+molecule.getFullID()+"' to " +(resultMixture == denseMixture ? "dense" : "light")+" Mixture");
-                            Destroy.LOGGER.info("   Total moles: "+totalMoles);
-                        };
-                        resultMixture.addMolecule(molecule, 2f * totalMoles / totalVolume);
-                        resultMixture.setState(molecule, moles.getFirst() / totalMoles);
-                    };
-                };
+                LegacyMixture denseMixture = denseMixtureBuilder.build();
+                LegacyMixture lightMixture = lightMixtureBuilder.build();
 
-                // If we've got to this point, the Fluid can be succesfully processed
+                if(debug) {
+                    float totalCharge = 0f;
+                    Destroy.LOGGER.info("== final mixtures ==");
+                    float denseCharge = 0f;
+                    float lightCharge = 0f;
+                    for (var m : mixture.getContents(false)) {
+                        Destroy.LOGGER.info("    {}: dense {} | light {} | total {}", m.getName(false),
+                            denseMixture.getConcentrationOf(m) * denseMixtureVolume,
+                            lightMixture.getConcentrationOf(m) * lightMixtureVolume,
+                            denseMixture.getConcentrationOf(m) * denseMixtureVolume + lightMixture.getConcentrationOf(m) * lightMixtureVolume
+                        );
+                        denseCharge += m.getCharge() * denseMixture.getConcentrationOf(m) * denseMixtureVolume;
+                        lightCharge += m.getCharge() * lightMixture.getConcentrationOf(m) * lightMixtureVolume;
+                        totalCharge += m.getCharge() * (denseMixture.getConcentrationOf(m) * denseMixtureVolume + lightMixture.getConcentrationOf(m) * lightMixtureVolume);
+                    }
+                    Destroy.LOGGER.info("    total charge: dense {} | light {} | total {}", denseCharge, lightCharge, totalCharge);
+                }
+
+                // If we got to this point, the Fluid can be successfully processed
                 getInputTank().drain(amount, FluidAction.EXECUTE);
-                getDenseOutputTank().fill(MixtureFluid.of(amount / 2, denseMixture), FluidAction.EXECUTE);
-                getLightOutputTank().fill(MixtureFluid.of(amount / 2, lightMixture), FluidAction.EXECUTE);
-
+                getDenseOutputTank().fill(MixtureFluid.of((int)denseMixtureVolume, denseMixture), FluidAction.EXECUTE);
+                getLightOutputTank().fill(MixtureFluid.of((int)lightMixtureVolume, lightMixture), FluidAction.EXECUTE);
             } else { // If there is no Mixture to Centrifuge
                 return;
-            };
+            }
         } else { // If there is a Recipe
             if (!canFitFluidInTank(lastRecipe.getDenseOutputFluid(), getDenseOutputTank()) || !canFitFluidInTank(lastRecipe.getLightOutputFluid(), getLightOutputTank()) || hasFluidInTank(lastRecipe.getRequiredFluid(), getLightOutputTank())) return; // Ensure the Recipe can still be Processed
             getInputTank().drain(lastRecipe.getRequiredFluid().getRequiredAmount(), FluidAction.EXECUTE);
             getDenseOutputTank().fill(lastRecipe.getDenseOutputFluid(), FluidAction.EXECUTE);
             getLightOutputTank().fill(lastRecipe.getLightOutputFluid(), FluidAction.EXECUTE);
-        };
+        }
         advancementBehaviour.awardDestroyAdvancement(DestroyAdvancementTrigger.USE_CENTRIFUGE);
         notifyUpdate();
-    };
-
-    private static Pair<LegacySpecies, Boolean> getNextIon(List<Pair<LegacySpecies, Boolean>> list, Map<Pair<LegacySpecies, Boolean>, Float> map, boolean cation) {
-        for (Pair<LegacySpecies, Boolean> pair : list) {
-            int charge = pair.getFirst().getCharge();
-            if (charge != 0 && charge > 0 == cation && map.containsKey(pair) && map.get(pair) > 0f) return pair;
-        };
-        return Pair.of(null, null);
-    };
+    }
 
     @SuppressWarnings("null")
     public void spawnParticles() {

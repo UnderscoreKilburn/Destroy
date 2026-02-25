@@ -2,7 +2,12 @@ package com.petrolpark.destroy.mixin;
 
 import java.util.List;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.petrolpark.destroy.core.fluid.GeniusFluidTankBehaviour;
 import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import net.createmod.catnip.lang.FontHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
@@ -27,6 +32,18 @@ public abstract class BasinBlockEntityMixin implements IHaveHoveringInformation 
     /**
      * Replace the Basin's Smart Fluid Tanks with Genius ones, which can hold Mixtures.
      */
+    @WrapOperation(
+        method = "addBehaviours",
+        at = @At(value = "NEW", target = "com/simibubi/create/foundation/blockEntity/behaviour/fluid/SmartFluidTankBehaviour", remap = false),
+        remap = false
+    )
+    public SmartFluidTankBehaviour replaceFluidTankBehaviour(BehaviourType<SmartFluidTankBehaviour> type, SmartBlockEntity be,int tanks, int capacity, boolean enforceVariety, Operation<SmartFluidTankBehaviour> original) {
+        if(type == SmartFluidTankBehaviour.INPUT) {
+            return new GeniusFluidTankBehaviour(type, be, tanks, capacity, enforceVariety, true);
+        }
+        return original.call(type, be, tanks, capacity, enforceVariety);
+    }
+
     @Inject(
         method = "Lcom/simibubi/create/content/processing/basin/BasinBlockEntity;addBehaviours(Ljava/util/List;)V",
         at = @At("RETURN"),

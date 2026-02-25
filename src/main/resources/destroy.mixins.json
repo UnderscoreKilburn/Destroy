@@ -25,6 +25,7 @@
     "GhostItemMenuMixin",
     "HeatConditionMixin",
     "HeatLevelMixin",
+    "ItemDrainBlockEntityMixin",
     "ItemDrainBlockMixin",
     "ItemEntityMixin",
     "LevelSettingsMixin",

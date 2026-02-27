@@ -63,6 +63,8 @@
     "accessor.ValueSettingsPacketAccessor",
     "accessor.ValueSettingsScreenAccessor",
     "accessor.VillagerAccessor",
+    "compat.create_connected.FluidVesselBlockEntityMixin",
+    "compat.create_connected.FluidVesselMountedStorageHandlerMixin",
     "compat.farmersdelight.CuttingBoardMixin",
     "compat.jei.BasinCategoryMixin",
     "compat.jei.CreateJEIMixin",

@@ -270,7 +270,7 @@ public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveL
                     float temperatureChange = energyChange / vatHeatCapacity;
                     if(Math.abs(energyChange) > 10.f)
                     {
-                        vatTemperature += temperatureChange;
+                        vatTemperature = Math.max(vatTemperature + temperatureChange, 0.0001f);
                         settled = false;
                     }
                 }

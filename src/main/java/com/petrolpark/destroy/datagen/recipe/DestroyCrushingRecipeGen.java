@@ -29,6 +29,7 @@ public class DestroyCrushingRecipeGen extends CrushingRecipeGen {
 
     COPPER = metalPowder("copper", DestroyItems.COPPER_POWDER::get, true),
     IRON = metalPowder("iron", DestroyItems.IRON_POWDER::get, true),
+    NICKEL = metalPowder("nickel", DestroyItems.NICKEL_POWDER::get, false),
     CHROMIUM = metalPowder("chromium", DestroyItems.CHROMIUM_POWDER::get, false),
     LEAD = metalPowder("lead", DestroyItems.LEAD_POWDER::get, false),
     PLATINUM = metalPowder("platinum", DestroyItems.PLATINUM_POWDER::get, false),
@@ -43,6 +44,10 @@ public class DestroyCrushingRecipeGen extends CrushingRecipeGen {
         .output(0.25f, AllItems.CRUSHED_LEAD)
         .output(0.25f, DestroyItems.CRUSHED_RAW_CHROMIUM)
         .output(0.75f, AllItems.EXP_NUGGET)),
+    NETHER_CROCOITE_BLOCK = create(DestroyBlocks.NETHER_CROCOITE_BLOCK::get, b -> b.duration(250)
+        .output(0.25f, AllItems.CRUSHED_LEAD, 9)
+        .output(0.25f, DestroyItems.CRUSHED_RAW_CHROMIUM, 9)
+        .output(0.75f, AllItems.EXP_NUGGET, 9)),
 
     ROSE_QUARTZ = create(AllItems.ROSE_QUARTZ::get, b -> b.duration(100)
         .output(DestroyItems.SILICA)

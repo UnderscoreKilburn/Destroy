@@ -41,7 +41,6 @@ public class DestroyCompactingRecipeGen extends CompactingRecipeGen {
         .output(DestroyItems.BUTTER)),
     CARBON_FIBER = create("carbon_fiber", b -> b
         .require(DestroyItems.POLYACRYLONITRILE)
-        .require(DestroyFluids.SKIMMED_MILK.get(), 100)
         .output(DestroyItems.CARBON_FIBER)
         .requiresHeat(HeatCondition.SUPERHEATED)),
     CHARCOAL_FROM_BEETROOT_ASHES = create("charcoal_from_beetroot_ashes", b -> b

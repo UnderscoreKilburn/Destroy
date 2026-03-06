@@ -427,7 +427,7 @@ public class CentrifugeBlockEntity extends KineticBlockEntity implements IDirect
                     }
 
                     // If there is any leftover charge, cheat a little and remove ions from this group to ensure the total charge is zero
-                    // If the original mixture didn't have unbalanced ions, this should usually result is a negligible loss
+                    // If the original mixture didn't have unbalanced ions, this should usually result in a negligible loss
                     if(!balanced)
                         group.forceChargeToZero();
                 }

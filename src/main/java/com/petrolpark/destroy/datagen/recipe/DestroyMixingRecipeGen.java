@@ -53,6 +53,7 @@ public class DestroyMixingRecipeGen extends MixingRecipeGen {
             new Ingredient.TagValue(DestroyTags.Items.DUSTS_LIME.tag),
             new Ingredient.ItemValue(DestroyItems.OXIDIZED_SODIUM_INGOT.asStack())
         )))
+        .requiresHeat(HeatCondition.HEATED)
         .output(DestroyFluids.MOLTEN_BOROSILICATE_GLASS.get(), 1000)),
 
     CREAM_FROM_MAGMA_CREAM = create("cream_from_magma_cream", b -> b // now you're really pushing it
@@ -80,6 +81,7 @@ public class DestroyMixingRecipeGen extends MixingRecipeGen {
         .require(I.nickelDust())
         .require(I.nickelDust())
         .require(I.chromiumDust())
+        .requiresHeat(HeatCondition.HEATED)
         .output(DestroyFluids.MOLTEN_STAINLESS_STEEL.get(), 500)
         .duration(1)), // Mixing recipes do not allow you to specify an actual duration - only fast (0) or slow (any other number)
     STAINLESS_STEEL_FLUXED = create("stainless_steel_fluxed", b -> b
@@ -93,6 +95,7 @@ public class DestroyMixingRecipeGen extends MixingRecipeGen {
         .require(I.nickelDust())
         .require(I.chromiumDust())
         .require(I.fluxes())
+        .requiresHeat(HeatCondition.HEATED)
         .output(DestroyFluids.MOLTEN_STAINLESS_STEEL.get(), 500)
         .output(DestroyItems.SLAG)),
 
@@ -103,6 +106,7 @@ public class DestroyMixingRecipeGen extends MixingRecipeGen {
         .require(I.nickel())
         .require(I.chromiumNugget())
         .require(I.chromiumNugget())
+        .requiresHeat(HeatCondition.HEATED)
         .output(DestroyItems.STAINLESS_STEEL_INGOT)
         .output(0.5f, DestroyItems.STAINLESS_STEEL_INGOT)
         .duration(1)),
@@ -114,6 +118,7 @@ public class DestroyMixingRecipeGen extends MixingRecipeGen {
         .require(I.chromiumNugget())
         .require(I.chromiumNugget())
         .require(I.fluxes())
+        .requiresHeat(HeatCondition.HEATED)
         .output(DestroyItems.STAINLESS_STEEL_INGOT, 2)),
 
     EMPTY_BOMB_BON = create("empty_bomb_bon", b -> b

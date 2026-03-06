@@ -20,7 +20,7 @@ public class ClientMixture extends ReadOnlyMixture {
         float totalRed = 0;
         float totalGreen = 0;
         float totalBlue = 0;
-        int totalAlpha = 64;
+        float totalAlpha = 64;
         for (Entry<LegacySpecies, Float> entry : contents.entrySet()) {
             //if (entry.getKey().isColorless()) continue;
             Color color = new Color(entry.getKey().getColor());
@@ -29,9 +29,9 @@ public class ClientMixture extends ReadOnlyMixture {
             totalRed += color.getRed() * colorContribution;
             totalGreen += color.getGreen() * colorContribution;
             totalBlue += color.getBlue() * colorContribution;
-            totalAlpha = Math.max(totalAlpha, color.getAlpha());
+            totalAlpha = Math.max(totalAlpha, colorContribution);
         };
-        color = new Color((int)(totalRed / totalColorContribution), (int)(totalGreen / totalColorContribution), (int)(totalBlue / totalColorContribution), totalAlpha).getRGB();
+        color = new Color((int)(totalRed / totalColorContribution), (int)(totalGreen / totalColorContribution), (int)(totalBlue / totalColorContribution), (int)totalAlpha).getRGB();
     };
 
     protected void updateName() {

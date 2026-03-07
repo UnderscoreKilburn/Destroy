@@ -16,12 +16,12 @@
         "Mixture": {
           "Contents": [
             {
-              "Concentration": 1.056338,
-              "Molecule": "destroy:ammonia"
-            },
-            {
               "Concentration": 54.384014,
               "Molecule": "destroy:water"
+            },
+            {
+              "Concentration": 1.056338,
+              "Molecule": "destroy:ammonia"
             }
           ],
           "Temperature": 298.0

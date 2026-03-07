@@ -1,8 +1,8 @@
 {
   "type": "destroy:distillation",
   "biomes": [
-    "#minecraft:is_beach",
-    "#minecraft:is_ocean"
+    "#minecraft:is_ocean",
+    "#minecraft:is_beach"
   ],
   "heatRequirement": "heated",
   "ingredients": [
@@ -20,12 +20,12 @@
         "Mixture": {
           "Contents": [
             {
-              "Concentration": 1.0,
-              "Molecule": "destroy:sodium_ion"
-            },
-            {
               "Concentration": 52.108456,
               "Molecule": "destroy:water"
+            },
+            {
+              "Concentration": 1.0,
+              "Molecule": "destroy:sodium_ion"
             },
             {
               "Concentration": 1.0,

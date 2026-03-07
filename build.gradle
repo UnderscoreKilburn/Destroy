@@ -87,7 +87,9 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
             property 'createbigcannons.datagen.platform', 'forge' // CBC needs this to be set or else datagen won't run
             //property 'forge.logging.console.level', 'debug'
-            args '--mod', 'destroy', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources'), '--existing-mod', 'create'
+            args '--mod', 'destroy', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources'),
+                    '--existing-mod','create',
+                    '--existing-mod', 'create_connected'
             mods {
                 destroy {
                     source sourceSets.main
@@ -239,6 +241,7 @@ dependencies {
 
     // Create Connected
     implementation fg.deobf("maven.modrinth:create-connected:1.1.13-mc1.20.1")
+    implementation fg.deobf("maven.modrinth:copycats:z7s54cjL")
 
     // Embeddium
     compileOnly fg.deobf("maven.modrinth:embeddium:${embeddium_version}+mc${minecraft_version}")

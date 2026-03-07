@@ -20,12 +20,12 @@
         "Mixture": {
           "Contents": [
             {
-              "Concentration": 37.18091,
-              "Molecule": "destroy:water"
-            },
-            {
               "Concentration": 5.13965,
               "Molecule": "destroy:ethanol"
+            },
+            {
+              "Concentration": 37.18091,
+              "Molecule": "destroy:water"
             },
             {
               "Concentration": 0.5239761,

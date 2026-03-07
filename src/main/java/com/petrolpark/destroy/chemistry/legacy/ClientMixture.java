@@ -29,7 +29,7 @@ public class ClientMixture extends ReadOnlyMixture {
             totalRed += color.getRed() * colorContribution;
             totalGreen += color.getGreen() * colorContribution;
             totalBlue += color.getBlue() * colorContribution;
-            totalAlpha = Math.max(totalAlpha, colorContribution);
+            totalAlpha = Math.max(totalAlpha, color.getAlphaAsFloat());
         };
         color = new Color((int)(totalRed / totalColorContribution), (int)(totalGreen / totalColorContribution), (int)(totalBlue / totalColorContribution), (int)totalAlpha).getRGB();
     };

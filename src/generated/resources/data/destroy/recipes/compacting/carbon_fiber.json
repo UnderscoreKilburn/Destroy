@@ -4,11 +4,6 @@
   "ingredients": [
     {
       "item": "destroy:polyacrylonitrile"
-    },
-    {
-      "amount": 100,
-      "fluid": "destroy:skimmed_milk",
-      "nbt": {}
     }
   ],
   "results": [

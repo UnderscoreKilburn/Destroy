@@ -2,6 +2,7 @@ package com.petrolpark.destroy.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,6 +20,10 @@ public class GlobalRecipeAccess {
 
     static {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> supplier = () -> {
+            IntegratedServer server = Minecraft.getInstance().getSingleplayerServer();
+            if (server != null)
+                return server.getRecipeManager();
+
             ClientPacketListener packetListener = Minecraft.getInstance().getConnection();
             if (packetListener == null) {
                 return null;

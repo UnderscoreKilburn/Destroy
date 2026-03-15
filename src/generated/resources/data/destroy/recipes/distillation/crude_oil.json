@@ -32,19 +32,19 @@
           "Contents": [
             {
               "Concentration": 2.0408788,
-              "Molecule": "destroy:metaxylene"
-            },
-            {
-              "Concentration": 2.0408788,
-              "Molecule": "destroy:ethylbenzene"
-            },
-            {
-              "Concentration": 2.0408788,
               "Molecule": "destroy:paraxylene"
             },
             {
               "Concentration": 2.0408788,
+              "Molecule": "destroy:metaxylene"
+            },
+            {
+              "Concentration": 2.0408788,
               "Molecule": "destroy:orthoxylene"
+            },
+            {
+              "Concentration": 2.0408788,
+              "Molecule": "destroy:ethylbenzene"
             }
           ],
           "Temperature": 298.0,
@@ -98,11 +98,11 @@
             },
             {
               "Concentration": 0.12612396,
-              "Molecule": "destroy:butadiene"
+              "Molecule": "destroy:propene"
             },
             {
               "Concentration": 0.12612396,
-              "Molecule": "destroy:propene"
+              "Molecule": "destroy:butadiene"
             }
           ],
           "Temperature": 298.0,

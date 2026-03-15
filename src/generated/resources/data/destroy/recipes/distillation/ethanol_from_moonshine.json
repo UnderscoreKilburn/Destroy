@@ -20,16 +20,16 @@
         "Mixture": {
           "Contents": [
             {
+              "Concentration": 0.5239761,
+              "Molecule": "destroy:acetic_acid"
+            },
+            {
               "Concentration": 5.13965,
               "Molecule": "destroy:ethanol"
             },
             {
               "Concentration": 37.18091,
               "Molecule": "destroy:water"
-            },
-            {
-              "Concentration": 0.5239761,
-              "Molecule": "destroy:acetic_acid"
             }
           ],
           "Temperature": 298.0,

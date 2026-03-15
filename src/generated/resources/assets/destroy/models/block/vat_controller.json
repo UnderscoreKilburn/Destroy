@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/orientable",
   "textures": {
-    "front": "destroy:block/vat/vat_controller",
+    "front": "destroy:block/vat_controller",
     "side": "destroy:block/stainless_steel_block",
     "top": "destroy:block/stainless_steel_block"
   }

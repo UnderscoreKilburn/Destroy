@@ -24,12 +24,12 @@
               "Molecule": "destroy:ethanol"
             },
             {
-              "Concentration": 0.5239761,
-              "Molecule": "destroy:acetic_acid"
-            },
-            {
               "Concentration": 37.18091,
               "Molecule": "destroy:water"
+            },
+            {
+              "Concentration": 0.5239761,
+              "Molecule": "destroy:acetic_acid"
             }
           ],
           "Temperature": 298.0,

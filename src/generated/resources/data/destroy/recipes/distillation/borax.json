@@ -20,14 +20,6 @@
         "Mixture": {
           "Contents": [
             {
-              "Concentration": 0.16969298,
-              "Molecule": "destroy:boric_acid"
-            },
-            {
-              "Concentration": 0.15305416,
-              "Molecule": "destroy:sodium_ion"
-            },
-            {
               "Concentration": 0.7818937,
               "Molecule": "destroy:chloride"
             },
@@ -36,16 +28,24 @@
               "Molecule": "destroy:hydroxide"
             },
             {
+              "Concentration": 0.15305416,
+              "Molecule": "destroy:sodium_ion"
+            },
+            {
               "Concentration": 0.75738716,
               "Molecule": "destroy:proton"
             },
             {
-              "Concentration": 0.004059694,
-              "Molecule": "destroy:tetrahydroxy_tetraborate"
-            },
-            {
               "Concentration": 0.1201766,
               "Molecule": "destroy:tetrahydroxyborate"
+            },
+            {
+              "Concentration": 0.16969298,
+              "Molecule": "destroy:boric_acid"
+            },
+            {
+              "Concentration": 0.004059694,
+              "Molecule": "destroy:tetrahydroxy_tetraborate"
             },
             {
               "Concentration": 52.72117,

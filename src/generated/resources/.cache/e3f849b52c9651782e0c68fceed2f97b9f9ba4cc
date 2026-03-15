@@ -1,4 +1,4 @@
-// 1.20.1	2026-03-15T04:30:33.0314501	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2026-03-15T05:38:57.6275088	Registrate Provider for destroy [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 9583bbca7c5e03f2ebe6d1611730c81873bed9d4 assets/destroy/blockstates/aging_barrel.json
 391a63a1be808a7eaeb2ac4bf47aac0c1d2a1e05 assets/destroy/blockstates/anfo_block.json
 a0487e31c10af4a6745a8cad3e9d0747d098b315 assets/destroy/blockstates/arc_furnace_lid.json
@@ -172,7 +172,7 @@ f6b6dd3632171d8fcc80a90772c05f9612900f21 assets/destroy/models/block/raw_fries_b
 f54b7f2d1d10bda17551607d5d595f1ec60fbfa7 assets/destroy/models/block/stainless_steel_rods_block.json
 12e60d92b43353cc861724a478e097656a8df0cd assets/destroy/models/block/unvarnished_plywood.json
 4fa290b08f6702889202d75cb09ff876ae9438a8 assets/destroy/models/block/unvarnished_plywood_flipped.json
-5f005a7a279d344e69ed61ca8674eddffe9d5195 assets/destroy/models/block/vat_controller.json
+d598f5e676e0745de68ba1bc8ab2aeea5d3730fd assets/destroy/models/block/vat_controller.json
 5d560bf8706b7b30a45751799fa3b8d8b377f2ef assets/destroy/models/block/zinc_periodic_table_block.json
 8be3c7905ca4b1981f379a559e3bf4f6e6164ec0 assets/destroy/models/item/abs.json
 5dc894275317447f752ed070c6e1cc0604199485 assets/destroy/models/item/acetone_peroxide.json

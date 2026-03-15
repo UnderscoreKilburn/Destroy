@@ -12,26 +12,39 @@ import com.petrolpark.destroy.config.DestroyAllConfigs;
 
 import net.createmod.catnip.theme.Color;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 
 public class ClientMixture extends ReadOnlyMixture {
 
     public void updateColor() {
         float totalColorContribution = 0f;
+        float totalAlphaContribution = 0f;
         float totalRed = 0;
         float totalGreen = 0;
         float totalBlue = 0;
-        float totalAlpha = 64;
+        float totalAlpha = 0;
+
         for (Entry<LegacySpecies, Float> entry : contents.entrySet()) {
             //if (entry.getKey().isColorless()) continue;
             Color color = new Color(entry.getKey().getColor());
+            float alphaContribution = entry.getValue() * color.getAlphaAsFloat() * color.getAlphaAsFloat();
             float colorContribution = entry.getValue() * color.getAlphaAsFloat();
+
+            totalAlphaContribution += alphaContribution;
             totalColorContribution += colorContribution;
+
             totalRed += color.getRed() * colorContribution;
             totalGreen += color.getGreen() * colorContribution;
             totalBlue += color.getBlue() * colorContribution;
-            totalAlpha = Math.max(totalAlpha, color.getAlphaAsFloat());
+            totalAlpha += color.getAlpha() * alphaContribution;
         };
-        color = new Color((int)(totalRed / totalColorContribution), (int)(totalGreen / totalColorContribution), (int)(totalBlue / totalColorContribution), (int)totalAlpha).getRGB();
+
+        color = new Color(
+            (int)(totalRed / totalColorContribution),
+            (int)(totalGreen / totalColorContribution),
+            (int)(totalBlue / totalColorContribution),
+            (int)Math.max(0.25f, totalAlpha / totalAlphaContribution)
+        ).getRGB();
     };
 
     protected void updateName() {

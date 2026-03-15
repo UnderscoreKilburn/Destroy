@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fml.ModList;
 
 /**
  * Interface for Blocks which can heat or cool a {@link Vat}.
@@ -37,7 +38,7 @@ public interface IVatHeaterBlock {
         };
 
         // Create: Diesel Generators compat
-        if (state.getBlock() instanceof BurnerBlock burner) {
+        if (ModList.get().isLoaded("createdieselgenerators") && state.getBlock() instanceof BurnerBlock burner) {
             if (level.getBlockEntity(blockPos) instanceof BurnerBlockEntity burnerBlockEntity) {
                 float heat = burnerBlockEntity.heat - 1;
 

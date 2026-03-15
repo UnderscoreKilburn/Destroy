@@ -20,28 +20,8 @@
         "Mixture": {
           "Contents": [
             {
-              "Concentration": 52.72117,
-              "Molecule": "destroy:water"
-            },
-            {
-              "Concentration": 0.1201766,
-              "Molecule": "destroy:tetrahydroxyborate"
-            },
-            {
-              "Concentration": 2.5182628E-4,
-              "Molecule": "destroy:hydroxide"
-            },
-            {
               "Concentration": 0.16969298,
               "Molecule": "destroy:boric_acid"
-            },
-            {
-              "Concentration": 0.004059694,
-              "Molecule": "destroy:tetrahydroxy_tetraborate"
-            },
-            {
-              "Concentration": 0.75738716,
-              "Molecule": "destroy:proton"
             },
             {
               "Concentration": 0.15305416,
@@ -50,6 +30,26 @@
             {
               "Concentration": 0.7818937,
               "Molecule": "destroy:chloride"
+            },
+            {
+              "Concentration": 2.5182628E-4,
+              "Molecule": "destroy:hydroxide"
+            },
+            {
+              "Concentration": 0.75738716,
+              "Molecule": "destroy:proton"
+            },
+            {
+              "Concentration": 0.004059694,
+              "Molecule": "destroy:tetrahydroxy_tetraborate"
+            },
+            {
+              "Concentration": 0.1201766,
+              "Molecule": "destroy:tetrahydroxyborate"
+            },
+            {
+              "Concentration": 52.72117,
+              "Molecule": "destroy:water"
             }
           ],
           "Temperature": 298.0,

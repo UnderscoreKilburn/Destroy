@@ -20,16 +20,16 @@
         "Mixture": {
           "Contents": [
             {
-              "Concentration": 52.108456,
-              "Molecule": "destroy:water"
-            },
-            {
               "Concentration": 1.0,
               "Molecule": "destroy:sodium_ion"
             },
             {
               "Concentration": 1.0,
               "Molecule": "destroy:chloride"
+            },
+            {
+              "Concentration": 52.108456,
+              "Molecule": "destroy:water"
             }
           ],
           "Temperature": 298.0,

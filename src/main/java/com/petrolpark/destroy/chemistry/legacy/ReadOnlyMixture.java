@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -89,7 +90,7 @@ public class ReadOnlyMixture {
 
     public ReadOnlyMixture(float temperature) {
         translationKey = "";
-        contents = new HashMap<>();
+        contents = new LinkedHashMap<>();
         if (temperature < 0f) throw new IllegalStateException("Mixtures cannot be below 0K");
         this.temperature = temperature;
         states = new HashMap<>();

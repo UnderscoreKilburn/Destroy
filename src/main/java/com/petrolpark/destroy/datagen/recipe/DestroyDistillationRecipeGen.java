@@ -23,6 +23,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.Tags;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class DestroyDistillationRecipeGen extends ExtendedProcessingRecipeGen<DistillationRecipe, DestroyDistillationRecipeGen.Builder> {
@@ -86,7 +87,7 @@ public class DestroyDistillationRecipeGen extends ExtendedProcessingRecipeGen<Di
     }
 
     public class Builder extends ExtendedProcessingRecipeBuilder<DistillationRecipe, Builder> {
-        private Set<IBiomeSpecificProcessingRecipe.BiomeValue> biomes = new HashSet<>();
+        private Set<IBiomeSpecificProcessingRecipe.BiomeValue> biomes = new LinkedHashSet<>();
 
         public Builder(ProcessingRecipeBuilder.ProcessingRecipeFactory<DistillationRecipe> factory, ResourceLocation recipeId) {
             super(factory, recipeId);

@@ -1,18 +1,17 @@
 package com.petrolpark.destroy.core.chemistry.vat;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Consumer;
 
+import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.DestroyFluids;
 import com.petrolpark.destroy.chemistry.legacy.LegacyMixture;
-import com.petrolpark.destroy.chemistry.legacy.LegacySpecies;
-import com.petrolpark.destroy.chemistry.legacy.ReadOnlyMixture;
 import com.petrolpark.destroy.chemistry.legacy.LegacyMixture.Phases;
+import com.petrolpark.destroy.chemistry.legacy.ReadOnlyMixture;
+import com.petrolpark.destroy.chemistry.legacy.index.DestroyMolecules;
 import com.petrolpark.destroy.chemistry.minecraft.MixtureFluid;
-import com.petrolpark.destroy.core.chemistry.vat.VatFluidTankBehaviour.VatTankSegment.VatFluidTank;
 import com.petrolpark.destroy.core.fluid.GeniusFluidTankBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 
@@ -21,11 +20,18 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import org.jetbrains.annotations.NotNull;
 
-public class VatFluidTankBehaviour extends GeniusFluidTankBehaviour {
+public class VatFluidTankBehaviour extends SmartFluidTankBehaviour {
 
-    protected boolean liquidFull;
+    /**
+     * Hold both the liquids and gases present in the Vat as a single Mixture
+     * with an implied volume equal to the {@link VatFluidTankBehaviour#vatCapacity volume of the whole Vat}.
+     */
+    protected LegacyMixture combinedMixture;
+
     protected int vatCapacity;
+    protected boolean liquidFull;
 
     public VatFluidTankBehaviour(VatControllerBlockEntity be, int vatCapacity) {
         super(SmartFluidTankBehaviour.TYPE, be, 2, vatCapacity, false);
@@ -38,9 +44,9 @@ public class VatFluidTankBehaviour extends GeniusFluidTankBehaviour {
 		};
         capability = LazyOptional.of(() -> new VatFluidHandler(handlers));
 
-        liquidFull = false;
-
         this.vatCapacity = vatCapacity;
+        this.liquidFull = false;
+        this.combinedMixture = new LegacyMixture();
     };
 
     public VatFluidTank getLiquidHandler() {
@@ -59,7 +65,10 @@ public class VatFluidTankBehaviour extends GeniusFluidTankBehaviour {
         return (VatTankSegment)tanks[1];
     };
 
-    @Override
+    public void disturbEquilibrium() {
+        combinedMixture.disturbEquilibrium();
+    }
+
     public void setCapacity(int capacity) {
         vatCapacity = capacity;
         for (TankSegment tankSegment : tanks) {
@@ -71,84 +80,31 @@ public class VatFluidTankBehaviour extends GeniusFluidTankBehaviour {
         return liquidFull;
     };
 
-    /**
-     * Get the Mixture with the {@link VatFluidTankBehaviour#vatCapacity volume of the whole Vat},
-     * containing the same number of moles of all Molecules present in both the {@link VatFluidTankBehaviour#getLiquidHandler liquid}
-     * and {@link VatFluidTankBehaviour#getGasHandler gas} phases.
-     */
-    public LegacyMixture getCombinedMixture() {
-        Map<LegacyMixture, Double> mixtures = new HashMap<>(2);
-        int totalVolume = 0;
-
-        FluidStack liquidStack = getLiquidHandler().getFluid();
-        if (!liquidStack.isEmpty()) {
-            mixtures.put(LegacyMixture.readNBT(liquidStack.getOrCreateChildTag("Mixture")), liquidStack.getAmount() / 1000d);
-            totalVolume += liquidStack.getAmount();  
-        };
-
-        FluidStack gasStack = getGasHandler().getFluid();
-        if (!gasStack.isEmpty()) {
-            mixtures.put(LegacyMixture.readNBT(gasStack.getOrCreateChildTag("Mixture")), gasStack.getAmount() / 1000d);
-            totalVolume += gasStack.getAmount();
-        };
-
-        if(totalVolume == 0) return new LegacyMixture();
-
-        LegacyMixture mixture = LegacyMixture.mix(mixtures);
-        mixture.scale((float)vatCapacity / (float)totalVolume); //TODO use different volume as this makes things slowww
-        return mixture;
-    };
-
-    public ReadOnlyMixture getCombinedReadOnlyMixture() {
-        Map<LegacySpecies, Float> moleculesAndMoles = new HashMap<>();
-        ReadOnlyMixture mixture = new ReadOnlyMixture();
-        int totalVolume = 0;
-
-        FluidStack liquidStack = getLiquidHandler().getFluid();
-        if (!liquidStack.isEmpty()) {
-            ReadOnlyMixture liquidMixture = ReadOnlyMixture.readNBT(ReadOnlyMixture::new, liquidStack.getOrCreateChildTag("Mixture"));
-            liquidMixture.getContents(false).forEach(molecule -> moleculesAndMoles.merge(molecule, liquidMixture.getConcentrationOf(molecule) * liquidStack.getAmount(), (f1, f2) -> f1 + f2));
-            totalVolume += liquidStack.getAmount();  
-        };
-
-        FluidStack gasStack = getGasHandler().getFluid();
-        if (!gasStack.isEmpty()) {
-            ReadOnlyMixture gasMixture = ReadOnlyMixture.readNBT(ReadOnlyMixture::new, gasStack.getOrCreateChildTag("Mixture"));
-            gasMixture.getContents(false).forEach(molecule -> moleculesAndMoles.merge(molecule, gasMixture.getConcentrationOf(molecule) * gasStack.getAmount(), (f1, f2) -> f1 + f2));
-            totalVolume += gasStack.getAmount();
-        };
-
-        if(totalVolume == 0) return mixture;
-
-        for (Entry<LegacySpecies, Float> entry : moleculesAndMoles.entrySet()) {
-            mixture.addMolecule(entry.getKey(), entry.getValue() / totalVolume); //TODO use different volume as this makes things slow
-        };
-
-        return mixture;
-    };
-
-    public void setMixture(LegacyMixture mixture, int amount) {
-        capability.ifPresent(fluidHandler -> {
-            fluidHandler.drain(vatCapacity, FluidAction.EXECUTE);
-            liquidFull = false;
-            fluidHandler.fill(MixtureFluid.of(amount, mixture), FluidAction.EXECUTE);
-        });
-    };
-
+    public LegacyMixture getCombinedMixture() { return combinedMixture; }
+    public ReadOnlyMixture getCombinedReadOnlyMixture() { return combinedMixture; }
+    
     /**
      * Replace all the gas in the gas tank with room temperature and pressure air.
      * @return The gas that was previously stored
      */
     public FluidStack flush(float temperature) {
-        FluidStack oldGas = getGasHandler().getFluid();
-        getGasHandler().setFluid(DestroyFluids.air(vatCapacity - getLiquidHandler().getFluidAmount(), temperature));
+        Phases phases = combinedMixture.separatePhases(vatCapacity);
+        double gasVolume = vatCapacity - phases.liquidVolume();
+        combinedMixture.drainGas(vatCapacity, vatCapacity).mixWith(vatCapacity, MixtureFluid.airMixture(temperature), (float)gasVolume);
+        updateTankContents();
         getGasHandler().flushed = true;
-        return oldGas;
+
+        LegacyMixture oldGasMixture = phases.gasMixture();
+        int oldGasVolume = Math.max(1, (int)gasVolume);
+        oldGasMixture.scale(oldGasVolume);
+        return MixtureFluid.of(oldGasVolume, oldGasMixture);
     };
 
     @Override
 	public void write(CompoundTag nbt, boolean clientPacket) {
 		super.write(nbt, clientPacket);
+        nbt.put("Mixture", combinedMixture.writeNBT());
+
         if (clientPacket) return;
 		nbt.putBoolean("Full", liquidFull);
 	};
@@ -156,19 +112,37 @@ public class VatFluidTankBehaviour extends GeniusFluidTankBehaviour {
 	@Override
 	public void read(CompoundTag nbt, boolean clientPacket) {
 		super.read(nbt, clientPacket);
+        combinedMixture = LegacyMixture.readNBT(nbt.getCompound("Mixture"));
+        updateTankContents();
+
         if (clientPacket) return;
+
         liquidFull = nbt.getBoolean("Full");
         vatCapacity = getLiquidHandler().getCapacity();
 	};
 
-    public void updateGasVolume() {
-        if (getGasHandler().isEmpty()) return;
-        double freeSpace = vatCapacity - getLiquidHandler().getFluidAmount();
-        double gasVolume = getGasHandler().getFluidAmount();
-        LegacyMixture mixture =  LegacyMixture.readNBT(getGasHandler().getFluid().getOrCreateChildTag("Mixture"));
-        mixture.scale((float)(freeSpace / gasVolume));
-        getGasHandler().setFluid(MixtureFluid.of((int)freeSpace, mixture));
-    };
+    public void updateTankContents() {
+        Phases phases = combinedMixture.separatePhases(vatCapacity);
+
+        int liquidVolume = phases.liquidVolume().intValue();
+        int gasVolume = vatCapacity - liquidVolume;
+
+        if(liquidVolume == 0 || phases.gasMixture().isEmpty())
+            getLiquidHandler().setFluid(FluidStack.EMPTY);
+        else {
+            LegacyMixture liquidMixture = phases.liquidMixture();
+            liquidMixture.scale((float) (liquidVolume / phases.liquidVolume()));
+            getLiquidHandler().setFluid(MixtureFluid.of(liquidVolume, liquidMixture));
+        }
+
+        if(gasVolume == 0 || phases.gasMixture().isEmpty())
+            getGasHandler().setFluid(FluidStack.EMPTY);
+        else {
+            LegacyMixture gasMixture = phases.gasMixture();
+            gasMixture.scale(gasVolume);
+            getGasHandler().setFluid(MixtureFluid.of(gasVolume, gasMixture));
+        }
+    }
 
     public class VatFluidHandler extends InternalFluidHandler {
 
@@ -181,44 +155,24 @@ public class VatFluidTankBehaviour extends GeniusFluidTankBehaviour {
             if (!DestroyFluids.isMixture(resource)) return 0;
 
             boolean simulate = action == FluidAction.SIMULATE;
+            LegacyMixture addedMixture = LegacyMixture.readNBT(resource.getOrCreateChildTag("Mixture"));
 
-            Phases phases = LegacyMixture.readNBT(resource.getOrCreateChildTag("Mixture")).separatePhases(resource.getAmount());
+            float existingLiquidVolume = combinedMixture.getLiquidVolume(vatCapacity);
+            float addedLiquidVolume = addedMixture.getLiquidVolume(resource.getAmount());
+
             double amountScale = 1d;
- 
-            if (phases.liquidVolume() > getLiquidHandler().getSpace() - 1) {
-                if (!simulate) liquidFull = true;
-                amountScale = ((double)getLiquidHandler().getSpace() - 1d) / (double)phases.liquidVolume();
-            };
+            if (addedLiquidVolume > 0 && existingLiquidVolume + addedLiquidVolume > vatCapacity - 1) {
+                if(!simulate) liquidFull = true;
+                amountScale = (vatCapacity - 1 - existingLiquidVolume) / addedLiquidVolume;
+            }
 
-            // Add liquid - as this is a child of Genius Fluid Tank the mixing-in of the Mixture to the existing Mixture Fluid is already handled
-            getLiquidHandler().fill(MixtureFluid.of((int)(phases.liquidVolume() * amountScale + 0.5d), phases.liquidMixture(), ""), action);
+            int transferAmount = (int)(resource.getAmount() * amountScale);
+            if(!simulate) {
+                combinedMixture.mixWith((float)vatCapacity, addedMixture, (float)transferAmount);
+                updateTankContents();
+            }
 
-            // Add gas
-            if (!simulate) {
-
-                Map<LegacyMixture, Double> mixtures = new HashMap<>(2);
-                double combinedVolume = 0d;
-                int freeSpace = vatCapacity - getLiquidHandler().getFluidAmount() + 1;
-
-                if (!getGasHandler().isEmpty()) {
-                    FluidStack existingGas = getGasHandler().getFluid();
-                    mixtures.put(LegacyMixture.readNBT(existingGas.getOrCreateChildTag("Mixture")), (double)existingGas.getAmount());
-                    combinedVolume += existingGas.getAmount();
-                };
-
-                if (!phases.gasMixture().isEmpty()) {
-                    mixtures.put(phases.gasMixture(), phases.gasVolume());
-                    combinedVolume += phases.gasVolume();
-                };
-
-                LegacyMixture combinedGasMixture = LegacyMixture.mix(mixtures);
-                if (combinedVolume > 0d && !combinedGasMixture.isEmpty()) {
-                    combinedGasMixture.scale((float)(freeSpace / combinedVolume)); // Scale it so it takes up all available space not taken up by the liquid
-                    getGasHandler().setFluid(MixtureFluid.of(freeSpace, combinedGasMixture));
-                };
-            };
-
-            return (int)(resource.getAmount() * amountScale);
+            return transferAmount;
 		};
 
         @Override
@@ -228,7 +182,85 @@ public class VatFluidTankBehaviour extends GeniusFluidTankBehaviour {
 
     };
 
-    public class VatTankSegment extends GeniusTankSegment {
+    public class VatFluidTank extends SmartFluidTank {
+
+        private final boolean isForGas;
+        protected boolean flushed;
+
+        public VatFluidTank(int capacity, boolean isForGas, Consumer<FluidStack> updateCallback) {
+            super(capacity, updateCallback);
+            this.isForGas = isForGas;
+            flushed = false;
+        };
+
+        @Override
+        public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
+            return DestroyFluids.isMixture(stack);
+        };
+
+        @Override
+        public void onContentsChanged() {
+            super.onContentsChanged();
+            flushed = false;
+            if (fluid.getAmount() < getCapacity() && !isForGas) liquidFull = false;
+        };
+
+        @Override
+        public void setFluid(FluidStack stack) {
+            super.setFluid(stack);
+            flushed = false;
+            if (stack.getAmount() < getCapacity() && !isForGas) liquidFull = false;
+        };
+
+        public boolean isFullOfAir() {
+            return isForGas && flushed;
+        };
+
+        @NotNull
+        @Override
+        public FluidStack drain(int maxDrain, FluidAction action) {
+            boolean simulate = action == FluidAction.SIMULATE;
+            Phases phases = combinedMixture.separatePhases(vatCapacity);
+            double liquidVolume = phases.liquidVolume();
+            double gasVolume = vatCapacity - liquidVolume;
+
+            if(isForGas) {
+                double drained = Math.min(gasVolume, maxDrain);
+                if(drained < 1.0) return FluidStack.EMPTY;
+
+                if(!simulate) {
+                    phases.gasMixture().scale((float)gasVolume);
+                    combinedMixture.drainGas(vatCapacity, (float)drained);
+                    updateTankContents();
+                }
+
+                int amount = Math.max((int)Math.round(drained), 1);
+                phases.gasMixture().scale((float)(amount / drained));
+
+                return MixtureFluid.of(amount, phases.gasMixture());
+            } else {
+                double drained = Math.min(liquidVolume, maxDrain);
+                if(drained < 1.0) return FluidStack.EMPTY;
+
+                if(!simulate) {
+                    combinedMixture.drainLiquid(vatCapacity, (float)drained);
+                    updateTankContents();
+                }
+
+                int amount = Math.max((int)Math.round(drained), 1);
+                phases.liquidMixture().scale((float)(amount / drained));
+
+                return MixtureFluid.of(amount, phases.liquidMixture());
+            }
+        };
+
+        @Override
+        public int fill(FluidStack resource, FluidAction action) {
+            return capability.map(handler -> handler.fill(resource, action)).orElse(0);
+        };
+    };
+
+    public class VatTankSegment extends SmartFluidTankBehaviour.TankSegment {
 
         public VatTankSegment(int capacity, boolean isForGas) {
             super(capacity);
@@ -239,51 +271,7 @@ public class VatFluidTankBehaviour extends GeniusFluidTankBehaviour {
             return (VatFluidTank)tank;
         };
 
-        public class VatFluidTank extends GeniusFluidTank {
-
-            private final boolean isForGas;
-
-            /**
-             * Whether this tank has been {@link VatFluidTankBehaviour#flush flushed}.
-             */
-            protected boolean flushed;
-
-            public VatFluidTank(int capacity, boolean isForGas, Consumer<FluidStack> updateCallback) {
-                super(capacity, updateCallback);
-                this.isForGas = isForGas;
-                flushed = false;
-            };
-
-            public boolean isEmptyOrFullOfAir() {
-                return isEmpty() || flushed;
-            };
-
-            @Override
-            public boolean isFluidValid(int tank, FluidStack stack) {
-                return DestroyFluids.isMixture(stack);
-            };
-
-            @Override
-            public void onContentsChanged() {
-                super.onContentsChanged();
-                flushed = false;
-                if (fluid.getAmount() < getCapacity() && !isForGas) liquidFull = false;
-            };
-
-            @Override
-            public void setFluid(FluidStack stack) {
-                super.setFluid(stack);
-                flushed = false;
-                if (stack.getAmount() < getCapacity() && !isForGas) liquidFull = false;
-            };
-
-            @Override
-            public FluidStack drain(int maxDrain, FluidAction action) {
-                return super.drain(maxDrain, action);
-            };
-        };
     };
-
 
     /**
      * @deprecated Use {@link VatFluidTankBehaviour#getLiquidHandler()} and {@link VatFluidTankBehaviour#getGasHandler()} instead.

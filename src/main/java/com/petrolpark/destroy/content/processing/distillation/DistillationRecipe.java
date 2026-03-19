@@ -1,6 +1,6 @@
 package com.petrolpark.destroy.content.processing.distillation;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
@@ -11,7 +11,7 @@ import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder.Pro
 
 public class DistillationRecipe extends SingleFluidRecipe implements IBiomeSpecificProcessingRecipe {
 
-    private Set<BiomeValue> biomes = new HashSet<>();
+    private Set<BiomeValue> biomes = new LinkedHashSet<>();
 
     public DistillationRecipe(ProcessingRecipeParams params) {
         super(DestroyRecipeTypes.DISTILLATION, params);

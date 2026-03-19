@@ -1,7 +1,7 @@
 package com.petrolpark.destroy.content.processing.centrifuge;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.HashSet;
 
 import com.ibm.icu.impl.locale.XCldrStub.ImmutableSet;
 import com.petrolpark.destroy.DestroyRecipeTypes;
@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class CentrifugationRecipe extends SingleFluidRecipe implements IBiomeSpecificProcessingRecipe {
     
-    private Set<BiomeValue> biomes = new HashSet<>();
+    private Set<BiomeValue> biomes = new LinkedHashSet<>();
 
     public CentrifugationRecipe(ProcessingRecipeParams params) {
         super(DestroyRecipeTypes.CENTRIFUGATION, params);

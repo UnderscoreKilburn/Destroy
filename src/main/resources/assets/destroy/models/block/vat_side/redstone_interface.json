@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "destroy:block/vat_redstone_interface",
-		"particle": "destroy:block/vat_redstone_interface"
+		"0": "destroy:block/vat/vat_redstone_interface",
+		"particle": "destroy:block/vat/vat_redstone_interface"
 	},
 	"elements": [
 		{

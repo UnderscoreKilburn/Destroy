@@ -52,6 +52,7 @@ import com.petrolpark.destroy.core.chemistry.storage.measuringcylinder.Measuring
 import com.petrolpark.destroy.core.chemistry.storage.measuringcylinder.MeasuringCylinderBlockItem;
 import com.petrolpark.destroy.core.chemistry.storage.testtube.TestTubeRackBlock;
 import com.petrolpark.destroy.core.chemistry.vat.VatControllerBlock;
+import com.petrolpark.destroy.core.chemistry.vat.VatControllerModel;
 import com.petrolpark.destroy.core.chemistry.vat.VatSideBlock;
 import com.petrolpark.destroy.core.chemistry.vat.observation.colorimeter.ColorimeterBlock;
 import com.petrolpark.destroy.core.chemistry.vat.uv.BlacklightBlock;
@@ -421,7 +422,7 @@ public class DestroyBlocks {
         .transform(TagGen.pickaxeOnly())
         .blockstate((c, p) -> p.horizontalBlock(c.get(),
             Destroy.asResource("block/stainless_steel_block"),
-            Destroy.asResource("block/vat_controller"),
+            Destroy.asResource("block/vat/vat_controller"),
             Destroy.asResource("block/stainless_steel_block")))
         .item()
         .build()

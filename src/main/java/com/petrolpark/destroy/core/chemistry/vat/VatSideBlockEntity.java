@@ -457,7 +457,7 @@ public class VatSideBlockEntity extends CopycatBlockEntity implements IHaveLabGo
         if (controller == null) return;
         if (updateVent) controller.removeVent();
         if (displayType == DisplayType.OPEN_VENT) {
-            if (controller.cachedMixture != null) controller.cachedMixture.disturbEquilibrium();
+            controller.tankBehaviour.disturbEquilibrium();
             if (controller.openVentPos == null) controller.openVentPos = getBlockPos();
         };
 

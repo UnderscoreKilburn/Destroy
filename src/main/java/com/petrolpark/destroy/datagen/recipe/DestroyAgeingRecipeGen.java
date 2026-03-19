@@ -9,14 +9,13 @@ import com.petrolpark.destroy.chemistry.legacy.LegacyMixture;
 import com.petrolpark.destroy.chemistry.legacy.index.DestroyMolecules;
 import com.petrolpark.destroy.chemistry.minecraft.MixtureFluid;
 import com.petrolpark.destroy.config.DestroyAllConfigs;
+import com.petrolpark.destroy.core.chemistry.NamedMixtures;
 import com.petrolpark.destroy.datagen.recipe.DestroyRecipeProvider.I;
 import com.simibubi.create.api.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluids;
-
-import java.util.Map;
 
 public class DestroyAgeingRecipeGen extends ProcessingRecipeGen {
 
@@ -41,11 +40,7 @@ public class DestroyAgeingRecipeGen extends ProcessingRecipeGen {
         .require(Fluids.WATER, 1000)
         .require(DestroyItems.MASHED_POTATO.get())
         .require(DestroyTags.Items.YEAST.tag)
-        .output(MixtureFluid.of(1000,
-            LegacyMixture.mix(Map.of(
-                LegacyMixture.pure(DestroyMolecules.ETHANOL), 400.0,
-                LegacyMixture.pure(DestroyMolecules.WATER), 600.0
-            )), "fluid.destroy.vodka"))
+        .output(NamedMixtures.VODKA.get(1000))
         .duration(9600)
     );
 

@@ -11,6 +11,7 @@ import com.simibubi.create.foundation.fluid.FluidHelper;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -99,7 +100,9 @@ public enum NamedMixtures {
     public static LegacyMixture mixByVolume(List<Map.Entry<LegacySpecies, Double>> contents) {
         return LegacyMixture.mix(contents.stream().collect(Collectors.toMap(
             e -> LegacyMixture.pure(e.getKey()),
-            e -> e.getValue()
+            e -> e.getValue(),
+            (a,b) -> b,
+            LinkedHashMap::new
         ))).setTemperature(298f);
     }
 

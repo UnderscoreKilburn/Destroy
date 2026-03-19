@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableList;
 import com.petrolpark.destroy.Destroy;
@@ -54,7 +55,7 @@ public class LegacyMixture extends ReadOnlyMixture {
 
     /**`
      * Every {@link LegacySpecies} in this Mixture that has a {@link LegacyFunctionalGroup functional Group}, indexed by the {@link LegacyFunctionalGroup#getType Type} of that Group.
-     * Molecules are stored as {@link com.petrolpark.destroy.chemistry.genericReaction.GenericReactant Generic Reactants}.
+     * Molecules are stored as {@link com.petrolpark.destroy.chemistry.legacy.genericreaction.GenericReactant Generic Reactants}.
      * Molecules which have multiple of the same Group are indexed for each occurence of the Group.
      */
     protected Map<LegacyFunctionalGroupType<?>, List<GenericReactant<?>>> groupIDsAndMolecules;
@@ -85,6 +86,7 @@ public class LegacyMixture extends ReadOnlyMixture {
      * This maps Molecules which have 0 concentration to the ticks they have left to live.
      */
     Map<LegacySpecies, Integer> moleculesToRemove;
+    boolean canReact;
 
     public LegacyMixture() {
         super();
@@ -96,6 +98,7 @@ public class LegacyMixture extends ReadOnlyMixture {
         nextLowerBoilingPoint = Pair.of(0f, null);
         moleculesToRemove = new HashMap<>();
         equilibrium = false;
+        canReact = false;
     };
 
     /**
@@ -298,6 +301,105 @@ public class LegacyMixture extends ReadOnlyMixture {
         return resultMixture;
     };
 
+    public float getLiquidVolume(float volume) {
+        float liquidVolume = 0f;
+
+        for (var entry : contents.entrySet()) {
+            LegacySpecies molecule = entry.getKey();
+            float concentration = entry.getValue();
+
+            // Liquid
+            liquidVolume += concentration * (1f - states.get(molecule)) * volume / molecule.getPureConcentration();
+        }
+
+        return liquidVolume;
+    }
+
+    public float getTotalEnergy(float volume) {
+        float energy = 0f;
+
+        for(var entry : contents.entrySet()) {
+            LegacySpecies molecule = entry.getKey();
+            float concentration = entry.getValue();
+
+            energy += molecule.getMolarHeatCapacity() * concentration * temperature * volume;
+            energy += molecule.getLatentHeat() * concentration * states.get(molecule) * volume;
+        }
+
+        return energy;
+    }
+
+    /**
+     * Adds the contents of another Mixture to this Mixture, without changing its volume.
+     * Faster than mix(), preserves reaction results, and only recalculates reactions when new molecules are introduced.
+     * @param volume
+     * @param other
+     * @param otherVolume
+     * @return The current mixture instance
+     */
+    public LegacyMixture mixWith(float volume, LegacyMixture other, float otherVolume) {
+        boolean shouldRefreshReactions = false;
+        float totalEnergy = getTotalEnergy(volume) + other.getTotalEnergy(otherVolume);
+        for(var entry : other.contents.entrySet()) {
+            shouldRefreshReactions |= internalAddMolecule(entry.getKey(), entry.getValue() * otherVolume / volume, false);
+        }
+
+        for(var entry : other.reactionResults.entrySet()) {
+            entry.getKey().getReaction().ifPresent(r -> incrementReactionResults(r, entry.getValue() * otherVolume / volume));
+        }
+
+        for(var m : states.keySet())
+            states.put(m, 0f);
+
+        temperature = 0f;
+        updateNextBoilingPoints();
+        heat(totalEnergy / volume);
+        if(shouldRefreshReactions) refreshPossibleReactions();
+
+        updateName();
+        updateColor();
+
+        return this;
+    }
+
+    public LegacyMixture drainLiquid(float volume, float toDrain) {
+        float liquidVolume = getLiquidVolume(volume);
+        float fraction = 1f - Math.min(1f, toDrain / liquidVolume);
+        contents.replaceAll((molecule, concentration) -> {
+            float gasFraction = states.get(molecule);
+            return (gasFraction + (1f - gasFraction) * fraction) * concentration;
+        });
+        contents.forEach((molecule, concentration) -> {
+            if(concentration <= 0f)
+                moleculesToRemove.put(molecule, 10);
+        });
+
+        updateName();
+        updateColor();
+
+        return this;
+    }
+
+    public LegacyMixture drainGas(float volume, float toDrain) {
+        float gasVolume = volume - getLiquidVolume(volume);
+        if(gasVolume <= 0f) return this;
+
+        float fraction = 1f - Math.min(1f, toDrain / gasVolume);
+        contents.replaceAll((molecule, concentration) -> {
+            float gasFraction = states.get(molecule);
+            return (gasFraction * fraction + (1f - gasFraction)) * concentration;
+        });
+        contents.forEach((molecule, concentration) -> {
+            if(concentration <= 0f)
+                moleculesToRemove.put(molecule, 10);
+        });
+
+        updateName();
+        updateColor();
+
+        return this;
+    }
+
     @Override
     public float getConcentrationOf(LegacySpecies molecule) {
         return super.getConcentrationOf(molecule);
@@ -332,6 +434,9 @@ public class LegacyMixture extends ReadOnlyMixture {
                 shouldUpdateDisplay = false;
                 break; 
             };
+
+            if(!canReact) // Only initialize stuff relevant to reactions if we're actually computing reactions for this mixture
+                initReactions();
 
             equilibrium = true; // Start by assuming we have reached equilibrium
             boolean shouldRefreshPossibleReactions = false; // Rather than refreshing the possible Reactions every time a new Molecule is added or removed, start by assuming we won't need to, and flag for refreshing if we ever do
@@ -413,7 +518,7 @@ public class LegacyMixture extends ReadOnlyMixture {
 
     /**
      * Add or take heat from this Mixture. This will boil/condense Molecules and change the temperature.
-     * @param energy In joules per bucket
+     * @param energyDensity In joules per bucket
      */
     public void heat(float energyDensity) {
         float volumetricHeatCapacity = getVolumetricHeatCapacity();
@@ -437,7 +542,7 @@ public class LegacyMixture extends ReadOnlyMixture {
                 if (energyDensity > energyRequiredToFullyBoil) { // If there is leftover energy once the Molecule has been boiled
                     states.put(molecule, 1f); // Convert the Molecule fully to gas
                     //temperature += 0.01f; // Increase the temperature slightly so the new next higher Molecule isn't the one we just finished boiling
-                    updateNextBoilingPoints(true);
+                    updateNextBoilingPoints(1);
                     boiling = false; // If we're just increasing the temperature, then all Molecule are either fully gaseous or liquid
                     heat(energyDensity - energyRequiredToFullyBoil); // Continue heating
                 } else { // If there is no leftover energy and the Molecule is still boiling
@@ -465,7 +570,7 @@ public class LegacyMixture extends ReadOnlyMixture {
                 if (energyDensity < -energyReleasedWhenFullyCondensed) { // If there is more energy that needs to be released than the condensation can supply
                     states.put(molecule, 0f); // Convert the Molecule fully to liquid
                     //temperature -= 0.01f; // Decrease the temperature slightly so the new next lower Molecule isn't the one we just finished condensing
-                    updateNextBoilingPoints(true);
+                    updateNextBoilingPoints(-1);
                     boiling = false; // If we're just increasing the temperature, then all Molecule are either fully gaseous or liquid
                     heat(energyDensity + energyReleasedWhenFullyCondensed); // Continue cooling
                 } else {
@@ -485,9 +590,9 @@ public class LegacyMixture extends ReadOnlyMixture {
     };
 
     /**
-     * Enact all {@link Reactions} that {@link LegacyReaction#getItemReactants involve Item Stacks}. This does not just
+     * Enact all {@link LegacyReaction Reactions} that {@link LegacyReaction#getItemReactants involve Item Stacks}. This does not just
      * include dissolutions, but Item-catalyzed Reactions too.
-     * @param availableStacks The Item Stacks available to this Mixture. This Stacks in this List will be modified
+     * @param context
      * @param volume The amount of this Mixture there is, in liters
      * @return The resultant Item Stacks after dissolution has occured
      */
@@ -622,6 +727,10 @@ public class LegacyMixture extends ReadOnlyMixture {
      * <li>{@code liquidVolume} A volume of liquid in the same units as {@code initialVolume}.</li></ul>
      */
     public Phases separatePhases(double initialVolume) {
+        return separatePhases(initialVolume, false);
+    }
+
+    public Phases separatePhases(double initialVolume, boolean keepReactionResults) {
         Map<LegacySpecies, Double> liquidMoles = new HashMap<>();
         Map<LegacySpecies, Double> gasMoles = new HashMap<>();
 
@@ -660,12 +769,14 @@ public class LegacyMixture extends ReadOnlyMixture {
         };
 
         // Add Reaction Results to new Mixtures
-        for (Entry<ReactionResult, Float> entry : reactionResults.entrySet()) {
-            double resultMoles = entry.getValue() * initialVolume;
-            double newTotalVolume = newLiquidVolume + newGasVolume;
-            liquidMixture.reactionResults.put(entry.getKey(), (float)(resultMoles / newTotalVolume)); // A cancelled-out expression for (resultMoles / liquidVolume)  * (liquidVolume / (liquidVolume + gasVolume)). Essentially we just divvy out the results based on the volumes of the two phases
-            gasMixture.reactionResults.put(entry.getKey(), (float)(resultMoles / newTotalVolume));
-        };
+        if(keepReactionResults) {
+            for (Entry<ReactionResult, Float> entry : reactionResults.entrySet()) {
+                double resultMoles = entry.getValue() * initialVolume;
+                double newTotalVolume = newLiquidVolume + newGasVolume;
+                liquidMixture.reactionResults.put(entry.getKey(), (float) (resultMoles / newTotalVolume)); // A cancelled-out expression for (resultMoles / liquidVolume)  * (liquidVolume / (liquidVolume + gasVolume)). Essentially we just divvy out the results based on the volumes of the two phases
+                gasMixture.reactionResults.put(entry.getKey(), (float) (resultMoles / newTotalVolume));
+            }
+        }
 
         liquidMixture.temperature = temperature;
         gasMixture.temperature = temperature;
@@ -798,20 +909,35 @@ public class LegacyMixture extends ReadOnlyMixture {
     /**
      * Set the Molecules which will be next to condense or boil if the temperature of this Mixture changes.
      */
-    protected void updateNextBoilingPoints() { updateNextBoilingPoints(false); }
-    protected void updateNextBoilingPoints(boolean ignoreCurrentTemperature) {
+    protected void updateNextBoilingPoints() { updateNextBoilingPoints(0); }
+    protected void updateNextBoilingPoints(int energyIn) {
         nextHigherBoilingPoint = Pair.of(Float.MAX_VALUE, null);
         nextLowerBoilingPoint = Pair.of(0f, null);
         for (LegacySpecies molecule : contents.keySet()) {
             float bp = molecule.getBoilingPoint();
-            if (bp < temperature || (bp == temperature && !ignoreCurrentTemperature)) {
+            if (bp < temperature || (bp == temperature && energyIn >= 0)) {
                 if (bp > nextLowerBoilingPoint.getFirst()) nextLowerBoilingPoint = Pair.of(bp, molecule);
             }
-            if (bp > temperature || (bp == temperature && !ignoreCurrentTemperature)) { // If the boiling point is higher than the current temperture.
+            if (bp > temperature || (bp == temperature && energyIn <= 0)) { // If the boiling point is higher than the current temperture.
                 if (bp < nextHigherBoilingPoint.getFirst()) nextHigherBoilingPoint = Pair.of(bp, molecule);
             };
         };
     };
+
+    private void initReactions() {
+        canReact = true;
+        groupIDsAndMolecules.clear();
+        for(LegacySpecies molecule : contents.keySet()) {
+            List<LegacyFunctionalGroup<?>> functionalGroups = molecule.getFunctionalGroups();
+            if (functionalGroups.size() != 0) {
+                for (LegacyFunctionalGroup group : functionalGroups) { // Unparameterised raw type
+                    addGroupToMixture(molecule, group); // Unchecked conversion
+                }
+            }
+        }
+
+        refreshPossibleReactions();
+    }
 
     /**
      * Adds a {@link LegacySpecies} to this Mixture.
@@ -838,12 +964,14 @@ public class LegacyMixture extends ReadOnlyMixture {
 
         if (!molecule.isNovel()) super.addMolecule(molecule, concentration);
 
-        List<LegacyFunctionalGroup<?>> functionalGroups = molecule.getFunctionalGroups();
-        if (functionalGroups.size() != 0) {
-            for (LegacyFunctionalGroup group : functionalGroups) { // Unparameterised raw type
-                addGroupToMixture(molecule, group); // Unchecked conversion
-            };
-        };
+        if(canReact) {
+            List<LegacyFunctionalGroup<?>> functionalGroups = molecule.getFunctionalGroups();
+            if (functionalGroups.size() != 0) {
+                for (LegacyFunctionalGroup group : functionalGroups) { // Unparameterised raw type
+                    addGroupToMixture(molecule, group); // Unchecked conversion
+                }
+            }
+        }
 
         if (molecule.isNovel()) { // If this is a novel Molecule, it might already match to one of our existing novel Molecules
             boolean found = false; // Start by assuming it's not already in the Mixture
@@ -941,11 +1069,15 @@ public class LegacyMixture extends ReadOnlyMixture {
     };
 
     /**
-     * Determine all {@link LegacyReaction Reactions} - including {@link GenericReactions Generic Reactions} that are possible with the {@link LegacySpecies Molecules} in this Mixture,
+     * Determine all {@link LegacyReaction Reactions} - including {@link GenericReaction Generic Reactions} that are possible with the {@link LegacySpecies Molecules} in this Mixture,
      * and update the {@link LegacyMixture#possibleReactions stored possible Reactions} accordingly.
      * This should be called whenever new Molecules have been {@link LegacyMixture#addMolecule added} to the Mixture, or a Molecule has been removed entirely, but rarely otherwise.
      */
     private void refreshPossibleReactions() {
+        if(!canReact) return;
+
+        Destroy.LOGGER.info("refresh reactions {}", this.hashCode());
+
         possibleReactions = new ArrayList<>();
         Set<LegacyReaction> newPossibleReactions = new HashSet<>();
 
@@ -1008,7 +1140,7 @@ public class LegacyMixture extends ReadOnlyMixture {
      * 
      * <p>For example, if the Generic Reaction supplied is the {@link com.petrolpark.destroy.chemistry.legacy.index.genericreaction.SaturatedCarbonHydrolysis hydration of an alkene},
      * and <b>reactants</b> includes {@code destroy:ethene}, the returned collection will include a Reaction with {@code destroy:ethene} and {@code destroy:water} as reactants,
-     * {@code destroy:ethanol} as a product, and all the appropriate rate constants and catalysts as defined in the {@link com.petrolpark.destroy.chemistry.index.SaturatedCarbonHydrolysis.AlkeneHydration#generateReaction generator}.</p>
+     * {@code destroy:ethanol} as a product, and all the appropriate rate constants and catalysts as defined in the {@link com.petrolpark.destroy.chemistry.legacy.index.genericreaction.SaturatedCarbonHydrolysis#generateReaction generator}.</p>
      * 
      * @param <G> <b>G</b> The Group to which this Generic Reaction applies
      * @param genericReaction

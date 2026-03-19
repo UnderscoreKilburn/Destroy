@@ -32,15 +32,6 @@ public class DestroyPartials {
     POLLUTOMETER_ANEMOMETER = block("pollutometer/anemometer"),
     POLLUTOMETER_WEATHERVANE = block("pollutometer/weathervane"),
 
-    // Vat
-    VAT_SIDE_PIPE = block("vat_side/pipe"),
-    VAT_SIDE_BAROMETER = block("vat_side/barometer"),
-    VAT_SIDE_BAROMETER_DIAL = block("vat_side/barometer_dial"),
-    VAT_SIDE_REDSTONE_INTERFACE = block("vat_side/redstone_interface"),
-    VAT_SIDE_THERMOMETER = block("vat_side/thermometer"),
-    VAT_SIDE_VENT = block("vat_side/vent"),
-    VAT_SIDE_VENT_BAR = block("vat_side/vent_bar"),
-
     // Redstone Programmer
     REDSTONE_PROGRAMMER_CYLINDER = block("redstone_programmer/cylinder"),
     REDSTONE_PROGRAMMER_NEEDLE = block("redstone_programmer/needle"),
@@ -66,6 +57,19 @@ public class DestroyPartials {
     MECHANICAL_SIEVE_SHAFT = block("mechanical_sieve/shaft"),
     MECHANICAL_SIEVE_LINKAGES = block("mechanical_sieve/linkages"),
     MECHANICAL_SIEVE = block("mechanical_sieve/sieve");
+
+    // Vat
+    public static final PartialModel
+    VAT_SIDE_BAROMETER_DIAL = block("vat_side/barometer_dial"),
+    VAT_SIDE_REDSTONE_INTERFACE = block("vat_side/redstone_interface"),
+    VAT_SIDE_THERMOMETER = block("vat_side/thermometer");
+
+    public static final PartialModel[]
+    VAT_SIDE_PIPE = {block("vat_side/pipe"), block("vat_side/copper/pipe")},
+    VAT_SIDE_BAROMETER = {block("vat_side/barometer"), block("vat_side/copper/barometer")},
+    VAT_SIDE_VENT = {block("vat_side/vent"), block("vat_side/copper/vent")},
+    VAT_SIDE_VENT_BAR = {block("vat_side/vent_bar"), block("vat_side/copper/vent_bar")};
+
 
     // Atoms
     static {

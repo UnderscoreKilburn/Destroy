@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "destroy:block/vat/vat_side_pipe",
-		"particle": "destroy:block/vat/vat_side_pipe"
+		"0": "destroy:block/vat/copper_vat_side_pipe",
+		"particle": "destroy:block/vat/copper_vat_side_pipe"
 	},
 	"elements": [
 		{

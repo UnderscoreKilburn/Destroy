@@ -2,7 +2,9 @@ package com.petrolpark.destroy.core.chemistry.vat;
 
 import java.util.Optional;
 
+import com.simibubi.create.AllBlocks;
 import net.createmod.catnip.platform.ForgeCatnipServices;
+import net.minecraft.client.renderer.LevelRenderer;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -62,18 +64,24 @@ public class VatRenderer extends SafeBlockEntityRenderer<VatControllerBlockEntit
             if (vatSideOptional.isEmpty()) continue;
             VatSideBlockEntity vatSide = vatSideOptional.get();
             Direction facing = vatSide.direction;
+            int sideLight = LevelRenderer.getLightColor(controller.getLevel(), sidePos);
+
+            int variantId = 0;
+            if(vatSide.getMaterial().is(AllBlocks.COPPER_CASING.get()))
+                variantId = 1;
+
             switch (vatSide.getDisplayType()) {
                 case PIPE: {
-                    CachedBuffers.partialFacing(DestroyPartials.VAT_SIDE_PIPE, state, facing)
+                    CachedBuffers.partialFacing(DestroyPartials.VAT_SIDE_PIPE[variantId], state, facing)
                         .translate(sidePos.subtract(controller.getBlockPos()))
-                        .light(light)
+                        .light(sideLight)
                         .renderInto(ms, vbSolid);
                     break;
 
                 } case BAROMETER: {
-                    CachedBuffers.partialFacing(DestroyPartials.VAT_SIDE_BAROMETER, state, facing)
+                    CachedBuffers.partialFacing(DestroyPartials.VAT_SIDE_BAROMETER[variantId], state, facing)
                         .translate(sidePos.subtract(controller.getBlockPos()))
-                        .light(light)
+                        .light(sideLight)
                         .renderInto(ms, vbSolid);
                     if (facing.getAxis() == Axis.Y) break;
                     ms.pushPose();
@@ -86,34 +94,34 @@ public class VatRenderer extends SafeBlockEntityRenderer<VatControllerBlockEntit
                         .translate(0d, dialPivot, dialPivot)
                         .rotateXDegrees(-90 + 155 - 310 * Mth.clamp(
                             (controller.getClientPressure(partialTicks) + VatControllerBlockEntity.AIR_PRESSURE) / (controller.getVatOptional().get().getMaxPressure() + VatControllerBlockEntity.AIR_PRESSURE), 0f, 1f))
-                        .light(light)
+                        .light(sideLight)
                         .renderInto(ms, vbSolid);
                     ms.popPose();
                     break;
                 } case THERMOMETER: {
                     CachedBuffers.partialFacing(DestroyPartials.VAT_SIDE_THERMOMETER, state, facing)
                         .translate(sidePos.subtract(controller.getBlockPos()))
-                        .light(light)
+                        .light(sideLight)
                         .renderInto(ms, vbCutout);
                     break;
                 } case BAROMETER_BLOCKED: case THERMOMETER_BLOCKED: {
                     CachedBuffers.partialFacing(DestroyPartials.VAT_SIDE_REDSTONE_INTERFACE, state, facing)
                         .translate(sidePos.subtract(controller.getBlockPos()))
-                        .light(light)
+                        .light(sideLight)
                         .renderInto(ms, vbCutout);
                     break;
                 } case OPEN_VENT: case CLOSED_VENT: {
-                    CachedBuffers.partial(DestroyPartials.VAT_SIDE_VENT, state)
+                    CachedBuffers.partial(DestroyPartials.VAT_SIDE_VENT[variantId], state)
                         .translate(sidePos.subtract(controller.getBlockPos()))
-                        .light(light)
+                        .light(sideLight)
                         .renderInto(ms, vbSolid);
                     for (boolean top : Iterate.trueAndFalse) {
                         for (int i = 0; i < 5; i++) {
-                            CachedBuffers.partial(DestroyPartials.VAT_SIDE_VENT_BAR, state)
+                            CachedBuffers.partial(DestroyPartials.VAT_SIDE_VENT_BAR[variantId], state)
                                 .translate(sidePos.subtract(controller.getBlockPos()))
                                 .translate((4 / 16f) + (i * 2 / 16f), top ? 17.5 / 16f : -1.5 / 16f, 0f)
                                 .rotateZDegrees(vatSide.ventOpenness.getValue(partialTicks) * -75)
-                                .light(light)
+                                .light(sideLight)
                                 .renderInto(ms, vbSolid);
                         };
                     };

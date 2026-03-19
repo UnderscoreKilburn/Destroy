@@ -37,7 +37,7 @@
               "Molecule": "destroy:water"
             }
           ],
-          "Temperature": 297.99997,
+          "Temperature": 298.0,
           "TranslationKey": "fluid.destroy.vodka"
         }
       }

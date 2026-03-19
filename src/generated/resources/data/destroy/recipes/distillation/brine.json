@@ -1,8 +1,8 @@
 {
   "type": "destroy:distillation",
   "biomes": [
-    "#minecraft:is_ocean",
-    "#minecraft:is_beach"
+    "#minecraft:is_beach",
+    "#minecraft:is_ocean"
   ],
   "heatRequirement": "heated",
   "ingredients": [

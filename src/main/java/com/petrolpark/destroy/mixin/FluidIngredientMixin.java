@@ -1,123 +1,81 @@
 package com.petrolpark.destroy.mixin;
 
-import java.util.Objects;
 import java.util.Map.Entry;
 
-import javax.annotation.Nullable;
-
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import com.petrolpark.destroy.core.recipe.ingredient.fluid.MixtureFluidIngredient;
 import com.petrolpark.destroy.core.recipe.ingredient.fluid.MixtureFluidIngredientSubType;
 import com.petrolpark.destroy.mixin.accessor.FluidIngredientAccessor;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-import com.simibubi.create.foundation.fluid.FluidIngredient.FluidStackIngredient;
-import com.simibubi.create.foundation.fluid.FluidIngredient.FluidTagIngredient;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.GsonHelper;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FluidIngredient.class)
 public abstract class FluidIngredientMixin {
 
-	private static final String
-	fluidTagMemberName = "fluidTag",
-	fluidMemberName = "fluid";
-    
-	/**
-	 * Overwriting of {@link com.simibubi.create.foundation.fluid.FluidIngredient#isFluidIngredient FluidIngredient} to
-	 * say {@link com.petrolpark.destroy.core.recipe.ingredient.fluid.MoleculeFluidIngredient Molecule ingredients}
-	 * are valid.
-	 */
-    @Overwrite(remap = false)
-    public static boolean isFluidIngredient(@Nullable JsonElement je) {
-        if (je == null || je.isJsonNull())
-			return false;
-		if (!je.isJsonObject())
-			return false;
-		JsonObject json = je.getAsJsonObject();
-		if (json.has(fluidTagMemberName) || json.has(fluidMemberName) || MixtureFluidIngredient.MIXTURE_FLUID_INGREDIENT_SUBTYPES.keySet().stream().anyMatch(json::has)) {
-            return true;
-        };
-		return false;
-    };
+	// Make {@link com.petrolpark.destroy.core.recipe.ingredient.fluid.MoleculeFluidIngredient Molecule ingredients} valid
+	@WrapOperation(method="isFluidIngredient", at=@At(value="INVOKE", target="Lcom/google/gson/JsonObject;has(Ljava/lang/String;)Z", ordinal=0), remap=false)
+	private static boolean matchFluidIngredient(JsonObject json, String name, Operation<Boolean> original) {
+		if (MixtureFluidIngredient.MIXTURE_FLUID_INGREDIENT_SUBTYPES.keySet().stream().anyMatch(json::has)) {
+			return true;
+		}
+		return original.call(json, name);
+	}
 
-	/**
-	 * Overwritten but mostly copied from {@link com.simibubi.create.foundation.fluid.FluidIngredient#deserialize FluidIngredient}.
-	 * This deserializes {@link com.petrolpark.destroy.core.recipe.ingredient.fluid.MoleculeFluidIngredient Molecule ingredients}.
-	 */
-    @Overwrite(remap = false)
-    public static FluidIngredient deserialize(@Nullable JsonElement je) {
-
-		if (je == null) return FluidIngredient.EMPTY;
-
-		// All copied from Create source code.
-		if (!isFluidIngredient(je))
-			throw new JsonSyntaxException("Invalid fluid ingredient: " + Objects.toString(je));
-
-		JsonObject json = je.getAsJsonObject(); // It thinks 'je' might be null (it can't be at this point)
-		FluidIngredient ingredient = null;
-		if (json.has(fluidMemberName)) {
-			ingredient = new FluidIngredient.FluidStackIngredient();
-		} else if (json.has(fluidTagMemberName)) {
-			ingredient = new FluidIngredient.FluidTagIngredient();
-		//
-		
+	@ModifyVariable(method="deserialize", name="ingredient", at=@At(value = "STORE"), remap=false)
+	private static FluidIngredient replaceFluidIngredient(FluidIngredient original, @Local(name="json") JsonObject json) {
 		// Deserialize Molecule-involving ingredients
-		} else {
-			for (Entry<String, MixtureFluidIngredientSubType<?>> mixtureFluidIngredientType : MixtureFluidIngredient.MIXTURE_FLUID_INGREDIENT_SUBTYPES.entrySet()) {
-				if (json.has(mixtureFluidIngredientType.getKey())) {
-					ingredient = mixtureFluidIngredientType.getValue().getNew();
-				};
-			};
-		};
+		for (Entry<String, MixtureFluidIngredientSubType<?>> mixtureFluidIngredientType : MixtureFluidIngredient.MIXTURE_FLUID_INGREDIENT_SUBTYPES.entrySet()) {
+			if (json.has(mixtureFluidIngredientType.getKey())) {
+				return mixtureFluidIngredientType.getValue().getNew();
+			}
+		}
 
-		if (ingredient == null) throw new IllegalStateException("Unknown Fluid Type");
+		return original;
+	}
 
-		// The rest is all copied from the Create Source code
-		((FluidIngredientAccessor)ingredient).invokeReadInternal(json);
-
-		if (!json.has("amount"))
-			throw new JsonSyntaxException("Fluid ingredient has to define an amount");
-		((FluidIngredientAccessor)ingredient).setAmountRequired(GsonHelper.getAsInt(json, "amount"));
-
-		return ingredient;
-	};
-
-	@Overwrite(remap = false)
-	public void write(FriendlyByteBuf buffer) {
+	/*
+	* Write an ingredient to the network.
+	* If the ingredient is using a custom type, write its type as a string then write the rest of its data ourselves,
+	* otherwise write an empty string then let Create handle the rest.
+	* */
+	@Inject(method="write", at=@At("HEAD"), cancellable=true, remap=false)
+	private void writeIngredient(FriendlyByteBuf buffer, CallbackInfo ci) {
 		FluidIngredient $this = (FluidIngredient)(Object)this;
-		String ingredientType = null;
-		if ($this instanceof FluidStackIngredient) {
-			ingredientType = fluidMemberName;
-		} else if ($this instanceof FluidTagIngredient) {
-			ingredientType = fluidTagMemberName;
-		} else if ($this instanceof MixtureFluidIngredient mixtureFluid) {
-			ingredientType = mixtureFluid.getType().getMixtureFluidIngredientSubtype();
-		};
-		if (ingredientType == null) throw new IllegalStateException("Unknown Fluid ingredient subtype");
-		buffer.writeUtf(ingredientType);
-		buffer.writeVarInt(((FluidIngredientAccessor)this).getAmountRequired());
-		((FluidIngredientAccessor)this).invokeWriteInternal(buffer);
-	};
 
-	@Overwrite(remap = false)
-	public static FluidIngredient read(FriendlyByteBuf buffer) {
-		String ingredientType = buffer.readUtf();
-		FluidIngredient ingredient = null;
-		if (ingredientType.equals(fluidMemberName)) {
-			ingredient = new FluidStackIngredient();
-		} else if (ingredientType.equals(fluidTagMemberName)) {
-			ingredient = new FluidTagIngredient();
+		if ($this instanceof MixtureFluidIngredient<?> mixtureFluid) {
+			buffer.writeUtf(mixtureFluid.getType().getMixtureFluidIngredientSubtype());
+			buffer.writeVarInt(((FluidIngredientAccessor)this).getAmountRequired());
+			((FluidIngredientAccessor)this).invokeWriteInternal(buffer);
+			ci.cancel();
 		} else {
-			ingredient = MixtureFluidIngredient.MIXTURE_FLUID_INGREDIENT_SUBTYPES.get(ingredientType).getNew();
-		};
+			buffer.writeUtf("");
+		}
+	}
+
+	/*
+	* Read an ingredient from the network.
+	* Read a string, if the string is not empty, this is a custom ingredient, handle it ourselves.
+	* If the string is empty, this is a standard ingredient, let Create handle it.
+	* */
+	@Inject(method="read", at=@At("HEAD"), cancellable=true, remap=false)
+	private static void readIngredient(FriendlyByteBuf buffer, CallbackInfoReturnable<FluidIngredient> cir) {
+		String ingredientType = buffer.readUtf();
+		if(ingredientType.isEmpty()) return;
+
+		FluidIngredient ingredient = MixtureFluidIngredient.MIXTURE_FLUID_INGREDIENT_SUBTYPES.get(ingredientType).getNew();
 		((FluidIngredientAccessor)ingredient).setAmountRequired(buffer.readVarInt());
 		((FluidIngredientAccessor)ingredient).invokeReadInternal(buffer);
-		return ingredient;
-	};
-};
+		cir.setReturnValue(ingredient);
+	}
+}

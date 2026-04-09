@@ -86,6 +86,10 @@ public class Branch {
         float total = 0f;
         for (Node node : nodes) {
             total += getMassForComparisonInSerialization(node.getAtom());
+
+            double totalBonds = node.getEdges().stream().mapToDouble(e -> e.bondType.getEquivalent()).sum();
+            total += (float)(node.getAtom().getElement().getNextLowestValency(totalBonds) - totalBonds);
+
             for (Branch branch : node.getSideBranches().keySet()) {
                 total += branch.getMass();
             };

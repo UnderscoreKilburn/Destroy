@@ -77,7 +77,7 @@ public class LegacyMolecularStructure implements Cloneable {
     private String optimumFROWNSCode;
 
     private LegacyMolecularStructure() {
-        structure = new LinkedHashMap<LegacyAtom, List<LegacyBond>>();
+        structure = new LinkedHashMap<>();
         groups = new ArrayList<>();
         topology = Topology.LINEAR;
         sideChains = new ArrayList<>();
@@ -757,14 +757,16 @@ public class LegacyMolecularStructure implements Cloneable {
             updateSideChainStructures();
             List<Branch> identity = new ArrayList<>(topology.getConnections());
 
-            if (topology.getConnections() > 0) for (int i = 0; i < topology.getConnections(); i++) {
-                LegacyMolecularStructure sideChain = sideChains.get(i).getSecond();
-                if (sideChain.getAllAtoms().size() == 0 || (sideChain.startingAtom.isNeutralHydrogen())) { // If there is nothing or just a hydrogen
-                    identity.add(new Branch(new Node(new LegacyAtom(LegacyElement.HYDROGEN))));
-                } else {
-                    identity.add(sideChain.getStrippedBranchStartingWithAtom(sideChain.startingAtom));
-                };
-            };
+            if (topology.getConnections() > 0) {
+                for (int i = 0; i < topology.getConnections(); i++) {
+                    LegacyMolecularStructure sideChain = sideChains.get(i).getSecond();
+                    if (sideChain.getAllAtoms().size() == 0 || (sideChain.startingAtom.isNeutralHydrogen())) { // If there is nothing or just a hydrogen
+                        identity.add(new Branch(new Node(new LegacyAtom(LegacyElement.HYDROGEN))));
+                    } else {
+                        identity.add(sideChain.getStrippedBranchStartingWithAtom(sideChain.startingAtom));
+                    }
+                }
+            }
             
             List<List<Branch>> possibleReflections = new ArrayList<>(topology.getReflections().length + 1);
             possibleReflections.add(identity);
@@ -813,15 +815,11 @@ public class LegacyMolecularStructure implements Cloneable {
             };
         };
 
-        Collections.sort(terminalAtoms, (a1, a2) -> {
-            return getMaximumBranch(a2, structure).getMassOfLongestChain().compareTo(getMaximumBranch(a1, structure).getMassOfLongestChain()); // Put in descending order of chain length
-        });
-
-        Collections.sort(terminalAtoms, (a1, a2) -> {
-            return Branch.getMassForComparisonInSerialization(a1).compareTo(Branch.getMassForComparisonInSerialization(a2));
-        });
-
-        return getMaximumBranch(terminalAtoms.get(0), structure);
+        return terminalAtoms.stream().map(a -> getMaximumBranch(a, structure))
+                .max(Comparator
+                        .comparing(Branch::getMassOfLongestChain)
+                        .thenComparing(b -> Branch.getMassForComparisonInSerialization(b.getStartNode().getAtom()))
+                ).get();
     };
 
     /**
@@ -868,6 +866,7 @@ public class LegacyMolecularStructure implements Cloneable {
 
             formula.addAllHydrogens().refreshFunctionalGroups();
             formula.updateSideChainStructures(); // Update this so the side chain structures which copy the Atoms in the overall structure also contain all newly-added Hydrogens
+
             return formula;
 
         } catch(Throwable e) {

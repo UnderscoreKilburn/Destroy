@@ -1,10 +1,6 @@
 package com.petrolpark.destroy.chemistry.serializer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import com.petrolpark.destroy.chemistry.legacy.LegacyAtom;
@@ -22,7 +18,7 @@ public class Node {
         this.atom = atom;
         visited = false;
         edges = new ArrayList<>();
-        sideBranches = new HashMap<>();
+        sideBranches = new LinkedHashMap<>();
     };
 
     public String serialize() {

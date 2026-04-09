@@ -39,6 +39,8 @@ import net.minecraft.world.phys.Vec3;
  */
 public class LegacySpecies implements INameableProduct {
 
+    private static Map<String, LegacySpecies> cachedNovelSpecies = new HashMap<>();
+
     // ID
 
     /**
@@ -167,17 +169,40 @@ public class LegacySpecies implements INameableProduct {
     @Nullable
     public static LegacySpecies getMolecule(String id) {
         if (id == null || id.isEmpty()) return null;
-        String[] idComponents = id.split(":");
 
         LegacySpecies molecule = MOLECULES.get(id);
         if (molecule != null) return molecule;
+
+        molecule = cachedNovelSpecies.get(id);
+        if (molecule != null) return molecule;
+
+        String[] idComponents = id.split(":");
         if (idComponents.length == 3) {
-            return new MoleculeBuilder("novel")
-                .structure(LegacyMolecularStructure.deserialize(id))
-                .build();
-        } else if (idComponents.length == 2) {
-            return MOLECULES.get(id);
-        };
+            LegacyMolecularStructure structure = LegacyMolecularStructure.deserialize(id);
+            molecule = cachedNovelSpecies.get(structure.serialize());
+            if(molecule == null) {
+                molecule = new MoleculeBuilder("novel").structure(LegacyMolecularStructure.deserialize(structure.serialize())).build(true);
+
+                // Don't cache hypothetical molecules
+                if(molecule.isHypothetical())
+                    return molecule;
+
+                for (LegacySpecies m : MOLECULES.values()) {
+                    if (Math.abs(molecule.getMass() - m.getMass()) < 0.001) { // Initially just check the masses match
+                        if (structure.serialize().equals(m.structure.serialize())) { // Check the structures match
+                            molecule = m;
+                            break;
+                        }
+                    }
+                }
+
+                cachedNovelSpecies.put(structure.serialize(), molecule);
+            }
+
+            cachedNovelSpecies.put(id, molecule);
+            return molecule;
+        }
+
         if (!"NO_MOLECULE".equals(id)) Destroy.LOGGER.warn("Could not find Molecule '"+id+"'."); // The 'NO_MOLECULE' is just to stop false warnings due to the Chemical Poison mob effect
         return null;
     };
@@ -213,14 +238,8 @@ public class LegacySpecies implements INameableProduct {
      * @return A pre-existing Molecule object if there is a match, or this Molecule otherwise
      */
     public LegacySpecies getEquivalent() {
-        for (LegacySpecies molecule : MOLECULES.values()) {
-            if (Math.abs(getMass() - molecule.getMass()) < 0.001) { // Initially just check the masses match
-                if (structure.serialize().equals(molecule.structure.serialize())) { // Check the structures match
-                    return molecule;
-                };
-            };
-        };
-        return this;
+        if(isHypothetical() || !isNovel()) return this;
+        return getMolecule(getFullID());
     };
 
     public String getFROWNSCode() {
@@ -733,7 +752,8 @@ public class LegacySpecies implements INameableProduct {
          * @throws IllegalArgumentException If the Molecule's {@link LegacyMolecularStructure structure} was not {@link MoleculeBuilder#structure declared},
          * or it is not novel and the {@link LegacySpecies#nameSpace name space} was not declared.
          */
-        public LegacySpecies build() {
+        public LegacySpecies build() {return build(false);}
+        public LegacySpecies build(boolean raw) {
 
             molecule.mass = calculateMass();
             molecule.translationKey = translationKey;
@@ -743,8 +763,9 @@ public class LegacySpecies implements INameableProduct {
             };
 
             if (molecule.getAtoms().size() >= 100) throw e("Molecule has too many Atoms");
+            if (molecule.getMolecularFormula().containsKey(LegacyElement.R_GROUP)) tag(DestroyMolecules.Tags.HYPOTHETICAL);
 
-            if ("novel".equals(molecule.nameSpace)) {
+            if (!raw && "novel".equals(molecule.nameSpace)) {
                 LegacySpecies equivalentMolecule = molecule.getEquivalent();
                 if (equivalentMolecule != molecule) {
                     return equivalentMolecule;
@@ -754,8 +775,6 @@ public class LegacySpecies implements INameableProduct {
             double charge = 0d;
             for (LegacyAtom atom : molecule.getAtoms()) charge += atom.formalCharge;
             molecule.charge = (int)charge;
-
-            if (molecule.getMolecularFormula().containsKey(LegacyElement.R_GROUP)) tag(DestroyMolecules.Tags.HYPOTHETICAL);
 
             if (!hasForcedDensity && molecule.charge != 0) molecule.density = estimateDensity(molecule);
             

@@ -1,17 +1,12 @@
 package com.petrolpark.destroy.core.chemistry.vat;
 
-import java.util.Map;
 import java.util.function.Consumer;
 
-import com.petrolpark.destroy.Destroy;
 import com.petrolpark.destroy.DestroyFluids;
 import com.petrolpark.destroy.chemistry.legacy.LegacyMixture;
 import com.petrolpark.destroy.chemistry.legacy.LegacyMixture.Phases;
 import com.petrolpark.destroy.chemistry.legacy.ReadOnlyMixture;
-import com.petrolpark.destroy.chemistry.legacy.index.DestroyMolecules;
 import com.petrolpark.destroy.chemistry.minecraft.MixtureFluid;
-import com.petrolpark.destroy.core.fluid.GeniusFluidTankBehaviour;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 
@@ -19,7 +14,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import org.jetbrains.annotations.NotNull;
 
 public class VatFluidTankBehaviour extends SmartFluidTankBehaviour {
@@ -82,7 +76,13 @@ public class VatFluidTankBehaviour extends SmartFluidTankBehaviour {
 
     public LegacyMixture getCombinedMixture() { return combinedMixture; }
     public ReadOnlyMixture getCombinedReadOnlyMixture() { return combinedMixture; }
-    
+
+    public void clear() {
+        combinedMixture = new LegacyMixture();
+        liquidFull = false;
+        updateTankContents();
+    }
+
     /**
      * Replace all the gas in the gas tank with room temperature and pressure air.
      * @return The gas that was previously stored

@@ -315,7 +315,6 @@ public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveL
                     if (!combinedMixture.isAtEquilibrium())
                         advancementBehaviour.awardDestroyAdvancement(DestroyAdvancementTrigger.USE_VAT);
                 }
-                ;
 
                 // Put all Items back in the Inventory
                 for (ItemStack itemStack : availableItemStacks)
@@ -562,10 +561,9 @@ public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveL
         ItemHelper.dropContents(getLevel(), posDestroyed, inventory);
         itemCapability.invalidate();
         removeVent();
-        PollutionHelper.pollute(getLevel(), pollutionPos, getLiquidTank().getFluid(), getGasTank().getFluid());
 
-        getLiquidTank().setFluid(FluidStack.EMPTY);
-        getGasTank().setFluid(FluidStack.EMPTY);
+        PollutionHelper.pollute(getLevel(), pollutionPos, getLiquidTank().getFluid(), getGasTank().getFluid());
+        tankBehaviour.clear();
 
         tankBehaviour.forbidExtraction(); // Forbid Fluid extraction now this Vat no longer exists
         if (!vat.isPresent()) return;

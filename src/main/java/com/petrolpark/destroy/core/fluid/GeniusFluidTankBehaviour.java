@@ -10,7 +10,6 @@ import com.petrolpark.destroy.chemistry.minecraft.MixtureFluid;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.fluid.CombinedTankWrapper;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 
 import net.createmod.catnip.data.Iterate;
@@ -118,7 +117,7 @@ public class GeniusFluidTankBehaviour extends SmartFluidTankBehaviour {
                 int amountOfMixtureAdded = Math.min(getSpace(), resource.getAmount());
                 int existingAmount = fluid.getAmount();
                 if (!action.simulate()) { // We don't need to do anything further if we're just simulating
-                    LegacyMixture newMixture = LegacyMixture.mix(Map.of(existingMixture, (double)existingAmount, addedMixture, (double)amountOfMixtureAdded));
+                    LegacyMixture newMixture = LegacyMixture.mix(existingMixture, existingAmount, addedMixture, amountOfMixtureAdded);
                     setFluid(MixtureFluid.of(existingAmount + amountOfMixtureAdded, newMixture));
                 };
 

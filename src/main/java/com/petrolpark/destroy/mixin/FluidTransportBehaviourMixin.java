@@ -8,14 +8,14 @@ import com.petrolpark.destroy.chemistry.minecraft.MixtureFluid;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import net.minecraftforge.fluids.FluidStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import java.util.Map;
-
 @Mixin(FluidTransportBehaviour.class)
 public class FluidTransportBehaviourMixin {
-    private ThreadLocal<FluidStack> accumulatedAvailableFluid = new ThreadLocal<>();
+    @Unique
+    private final ThreadLocal<FluidStack> destroy$accumulatedAvailableFluid = new ThreadLocal<>();
 
     @WrapOperation(
         method = "tick()V",
@@ -45,23 +45,23 @@ public class FluidTransportBehaviourMixin {
     private FluidStack accumulateAvailableFluidStack(FluidStack providedFluid) {
         if(providedFluid.isEmpty()) {
             // If providedFluid is empty, we just initialized availableFlow
-            accumulatedAvailableFluid.set(FluidStack.EMPTY);
+            destroy$accumulatedAvailableFluid.set(FluidStack.EMPTY);
         } else if(DestroyFluids.isMixture(providedFluid)) {
-            if(accumulatedAvailableFluid.get().isEmpty()) {
+            if(destroy$accumulatedAvailableFluid.get().isEmpty()) {
                 // First Mixture input, remember it and carry on as normal
-                accumulatedAvailableFluid.set(providedFluid);
+                destroy$accumulatedAvailableFluid.set(providedFluid);
                 return providedFluid;
             } else {
                 // If this pipe segments has multiple Mixture inputs, mix them together
                 // This is purely visual for the sake of displaying flowing liquids in transparent pipes
-                LegacyMixture existingMixture = LegacyMixture.readNBT(accumulatedAvailableFluid.get().getOrCreateTag().getCompound("Mixture"));
+                LegacyMixture existingMixture = LegacyMixture.readNBT(destroy$accumulatedAvailableFluid.get().getOrCreateTag().getCompound("Mixture"));
                 LegacyMixture addedMixture = LegacyMixture.readNBT(providedFluid.getOrCreateTag().getCompound("Mixture"));
-                int existingAmount = accumulatedAvailableFluid.get().getAmount();
+                int existingAmount = destroy$accumulatedAvailableFluid.get().getAmount();
                 int addedAmount = providedFluid.getAmount();
-                LegacyMixture newMixture = LegacyMixture.mix(Map.of(existingMixture, existingAmount/1000d, addedMixture, addedAmount/1000d));
+                LegacyMixture newMixture = LegacyMixture.mix(existingMixture, existingAmount, addedMixture, addedAmount);
 
-                accumulatedAvailableFluid.set(MixtureFluid.of(existingAmount + addedAmount, newMixture));
-                return accumulatedAvailableFluid.get();
+                destroy$accumulatedAvailableFluid.set(MixtureFluid.of(existingAmount + addedAmount, newMixture));
+                return destroy$accumulatedAvailableFluid.get();
             }
         }
 

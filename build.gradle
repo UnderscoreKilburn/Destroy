@@ -201,12 +201,12 @@ dependencies {
     implementation "com.petrolpark:petrolpark:${minecraft_version}-${petrolpark_library_version}"
 
     // JGraphT
-    jarJar(implementation("org.jgrapht:jgrapht-core:[${jgrapht_version}]"))
+    /*jarJar(implementation("org.jgrapht:jgrapht-core:[${jgrapht_version}]"))
     jarJar(implementation("org.jheaps:jheaps:[0.14]"))
-    jarJar(implementation("org.apfloat:apfloat:[1.10.1]"))
+    jarJar(implementation("org.apfloat:apfloat:[1.10.1]"))*/
 
     // Apache Commons Math
-    //jarJar(implementation("org.apache.commons:commons-math3:[3.6.1]"))
+    library(jarJar("org.apache.commons:commons-math3:3.6.1")) {jarJar.ranged(it, "[3.6.1,)")}
 
     // CDK
     //implementation "org.openscience.cdk:cdk-bundle:2.9"
@@ -245,7 +245,10 @@ dependencies {
 
     // Embeddium
     compileOnly fg.deobf("maven.modrinth:embeddium:${embeddium_version}+mc${minecraft_version}")
-    
+
+    // Spark
+    runtimeOnly fg.deobf("maven.modrinth:spark:1.10.53-forge")
+
     // ANNOTATION PROCESSORS
 
     // MixinSquared's annotationProcessor MUST be registered BEFORE Mixin's one.

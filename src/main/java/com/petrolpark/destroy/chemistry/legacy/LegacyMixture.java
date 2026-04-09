@@ -1,16 +1,8 @@
 package com.petrolpark.destroy.chemistry.legacy;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-
-import java.util.Set;
-import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 import com.petrolpark.destroy.Destroy;
@@ -21,9 +13,13 @@ import com.petrolpark.destroy.chemistry.legacy.genericreaction.GenericReactant;
 import com.petrolpark.destroy.chemistry.legacy.genericreaction.GenericReaction;
 import com.petrolpark.destroy.chemistry.legacy.genericreaction.SingleGroupGenericReaction;
 import com.petrolpark.destroy.chemistry.legacy.index.DestroyMolecules;
+import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AcylChlorideEsterification;
+import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.SaturatedCarbonHydrolysis;
 import com.petrolpark.destroy.chemistry.legacy.reactionresult.NovelCompoundSynthesizedReactionResult;
 import com.petrolpark.destroy.core.chemistry.basinreaction.ReactionInBasinRecipe.ReactionInBasinResult;
 
+import com.petrolpark.destroy.core.chemistry.vat.IVatHeaterBlock;
+import com.petrolpark.destroy.core.pollution.Pollution;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -55,7 +51,7 @@ public class LegacyMixture extends ReadOnlyMixture {
 
     /**`
      * Every {@link LegacySpecies} in this Mixture that has a {@link LegacyFunctionalGroup functional Group}, indexed by the {@link LegacyFunctionalGroup#getType Type} of that Group.
-     * Molecules are stored as {@link com.petrolpark.destroy.chemistry.legacy.genericreaction.GenericReactant Generic Reactants}.
+     * Molecules are stored as {@link GenericReactant Generic Reactants}.
      * Molecules which have multiple of the same Group are indexed for each occurence of the Group.
      */
     protected Map<LegacyFunctionalGroupType<?>, List<GenericReactant<?>>> groupIDsAndMolecules;
@@ -211,7 +207,7 @@ public class LegacyMixture extends ReadOnlyMixture {
     };
 
     /**
-     * Set the state of a {@link com.petrolpark.destroy.chemistry.legacy.LegacySpecies Molecule}.
+     * Set the state of a {@link LegacySpecies Molecule}.
      * @param molecule The Molecule to set the state of. If not present in this Mixture, nothing happens
      * @param state A number from {@code 0} (entirely liquid) to {@code 1} (entirely gaseous). If out of this range, an exception will be thrown
      */
@@ -248,21 +244,22 @@ public class LegacyMixture extends ReadOnlyMixture {
 
     /**
      * Creates a new Mixture by mixing together existing ones. This does not give the volume of the new Mixture.
-     * @param mixtures A Map of all Mixtures to their volumes (in any consistent units)
+     * @param mixtures A List of Pairs containing each Mixture to mix and its relative volume (in any consistent units)
      * @return A new Mixture instance
      */
-    public static LegacyMixture mix(Map<LegacyMixture, Double> mixtures) {
+    public static LegacyMixture mix(List<Pair<LegacyMixture, Double>> mixtures) {
         if (mixtures.size() == 0) return new LegacyMixture();
-        if (mixtures.size() == 1) return mixtures.keySet().iterator().next();
+        if (mixtures.size() == 1) return mixtures.get(0).getFirst();
+
         LegacyMixture resultMixture = new LegacyMixture();
-        Map<LegacySpecies, Double> moleculesAndMoles = new HashMap<>(); // A Map of all Molecules to their quantity in moles (not their concentration)
-        Map<ReactionResult, Double> reactionResultsAndMoles = new HashMap<>(); // A Map of all Reaction Results to their quantity in moles
+        Map<LegacySpecies, Double> moleculesAndMoles = new LinkedHashMap<>(); // A Map of all Molecules to their quantity in moles (not their concentration)
+        Map<ReactionResult, Double> reactionResultsAndMoles = new LinkedHashMap<>(); // A Map of all Reaction Results to their quantity in moles
         double totalAmount = 0d;
         float totalEnergy = 0f;
 
-        for (Entry<LegacyMixture, Double> mixtureAndAmount : mixtures.entrySet()) {
-            LegacyMixture mixture = mixtureAndAmount.getKey();
-            double amount = mixtureAndAmount.getValue();
+        for (Pair<LegacyMixture, Double> mixtureAndAmount : mixtures) {
+            LegacyMixture mixture = mixtureAndAmount.getFirst();
+            double amount = mixtureAndAmount.getSecond();
             totalAmount += amount;
 
             for (Entry<LegacySpecies, Float> entry : mixture.contents.entrySet()) {
@@ -299,6 +296,21 @@ public class LegacyMixture extends ReadOnlyMixture {
         resultMixture.updateNextBoilingPoints();
 
         return resultMixture;
+    }
+
+    public static LegacyMixture mix(LegacyMixture m1, double v1, LegacyMixture m2, double v2) {
+        return mix(List.of(Pair.of(m1,v1), Pair.of(m2,v2)));
+    }
+    public static LegacyMixture mix(LegacyMixture m1, double v1, LegacyMixture m2, double v2, LegacyMixture m3, double v3) {
+        return mix(List.of(Pair.of(m1,v1), Pair.of(m2,v2), Pair.of(m3,v3)));
+    }
+    public static LegacyMixture mix(LegacyMixture m1, double v1, LegacyMixture m2, double v2, LegacyMixture m3, double v3, LegacyMixture m4, double v4) {
+        return mix(List.of(Pair.of(m1,v1), Pair.of(m2,v2), Pair.of(m3,v3), Pair.of(m4,v4)));
+    }
+
+    @Deprecated
+    public static LegacyMixture mix(Map<LegacyMixture, Double> mixtures) {
+        return mix(mixtures.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).toList());
     };
 
     public float getLiquidVolume(float volume) {
@@ -330,12 +342,12 @@ public class LegacyMixture extends ReadOnlyMixture {
     }
 
     /**
-     * Adds the contents of another Mixture to this Mixture, without changing its volume.
+     * Adds the contents of another Mixture, without changing the recipient's volume.
      * Faster than mix(), preserves reaction results, and only recalculates reactions when new molecules are introduced.
-     * @param volume
-     * @param other
-     * @param otherVolume
-     * @return The current mixture instance
+     * @param volume The volume of this Mixture
+     * @param other The Mixture which should be added to this one
+     * @param otherVolume The volume of the Mixture to be added
+     * @return The current Mixture instance
      */
     public LegacyMixture mixWith(float volume, LegacyMixture other, float otherVolume) {
         boolean shouldRefreshReactions = false;
@@ -348,8 +360,7 @@ public class LegacyMixture extends ReadOnlyMixture {
             entry.getKey().getReaction().ifPresent(r -> incrementReactionResults(r, entry.getValue() * otherVolume / volume));
         }
 
-        for(var m : states.keySet())
-            states.put(m, 0f);
+        states.replaceAll((m, v) -> 0f);
 
         temperature = 0f;
         updateNextBoilingPoints();
@@ -362,6 +373,13 @@ public class LegacyMixture extends ReadOnlyMixture {
         return this;
     }
 
+    /**
+     * Removes up to a set volume of liquid from this Mixture, without changing its total volume
+     * (it is implied that any gases present expand to fill in the missing volume).
+     * @param volume The volume of this Mixture
+     * @param toDrain The maximum volume of liquid to be removed
+     * @return The current Mixture instance
+     */
     public LegacyMixture drainLiquid(float volume, float toDrain) {
         float liquidVolume = getLiquidVolume(volume);
         float fraction = 1f - Math.min(1f, toDrain / liquidVolume);
@@ -380,6 +398,12 @@ public class LegacyMixture extends ReadOnlyMixture {
         return this;
     }
 
+    /**
+     * Removes up to a set volume of gas from this Mixture, without changing its total volume.
+     * @param volume The volume of this Mixture
+     * @param toDrain The maximum volume of gas to be removed
+     * @return The current Mixture instance
+     */
     public LegacyMixture drainGas(float volume, float toDrain) {
         float gasVolume = volume - getLiquidVolume(volume);
         if(gasVolume <= 0f) return this;
@@ -541,7 +565,6 @@ public class LegacyMixture extends ReadOnlyMixture {
 
                 if (energyDensity > energyRequiredToFullyBoil) { // If there is leftover energy once the Molecule has been boiled
                     states.put(molecule, 1f); // Convert the Molecule fully to gas
-                    //temperature += 0.01f; // Increase the temperature slightly so the new next higher Molecule isn't the one we just finished boiling
                     updateNextBoilingPoints(1);
                     boiling = false; // If we're just increasing the temperature, then all Molecule are either fully gaseous or liquid
                     heat(energyDensity - energyRequiredToFullyBoil); // Continue heating
@@ -569,7 +592,6 @@ public class LegacyMixture extends ReadOnlyMixture {
 
                 if (energyDensity < -energyReleasedWhenFullyCondensed) { // If there is more energy that needs to be released than the condensation can supply
                     states.put(molecule, 0f); // Convert the Molecule fully to liquid
-                    //temperature -= 0.01f; // Decrease the temperature slightly so the new next lower Molecule isn't the one we just finished condensing
                     updateNextBoilingPoints(-1);
                     boiling = false; // If we're just increasing the temperature, then all Molecule are either fully gaseous or liquid
                     heat(energyDensity + energyReleasedWhenFullyCondensed); // Continue cooling
@@ -714,7 +736,7 @@ public class LegacyMixture extends ReadOnlyMixture {
         reactionResults.replaceAll((reactionResult, molesPerBucket) -> molesPerBucket / volumeIncreaseFactor);
     };
 
-    public static record Phases(LegacyMixture gasMixture, Double gasVolume, LegacyMixture liquidMixture, Double liquidVolume) {};
+    public record Phases(LegacyMixture gasMixture, Double gasVolume, LegacyMixture liquidMixture, Double liquidVolume) {};
 
     /**
      * Get two new Mixtures from one - one containing all gas, one containing all liquid.
@@ -829,18 +851,21 @@ public class LegacyMixture extends ReadOnlyMixture {
      */
     protected void incrementReactionResults(LegacyReaction reaction, float molesPerBucket) {
         if (!reaction.hasResult()) return;
-        ReactionResult result = reaction.getResult();
+        incrementReactionResults(reaction.getResult(), molesPerBucket);
+    };
+
+    protected void incrementReactionResults(ReactionResult result, float molesPerBucket) {
         reactionResults.merge(result, molesPerBucket, (f1, f2) -> f1 + f2);
     };
 
     /**
      * {@link LegacyMixture#reactForTick React} this Mixture until it reaches {@link LegacyMixture#equilibrium equilibrium}. This is mutative.
-     * @return A {@link com.petrolpark.destroy.core.chemistry.basinreaction.ReactionInBasinRecipe.ReactionInBasinResult ReactionInBasinResult} containing
+     * @return A {@link ReactionInBasinResult ReactionInBasinResult} containing
      * the number of ticks it took to reach equilibrium, the {@link ReactionResult Reaction Results} and the new volume of Mixture.
      * @param volume (in liters) of this Reaction
      * @param availableStacks Item Stacks available for reacting. This List and its contents will be modified.
-     * @param heatingPower The power being supplied to this Basin by the {@link com.petrolpark.destroy.core.chemistry.vat.IVatHeaterBlock heater} below it.
-     * @param outsideTemperature The {@link com.petrolpark.destroy.core.pollution.Pollution#getLocalTemperature temperature} outside the Basin.
+     * @param heatingPower The power being supplied to this Basin by the {@link IVatHeaterBlock heater} below it.
+     * @param outsideTemperature The {@link Pollution#getLocalTemperature temperature} outside the Basin.
      */
     public ReactionInBasinResult reactInBasin(int volume, List<ItemStack> availableStacks, float heatingPower, float outsideTemperature) {
         float volumeInLiters = (float)volume / Constants.MILLIBUCKETS_PER_LITER;
@@ -1076,8 +1101,6 @@ public class LegacyMixture extends ReadOnlyMixture {
     private void refreshPossibleReactions() {
         if(!canReact) return;
 
-        Destroy.LOGGER.info("refresh reactions {}", this.hashCode());
-
         possibleReactions = new ArrayList<>();
         Set<LegacyReaction> newPossibleReactions = new HashSet<>();
 
@@ -1138,9 +1161,9 @@ public class LegacyMixture extends ReadOnlyMixture {
      * Given a {@link SingleGroupGenericReaction Generic Reaction} involving only one {@link LegacyFunctionalGroup functional Group},
      * generates the specified {@link LegacyReaction Reactions} that apply to this Mixture.
      * 
-     * <p>For example, if the Generic Reaction supplied is the {@link com.petrolpark.destroy.chemistry.legacy.index.genericreaction.SaturatedCarbonHydrolysis hydration of an alkene},
+     * <p>For example, if the Generic Reaction supplied is the {@link SaturatedCarbonHydrolysis hydration of an alkene},
      * and <b>reactants</b> includes {@code destroy:ethene}, the returned collection will include a Reaction with {@code destroy:ethene} and {@code destroy:water} as reactants,
-     * {@code destroy:ethanol} as a product, and all the appropriate rate constants and catalysts as defined in the {@link com.petrolpark.destroy.chemistry.legacy.index.genericreaction.SaturatedCarbonHydrolysis#generateReaction generator}.</p>
+     * {@code destroy:ethanol} as a product, and all the appropriate rate constants and catalysts as defined in the {@link SaturatedCarbonHydrolysis#generateReaction generator}.</p>
      * 
      * @param <G> <b>G</b> The Group to which this Generic Reaction applies
      * @param genericReaction
@@ -1166,7 +1189,7 @@ public class LegacyMixture extends ReadOnlyMixture {
      * Given a {@link DoubleGroupGenericReaction Generic Reaction} involving two {@link LegacyFunctionalGroup functional Groups},
      * generates the specified {@link LegacyReaction Reactions} that apply to this Mixture.
      * 
-     * <p>For example, if the Generic Reaction supplied is {@link com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AcylChlorideEsterification esterification},
+     * <p>For example, if the Generic Reaction supplied is {@link AcylChlorideEsterification esterification},
      * and this this Mixture contains methanoyl chloride, ethanoyl chloride, and ethanol, the returned collection will include two Reactions, one of which makes 
      * ethyl ethanoate and the other ethyl methanoate.</p>
      * 

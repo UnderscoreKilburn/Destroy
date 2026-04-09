@@ -1,10 +1,5 @@
 package com.petrolpark.destroy.core.chemistry.basinreaction;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Nullable;
 
 import com.petrolpark.destroy.Destroy;
@@ -28,6 +23,7 @@ import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder.Pro
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.recipe.RecipeFinder;
 
+import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -35,6 +31,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.*;
 
 public class ReactionInBasinRecipe extends BasinRecipe {
 
@@ -64,7 +62,7 @@ public class ReactionInBasinRecipe extends BasinRecipe {
         ExtendedBasinBehaviour behaviour = basin.getBehaviour(ExtendedBasinBehaviour.TYPE);
         boolean shouldUpdateBasin = false;
 
-        Map<LegacyMixture, Double> mixtures = new HashMap<>(availableFluids.size()); // A Map of all available Mixtures to the volume of them available (in Buckets)
+        List<Pair<LegacyMixture, Double>> mixtures = new ArrayList<>(availableFluids.size()); // A Map of all available Mixtures to the volume of them available (in Buckets)
         int totalAmount = 0; // How much Mixture there is
 
         // Check all Fluids are Mixturess
@@ -93,7 +91,7 @@ public class ReactionInBasinRecipe extends BasinRecipe {
 
             int amount = fluidStack.getAmount();
             totalAmount += amount;
-            mixtures.put(mixture, (double)amount / Constants.MILLIBUCKETS_PER_LITER);
+            mixtures.add(Pair.of(mixture, (double)amount / Constants.MILLIBUCKETS_PER_LITER));
         };
 
         if (!containsRawMixtures && mixtures.size() == 1) canReact = false; // Don't react without Mixtures, even if there are fluids which could be converted into Mixtures 

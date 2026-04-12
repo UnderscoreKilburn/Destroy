@@ -230,6 +230,12 @@ dependencies {
     implementation fg.deobf("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}")
     implementation fg.deobf("com.rbasamoyai:createbigcannons:${cbc_version}")
 
+    // Diesel Generators
+    implementation fg.deobf("curse.maven:create-diesel-generators-869316:7350909")
+
+    // Create Connected
+    implementation fg.deobf("maven.modrinth:create-connected:1.1.13-mc1.20.1")
+
     // Embeddium
     compileOnly fg.deobf("maven.modrinth:embeddium:${embeddium_version}+mc${minecraft_version}")
     

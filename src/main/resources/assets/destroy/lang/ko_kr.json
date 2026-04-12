@@ -1283,7 +1283,7 @@
     "destroy.tooltip.mixture_ingredient.refrigerants": "최상의 결과를 얻으려면 _고농도_ 냉매를 사용하세요. JEI에서 '냉매'를 _검색_할 수 있습니다.",
     "destroy.tooltip.molecule.boiling_point": "끓는점: %1$s",
     "destroy.tooltip.molecule.charge": "전하량: %1$s",
-    "destroy.tooltip.molecule.density": "액체 밀도: %1$sgB⁻¹",
+    "destroy.tooltip.molecule.density": "액체 밀도: %1$sgmB⁻¹",
     "destroy.tooltip.molecule.formula": "화학식: %1$s",
     "destroy.tooltip.molecule.heat_capacity": "열용량: %1$sJK⁻¹mol⁻¹",
     "destroy.tooltip.molecule.latent_heat": "증발잠열: %1$skJmol⁻¹",

@@ -1380,7 +1380,7 @@
     "destroy.tooltip.mixture_ingredient.refrigerants": "最良の結果を得るには、_高濃度_の冷媒を使用することです。JEIで「冷媒」を_検索_できることをお忘れなく。",
     "destroy.tooltip.molecule.boiling_point": "沸点: %1$s",
     "destroy.tooltip.molecule.charge": "電荷: %1$s",
-    "destroy.tooltip.molecule.density": "液体密度: %1$sgB\u207b\u00b9",
+    "destroy.tooltip.molecule.density": "液体密度: %1$sgmB\u207b\u00b9",
     "destroy.tooltip.molecule.formula": "化学式： %1$s",
     "destroy.tooltip.molecule.heat_capacity": "熱容量: %1$sJK\u207b\u00b9mol\u207b\u00b9",
     "destroy.tooltip.molecule.latent_heat": "蒸発潜熱: %1$skJmol\u207b\u00b9",

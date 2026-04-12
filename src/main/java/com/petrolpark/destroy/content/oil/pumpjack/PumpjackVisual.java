@@ -84,7 +84,7 @@ public class PumpjackVisual extends AbstractBlockEntityVisual<PumpjackBlockEntit
 
     protected TransformedInstance transformed(TransformedInstance modelData, Direction facing) {
         return modelData.setIdentityTransform()
-            .translate(pos)
+            .translate(getVisualPosition())
             .center()
             .rotateYDegrees(AngleHelper.horizontalAngle(facing))
             .uncenter();

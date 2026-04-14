@@ -74,7 +74,8 @@
     "compat.jei.PackingCategoryMixin",
     "compat.supplementaries.SoftFluidStackImplMixin",
     "compat.supplementaries.SpongeInteractionMixin",
-    "patch.ContaminantMixin"
+    "patch.ContaminantMixin",
+    "patch.ContraptionMixin"
   ],
   "client": [
     "client.ClientLevelMixin",

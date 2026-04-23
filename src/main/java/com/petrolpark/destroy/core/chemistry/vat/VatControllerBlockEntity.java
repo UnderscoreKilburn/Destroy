@@ -309,7 +309,7 @@ public class VatControllerBlockEntity extends SmartBlockEntity implements IHaveL
 
                     // React
                     context = new ReactionContext(availableItemStacks, UVPower, false); // Update the context
-                    combinedMixture.reactForTick(context, getSimulationLevel());
+                    combinedMixture.react(context);
                     shouldUpdateFluidMixture = true;
 
                     if (!combinedMixture.isAtEquilibrium())

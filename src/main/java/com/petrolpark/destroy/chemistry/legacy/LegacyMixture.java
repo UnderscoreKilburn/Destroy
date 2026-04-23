@@ -2,7 +2,6 @@ package com.petrolpark.destroy.chemistry.legacy;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 import com.petrolpark.destroy.Destroy;
@@ -16,9 +15,14 @@ import com.petrolpark.destroy.chemistry.legacy.index.DestroyMolecules;
 import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.AcylChlorideEsterification;
 import com.petrolpark.destroy.chemistry.legacy.index.genericreaction.SaturatedCarbonHydrolysis;
 import com.petrolpark.destroy.chemistry.legacy.reactionresult.NovelCompoundSynthesizedReactionResult;
+import com.petrolpark.destroy.chemistry.legacy.solver.AbstractReactionSolver;
+import com.petrolpark.destroy.chemistry.legacy.solver.LegacyReactionSolver;
+import com.petrolpark.destroy.chemistry.legacy.solver.PositiveEulerForwardSolver;
+import com.petrolpark.destroy.chemistry.legacy.solver.PositiveRK4Solver;
 import com.petrolpark.destroy.core.chemistry.basinreaction.ReactionInBasinRecipe.ReactionInBasinResult;
 
 import com.petrolpark.destroy.core.chemistry.vat.IVatHeaterBlock;
+import com.petrolpark.destroy.core.chemistry.vat.VatControllerBlockEntity;
 import com.petrolpark.destroy.core.pollution.Pollution;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.nbt.NBTHelper;
@@ -48,6 +52,8 @@ public class LegacyMixture extends ReadOnlyMixture {
      * which are possible given the {@link LegacySpecies Molecules} in this Mixture.
      */
     protected List<LegacyReaction> possibleReactions;
+
+    protected AbstractReactionSolver solver;
 
     /**`
      * Every {@link LegacySpecies} in this Mixture that has a {@link LegacyFunctionalGroup functional Group}, indexed by the {@link LegacyFunctionalGroup#getType Type} of that Group.
@@ -429,6 +435,8 @@ public class LegacyMixture extends ReadOnlyMixture {
         return super.getConcentrationOf(molecule);
     };
 
+    public float getConcentrationOf(ReactionResult result) { return reactionResults.getOrDefault(result, 0f); }
+
     /**
      * Whether this Mixture will {@link LegacyMixture#equilibrium react any further}.
      */
@@ -539,6 +547,76 @@ public class LegacyMixture extends ReadOnlyMixture {
             updateColor();
         };
     };
+
+    public void react(ReactionContext context) {
+        boolean shouldUpdateDisplay = true;
+        boolean shouldRefreshReactions = false;
+
+        if(!canReact) // Only initialize stuff relevant to reactions if we're actually computing reactions for this mixture
+            initReactions();
+
+        solver.setup(context, temperature);
+
+        double[] y0 = new double[solver.getDimension()];
+        double[] y = new double[solver.getDimension()];
+        double[] s = new double[solver.getDimension()];
+
+        double dt = 1/(double)TICKS_PER_SECOND;
+
+        y0[0] = 0;
+        double lP = getLiquidVolume(1.f);
+        for(Map.Entry<Object, Integer> e : solver.getIndexSet()) {
+            if(e.getKey() instanceof LegacySpecies sp) {
+                y0[e.getValue()] = getConcentrationOf(sp);
+                s[e.getValue()] = states.getOrDefault(sp, sp.getBoilingPoint() < temperature ? 1f : 0f);
+            } else if (e.getKey() instanceof ReactionResult res) {
+                y0[e.getValue()] = getConcentrationOf(res);
+                s[e.getValue()] = 0.0;
+            }
+        }
+
+        solver.compute(y0, s, lP, dt, y);
+
+        for(Map.Entry<Object, Integer> e : solver.getIndexSet()) {
+            float dy = (float)(y[e.getValue()] - y0[e.getValue()]);
+            if(dy > 1e-4f)
+                equilibrium = false;
+
+            if(e.getKey() instanceof LegacySpecies sp) {
+                if(dy > 0) {
+                    if(internalAddMolecule(sp, dy, false))
+                        shouldRefreshReactions = true;
+                } else if(dy < 0) {
+                    if(contents.containsKey(sp))
+                        changeConcentrationOf(sp, dy, false);
+                }
+            } else if (e.getKey() instanceof ReactionResult res) {
+                incrementReactionResults(res, dy);
+            }
+        }
+
+        // Purge removed Molecules
+        Iterator<Entry<LegacySpecies, Integer>> iterator = moleculesToRemove.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Entry<LegacySpecies, Integer> entry = iterator.next();
+            entry.setValue(entry.getValue() - 1);
+            if (entry.getValue() <= 0) {
+                removeMolecule(entry.getKey()); // Completely remove the Molecule from the Mixture if its TTL has expired
+                iterator.remove();
+                shouldRefreshReactions = true; // Now we know the Molecule isn't coming back, we can update the reactions to reflect its removal
+            }
+        }
+
+        if(shouldRefreshReactions)
+            refreshPossibleReactions();
+
+        if(shouldUpdateDisplay) {
+            updateName();
+            updateColor();
+        }
+
+
+    }
 
     /**
      * Add or take heat from this Mixture. This will boil/condense Molecules and change the temperature.
@@ -873,6 +951,7 @@ public class LegacyMixture extends ReadOnlyMixture {
 
         ReactionContext context = new ReactionContext(availableStacks, 0f, false); 
         dissolveItems(context, volumeInLiters); // Dissolve all Items
+
         while (!equilibrium && ticks < 600) { // React the Mixture
             float energyChange = heatingPower / TICKS_PER_SECOND;
             energyChange += (outsideTemperature - temperature) * 100f / TICKS_PER_SECOND; // Fourier's Law (sort of), the Basin has a fixed conductance of 100 andthe divide by 20 is for 20 ticks per second
@@ -1071,7 +1150,9 @@ public class LegacyMixture extends ReadOnlyMixture {
 
         if (!contents.containsKey(molecule) && change > 0f) internalAddMolecule(molecule, change, shouldRefreshReactions);
 
-        if (currentConcentration <= 0f && change < 0f) throw new IllegalArgumentException("Attempted to decrease concentration of Molecule '" + molecule.getFullID()+"', which was not in a Mixture. The Mixture contains " + getContentsString());
+        //if (currentConcentration <= 0f && change < 0f) throw new IllegalArgumentException("Attempted to decrease concentration of Molecule '" + molecule.getFullID()+"', which was not in a Mixture. The Mixture contains " + getContentsString());
+        if (currentConcentration <= 0f && change < 0f)
+            Destroy.LOGGER.warn("Attempted to decrease concentration of Molecule '{}', which was not in a Mixture. The Mixture contains {}", molecule.getFullID(), getContentsString());
 
         float newConcentration = Math.max(currentConcentration + change, 0f);
         contents.replace(molecule, newConcentration);
@@ -1102,6 +1183,10 @@ public class LegacyMixture extends ReadOnlyMixture {
         if(!canReact) return;
 
         possibleReactions = new ArrayList<>();
+
+        //solver = new LegacyReactionSolver(VatControllerBlockEntity.getSimulationLevel());
+        solver = new PositiveRK4Solver(1);
+
         Set<LegacyReaction> newPossibleReactions = new HashSet<>();
 
         // Generate specific Generic Reactions
@@ -1155,6 +1240,8 @@ public class LegacyMixture extends ReadOnlyMixture {
             };
         };
 
+        for (LegacyReaction reaction : possibleReactions)
+            solver.addReaction(reaction);
     };
 
     /**

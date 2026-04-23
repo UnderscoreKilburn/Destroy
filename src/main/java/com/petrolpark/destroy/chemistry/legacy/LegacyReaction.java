@@ -682,19 +682,9 @@ public class LegacyReaction {
                 .addProduct(DestroyMolecules.PROTON)
                 .addProduct(conjugateBase)
                 .activationEnergy(GAS_CONSTANT * 0.298f) // Makes the pKa accurate at room temperature
-                .preexponentialFactor(0.5f * (float)Math.pow(10, -pKa))
-                .dontIncludeInJei()
-                .build();
-            
-            // Neutralization with hydroxide (temporary fix while API gets rewritten)
-            new ReactionBuilder(namespace)
-                .id(acid.getFullID().split(":")[1] + ".neutralization")
-                .addReactant(acid)
-                .addReactant(DestroyMolecules.HYDROXIDE)
-                .addProduct(conjugateBase)
-                .addProduct(DestroyMolecules.WATER)
-                .activationEnergy(GAS_CONSTANT * 0.298f) // Makes the pKa accurate at room temperature
-                .preexponentialFactor(0.5f * (float)Math.pow(10, -pKa))
+                .preexponentialFactor((float)Math.pow(10, 2.0-0.5*pKa)) // 2.0 is an arbitrary choice to make both pre-exponential factors
+                                                                        // fall within reasonable orders of magnitude for most values of pKa.
+                                                                        // The pKa is respected as long as A(dissoc)/A(assoc)=10^-pKa.
                 .dontIncludeInJei()
                 .build();
 
@@ -705,7 +695,7 @@ public class LegacyReaction {
                 .addReactant(DestroyMolecules.PROTON)
                 .addProduct(acid)
                 .activationEnergy(GAS_CONSTANT * 0.298f)
-                .preexponentialFactor(1f)
+                .preexponentialFactor((float)Math.pow(10, 2.0+0.5*pKa)) // see above
                 .dontIncludeInJei()
                 .build();
 

@@ -514,17 +514,6 @@ public class DestroyReactions {
         .enthalpyChange(-500f)
         .build(),
 
-
-
-    HYDROGEN_CYANIDE_DISSOCIATION = builder()
-            .id("hydrogen_cyanide_dissociation")
-            .addReactant(DestroyMolecules.HYDROGEN_CYANIDE)
-            .addReactant(DestroyMolecules.HYDROXIDE)
-            .addProduct(DestroyMolecules.WATER)
-            .addProduct(DestroyMolecules.CYANIDE)
-            .build(),
-
-
     HYDROGEN_IODIDE_SYNTHESIS = builder()
         .id("hydrogen_iodide_synthesis")
         .addReactant(DestroyMolecules.HYDRAZINE)
@@ -557,16 +546,6 @@ public class DestroyReactions {
         .addProduct(DestroyMolecules.WATER)
         .requireUV() //TODO add reverse reaction
         .build(),
-
-
-    HYPOCHLOROUS_ACID_DISSOCIATION = builder()
-            .id("hypochlorous_acid_dissociation")
-            .addReactant(DestroyMolecules.HYPOCHLOROUS_ACID)
-            .addReactant(DestroyMolecules.HYDROXIDE)
-            .addProduct(DestroyMolecules.WATER)
-            .addProduct(DestroyMolecules.HYPOCHLORITE)
-            .build(),
-
 
     IODIDE_DISPLACEMENT = builder()
         .id("iodide_displacement")

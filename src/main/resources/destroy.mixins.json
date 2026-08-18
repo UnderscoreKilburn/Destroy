@@ -73,6 +73,7 @@
     "patch.ContaminantMixin"
   ],
   "client": [
+    "client.ClientLanguageMixin",
     "client.ClientLevelMixin",
     "client.CreativeModeInventoryScreenMixin",
     "client.EffectRenderingInventoryScreenMixin",

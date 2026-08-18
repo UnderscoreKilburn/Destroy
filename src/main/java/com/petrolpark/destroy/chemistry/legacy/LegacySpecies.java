@@ -24,7 +24,6 @@ import com.petrolpark.destroy.client.DestroyLang;
 import com.petrolpark.destroy.core.chemistry.MoleculeRenderer;
 
 import net.createmod.catnip.data.Pair;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.Vec3;
 
@@ -445,10 +444,8 @@ public class LegacySpecies implements INameableProduct {
     public String getTranslationKey(boolean iupac) {
         if (isNovel()) return "destroy.chemical.unknown";
         String key = nameSpace + ".chemical." + translationKey;
-        String iupacKey = key + ".iupac";
-        if (iupac && I18n.exists(iupacKey)) {
-            key = iupacKey;
-        };
+        if(iupac) key += ".iupac";
+
         return key;
     };
 

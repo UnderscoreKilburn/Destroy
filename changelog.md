@@ -1,4 +1,11 @@
 ------------------------------------------------------
+Destroy 0.1.3-𝑖+2
+------------------------------------------------------
+Requires **Create 6.0.8** and **Petrolpark's Library 1.4.27**.
+
+# Fixes
+- Fixed a server crash caused by trying to display the contents of a Vat using a Display Link
+------------------------------------------------------
 Destroy 0.1.3-𝑖+1
 ------------------------------------------------------
 Requires **Create 6.0.8** and **Petrolpark's Library 1.4.27**.
